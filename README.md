@@ -2,3 +2,11 @@
 Backend api for FSO capstone project.
 
 Date: 22.1.2023
+
+## Time Entry
+
+| Date                    | Time (hh:mm:ss) | Details    |
+|-------------------------|-----------------|------------|
+| 22.01.2023              | 05:12:35        | [Initial](https://app.clockify.me/shared/63d02cdbc6447650fdb1120a)|
+| 23.01.2023 - 29.01.2023 | 04:18:26        | [First Week](https://app.clockify.me/shared/63d02cfac6447650fdb11264)|
+|                         |                 |            |
