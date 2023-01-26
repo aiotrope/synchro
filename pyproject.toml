@@ -3,17 +3,29 @@ name = "synchro-api"
 version = "0.1.0"
 description = "Backend api for FSO capstone project."
 authors = ["aiotrope <arneli74@protonmail.com>"]
-license = "Zero-Clause BSD"
 readme = "README.md"
 packages = [{include = "synchro_api"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "^4.1.5"
+djangorestframework = "^3.14.0"
+markdown = "^3.4.1"
+django-filter = "^22.1"
+dj-rest-auth = {extras = ["with-social"], version = "^2.2.7"}
 psycopg2 = "^2.9.5"
+whitenoise = "^6.3.0"
 python-decouple = "^3.7"
+pillow = "^9.4.0"
+python-slugify = "^7.0.0"
+gunicorn = "^20.1.0"
+django-cors-headers = "^3.13.0"
+django-crispy-forms = "^1.14.0"
 dj-database-url = "^1.2.0"
 
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.1"
 
 [build-system]
 requires = ["poetry-core"]
