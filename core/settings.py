@@ -14,7 +14,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
-# Application definition
+# Application definition & Middlewares
+# ------------------------------------------------------------------------------
 DJANGO_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,7 +57,8 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-# Common
+# Common & Templates
+# ------------------------------------------------------------------------------
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
@@ -94,6 +96,7 @@ USE_THOUSAND_SEPARATOR = True
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # Database
+# ------------------------------------------------------------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -105,13 +108,55 @@ DATABASES = {
 db_from_env = dj_database_url.config(conn_max_age=600, conn_health_checks=True)
 DATABASES['default'].update(db_from_env)
 
+# Authentication
+# ------------------------------------------------------------------------------
+AUTH_USER_MODEL = 'users.User'
+
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# dj-rest-auth
+# ------------------------------------------------------------------------------
+
+# REST_USE_JWT = True
+
+# JWT_AUTH_COOKIE = 'jwt-auth'
+
+# django-allauth
+# ------------------------------------------------------------------------------
+""" ACCOUNT_ALLOW_REGISTRATION = True
+
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+ACCOUNT_ADAPTER = "users.adapters.AccountAdapter"
+
+SOCIALACCOUNT_ADAPTER = "users.adapters.SocialAccountAdapter"
+
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+
+ACCOUNT_SESSION_REMEMBER = True
+
+ACCOUNT_UNIQUE_EMAIL = True
+
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ """
+# ACCOUNT_FORMS = {'signup': 'users.forms.RegistrationForm'}
+
+
 # Password
-PASSWORD_HASHERS = [
+# ------------------------------------------------------------------------------
+""" PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
-]
+] """
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -128,28 +173,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Email
+# ------------------------------------------------------------------------------
+EMAIL_BACKEND = config(
+    'EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend'
+)
 
-# Static files (CSS, JavaScript, Images)
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', cast=str)
 
-STATIC_URL = 'static/'
+SERVER_EMAIL = config('SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
 
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='DEFAULT_FROM_EMAIL')
 
-# Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
-
-# Authentication
-AUTH_USER_MODEL = 'users.User'
-
+EMAIL_TIMEOUT = 5
 
 # CORS
+# ------------------------------------------------------------------------------
 if not settings.DEBUG:
     CORS_ORIGIN_ALLOW_ALL = False
 else:
@@ -163,7 +206,9 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:3000',
+    'http://localhost:3000',
     'http://127.0.0.1:8000',
+    'http://localhost:8000',
 )
 
 CORS_EXPOSE_HEADERS = (
@@ -175,3 +220,22 @@ CORS_ALLOW_HEADERS = default_headers + (
 )
 
 CORS_PREFLIGHT_MAX_AGE = 86400
+
+
+# Static files (CSS, JavaScript, Images)
+# ------------------------------------------------------------------------------
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+STATIC_URL = 'static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
