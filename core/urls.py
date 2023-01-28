@@ -4,6 +4,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+     path("accounts/", include("allauth.urls")),
     # API base URL
     path('api/', include('core.api_router')),
     # DRF auth token

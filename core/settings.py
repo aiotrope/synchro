@@ -70,7 +70,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'),],
-        #'APP_DIRS': True,
+        # 'APP_DIRS': True,
         'OPTIONS': {
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
@@ -110,7 +110,7 @@ FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # Database
 # ------------------------------------------------------------------------------
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
@@ -119,7 +119,17 @@ DATABASES = {
 
 # Config will look for env.variable name DATABASE_URL set on os.environ
 db_from_env = dj_database_url.config(conn_max_age=600, conn_health_checks=True)
-DATABASES['default'].update(db_from_env)
+DATABASES['default'].update(db_from_env) """
+
+db_from_env = config('DATABASE_URL')
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=db_from_env,
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
 
 # Authentication
 # ------------------------------------------------------------------------------
@@ -134,7 +144,9 @@ AUTHENTICATION_BACKENDS = [
 # ------------------------------------------------------------------------------
 REST_USE_JWT = True
 
-JWT_AUTH_COOKIE = 'jwt-auth'
+JWT_AUTH_COOKIE = config('JWT_AUTH_COOKIE')
+
+JWT_AUTH_REFRESH_COOKIE = config('JWT_AUTH_REFRESH_COOKIE')
 
 # django-allauth
 # ------------------------------------------------------------------------------
@@ -195,13 +207,13 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', cast=str)
 
 SERVER_EMAIL = config('SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
 
-EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_HOST = config('EMAIL_HOST', default='mail.smtp2go.com')
 
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='DEFAULT_FROM_EMAIL')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
-EMAIL_PORT = 587
+EMAIL_PORT = 2525
 
 EMAIL_USE_TLS = True
 
