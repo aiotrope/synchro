@@ -7,6 +7,7 @@ from django.core.validators import validate_email
 
 from .managers import UserManager
 
+
 class User(AbstractUser):
     validate_username = UnicodeUsernameValidator()
 
