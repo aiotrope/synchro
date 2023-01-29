@@ -108,19 +108,11 @@ USE_THOUSAND_SEPARATOR = True
 
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # Database
 # ------------------------------------------------------------------------------
-""" DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# Config will look for env.variable name DATABASE_URL set on os.environ
-db_from_env = dj_database_url.config(conn_max_age=600, conn_health_checks=True)
-DATABASES['default'].update(db_from_env) """
-
 db_from_env = config('DATABASE_URL')
 
 DATABASES = {
@@ -140,6 +132,10 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+LOGIN_REDIRECT_URL = 'users:redirect'
+
+LOGIN_URL = 'account_login'
+
 # dj-rest-auth
 # ------------------------------------------------------------------------------
 REST_USE_JWT = True
@@ -156,6 +152,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 
 ACCOUNT_EMAIL_REQUIRED = True
 
+ACCOUNT_USERNAME_REQUIRED = True
+
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
@@ -169,8 +167,6 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-
-# ACCOUNT_FORMS = {'signup': 'users.forms.RegistrationForm'}
 
 
 # Password
@@ -264,7 +260,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        # "rest_framework.authentication.BasicAuthentication",
+        'rest_framework.authentication.BasicAuthentication',
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         # "rest_framework.permissions.IsAuthenticated",
@@ -278,7 +274,7 @@ REST_FRAMEWORK = {
 }
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images) & Media
 # ------------------------------------------------------------------------------
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
@@ -293,8 +289,18 @@ STATICFILES_FINDERS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = "/media/"
+
+# ADMIN
+# ------------------------------------------------------------------------------
+# Django Admin URL.
+ADMIN_URL = config('ADMIN_URL', default='admin/')
+
+ADMINS = [("""Synchro API""", 'arnelimperial.com')]
+
+MANAGERS = ADMINS
 
 # Security
 # ------------------------------------------------------------------------------
