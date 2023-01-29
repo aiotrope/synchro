@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = [
     'whitenoise.runserver_nostatic',
     'corsheaders',
     'rest_framework_simplejwt',
+    'django_extensions',
 ]
 
 LOCAL_APPS = ['users.apps.UsersConfig']
@@ -135,8 +136,7 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL = 'users:redirect'
 
-LOGIN_URL = config(
-    'LOGIN_URL', default='http://localhost:8000/dj-rest-auth/login/')
+LOGIN_URL = 'account_login'
 
 # dj-rest-auth
 # ------------------------------------------------------------------------------
@@ -264,8 +264,8 @@ if DEBUG:
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        #'rest_framework.authentication.TokenAuthentication',
+        #'rest_framework.authentication.BasicAuthentication',
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         # "rest_framework.permissions.IsAuthenticated",

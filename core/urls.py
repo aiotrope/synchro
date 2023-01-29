@@ -31,10 +31,16 @@ urlpatterns += [
         'dj-rest-auth/registration/account-confirm-email/<str:key>/',
         ConfirmEmailView.as_view(),
     ),  # Needs to be defined before the registration path
-    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('dj-rest-auth/registration/', RegisterView.as_view()),
+    path('dj-rest-auth/login/', LoginView.as_view(), name='dj_rest_login'),
+    path('dj-rest-auth/logout/', LogoutView.as_view(), name='dj_rest_logout'),
+
+    path('dj-rest-auth/verify-email/',
+         VerifyEmailView.as_view(), name='rest_verify_email'),
     path('dj-rest-auth/account-confirm-email/', VerifyEmailView.as_view(),
          name='account_email_verification_sent'),
-    path('dj-rest-auth/', include('dj_rest_auth.urls')), 
+    re_path(r'^dj-rest-auth/account-confirm-email/(?P<key>[-:\w]+)/$',
+            VerifyEmailView.as_view(), name='account_confirm_email'),
     # Simple JWT
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
