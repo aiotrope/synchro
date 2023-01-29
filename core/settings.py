@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount.providers.facebook',
     'whitenoise.runserver_nostatic',
     'corsheaders',
+    'rest_framework_simplejwt',
 ]
 
 LOCAL_APPS = ['users.apps.UsersConfig']
@@ -134,7 +135,8 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL = 'users:redirect'
 
-LOGIN_URL = 'account_login'
+LOGIN_URL = config(
+    'LOGIN_URL', default='http://localhost:8000/dj-rest-auth/login/')
 
 # dj-rest-auth
 # ------------------------------------------------------------------------------
@@ -143,6 +145,7 @@ REST_USE_JWT = True
 JWT_AUTH_COOKIE = config('JWT_AUTH_COOKIE')
 
 JWT_AUTH_REFRESH_COOKIE = config('JWT_AUTH_REFRESH_COOKIE')
+
 
 # django-allauth
 # ------------------------------------------------------------------------------
@@ -167,6 +170,8 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
 
 # Password

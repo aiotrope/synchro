@@ -4,6 +4,10 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views import defaults as default_views
 from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import LoginView, LogoutView
 
@@ -23,11 +27,17 @@ urlpatterns += [
     # Login via browsable API
     path('api-auth/', include('rest_framework.urls')),
     # Auth via dj-rest-auth
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path(
+        'dj-rest-auth/registration/account-confirm-email/<str:key>/',
+        ConfirmEmailView.as_view(),
+    ),  # Needs to be defined before the registration path
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     path('dj-rest-auth/account-confirm-email/', VerifyEmailView.as_view(),
          name='account_email_verification_sent'),
-
+    path('dj-rest-auth/', include('dj_rest_auth.urls')), 
+    # Simple JWT
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 if settings.DEBUG:
