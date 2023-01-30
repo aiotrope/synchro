@@ -5,14 +5,17 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.viewsets import ModelViewSet
-
+from rest_framework.generics import GenericAPIView
 from django.conf import settings
+import requests
+
 
 from .serializers import UserSerializer
 
 
 UserModel = getattr(settings, 'AUTH_USER_MODEL')
 User = get_user_model()
+djoser_user_activate_url = getattr(settings, 'DJOSER_USER_ACTIVATE_URL')
 
 
 class UserViewSet(ModelViewSet):
@@ -34,3 +37,17 @@ class UserCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
         content = {"active_users": obj}
         return Response(content)
+
+
+class ActivateUser(GenericAPIView):
+
+    def get(self, request, uid, token, format=None):
+        payload = {'uid': uid, 'token': token}
+
+        url = djoser_user_activate_url
+        response = requests.post(url, data=payload)
+
+        if response.status_code == 204:
+            return Response({}, response.status_code)
+        else:
+            return Response(response.json())

@@ -8,6 +8,6 @@ The links provided include a detailed breakdown of my time allocated to this pro
 
 | Date                    | Time (hh:mm) | Details    |
 |-------------------------|-----------------|------------|
-| 22.01.2023              | 05:12:35        | [Initial](https://app.clockify.me/shared/63d02cdbc6447650fdb1120a)|
-| 23.01.2023 - 29.01.2023 | 04:18:26        | [First Week](https://app.clockify.me/shared/63d02cfac6447650fdb11264)|
+| 22.01.2023              | 05:12:35        | [Initial](https://app.clockify.me/shared/63d83b4231f27776430a0a49)|
+| 23.01.2023 - 29.01.2023 | 04:18:26        | [First Week](https://app.clockify.me/shared/63d83b6e4dd73c4f11b8da8b)|
 |                         |                 |            |

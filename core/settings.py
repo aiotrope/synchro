@@ -4,6 +4,7 @@ from django.conf import settings
 from pathlib import Path
 import dj_database_url
 from corsheaders.defaults import default_headers
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,17 +32,20 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
+    'djoser',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
-    'whitenoise.runserver_nostatic',
     'corsheaders',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'django_extensions',
+    'social_django',
 ]
+
+if settings.DEBUG:
+    THIRD_PARTY_APPS += 'whitenoise.runserver_nostatic',
 
 LOCAL_APPS = ['users.apps.UsersConfig']
 
@@ -61,8 +65,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
-    'csp.middleware.CSPMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
+
+if not settings.DEBUG:
+    MIDDLEWARE += 'csp.middleware.CSPMiddleware',
 
 # Common & Templates
 # ------------------------------------------------------------------------------
@@ -87,6 +94,8 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -134,17 +143,11 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-LOGIN_REDIRECT_URL = 'users:redirect'
+LOGIN_REDIRECT_URL = config(
+    'LOGIN_REDIRECT_URL', default='http://127.0.0.1:8000/auth/users/me/')
 
-LOGIN_URL = 'account_login'
-
-# dj-rest-auth
-# ------------------------------------------------------------------------------
-REST_USE_JWT = True
-
-JWT_AUTH_COOKIE = config('JWT_AUTH_COOKIE')
-
-JWT_AUTH_REFRESH_COOKIE = config('JWT_AUTH_REFRESH_COOKIE')
+LOGIN_URL = config(
+    'LOGIN_URL', default='http://127.0.0.1:8000/auth/jwt/create/')
 
 
 # django-allauth
@@ -263,9 +266,9 @@ if DEBUG:
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-        #'rest_framework.authentication.TokenAuthentication',
-        #'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         # "rest_framework.permissions.IsAuthenticated",
@@ -275,9 +278,54 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 
-    # 'PAGE_SIZE': 10
+    'PAGE_SIZE': 10
 }
 
+# Djoser & Python Social Auth
+# ------------------------------------------------------------------------------
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+DJOSER = {
+    # 'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SET_USERNAME_RETYPE': True,
+    'SET_PASSWORD_RETYPE': True,
+    'USERNAME_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': config('ACTIVATION_URL', default='auth/users/activate/{uid}/{token}/'),
+    'SEND_ACTIVATION_EMAIL': True,
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
+    """   'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
+        "your redirect url",
+        "your redirect url",
+    ], """
+    "SERIALIZERS": {
+        "user": "djoser.serializers.UserSerializer",
+        "current_user": "djoser.serializers.UserSerializer",
+        "user_delete": "djoser.serializers.UserSerializer",
+    },
+}
+
+# Other ENV Vars
+DJOSER_USER_ACTIVATE_URL = config(
+    'DJOSER_USER_ACTIVATE_URL', default='http://127.0.0.1:8000/auth/users/activation/')
+
+
+# Simple JWT
+# ------------------------------------------------------------------------------
+
+SIMPLE_JWT = {
+    # 'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_TOKEN_CLASSES': ("rest_framework_simplejwt.tokens.AccessToken",),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
 
 # Static files (CSS, JavaScript, Images) & Media
 # ------------------------------------------------------------------------------
@@ -285,18 +333,22 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = "/media/"
+
+if not settings.DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ADMIN
 # ------------------------------------------------------------------------------
@@ -316,16 +368,6 @@ SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
 CSRF_COOKIE_HTTPONLY = True
-
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
-CSP_SCRIPT_SRC = ("'self'",)
-CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
-CSP_IMG_SRC = ("'self'", "*")
-CSP_INCLUDE_NONCE_IN = ["script-src"]
-CSP_OBJECT_SRC = ("'none'", )
-CSP_BASE_URI = ("'self'", )
-CSP_CONNECT_SRC = ("'self'", "*")
 
 if not settings.DEBUG:
 
@@ -362,3 +404,16 @@ if not settings.DEBUG:
         "camera": [],
         "fullscreen": []
     }
+
+    CSP_DEFAULT_SRC = ("'self'",)
+    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.2.3/spacelab/bootstrap.min.css",
+                     "'sha512-kb6aHe8Fchic05HVLuEio/LWsmwtNRndUxZ5AqK4IyMG817Dhff2BxuKJCRPWzQ4daCxN5TagQ5s8Hpo9YJgbQ=='",)
+    CSP_SCRIPT_SRC = ("'self'", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js", "https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js",
+                      "'sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN'", "'sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN'",)
+    CSP_FONT_SRC = ("'self'", "fonts.gstatic.com", "*")
+    CSP_IMG_SRC = ("'self'", "*")
+    CSP_INCLUDE_NONCE_IN = ["script-src"]
+    CSP_OBJECT_SRC = ("'none'", )
+    CSP_BASE_URI = ("'none'", )
+    CSP_CONNECT_SRC = ("'self'",)
+    CSP_FRAME_ANCESTORS = ("'none'", )

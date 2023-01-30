@@ -1,18 +1,26 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
+# from django.conf.urls import url
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views import defaults as default_views
+from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+    TokenVerifyView
 )
-from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView
-from dj_rest_auth.views import LoginView, LogoutView
+
+from users.api.views import ActivateUser
 
 
 urlpatterns = [
+    path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
+    path(
+        'about/', TemplateView.as_view(template_name='pages/about.html'), name='about'
+    ),
     path(settings.ADMIN_URL, admin.site.urls),
     path('users/', include('users.urls', namespace='users')),
     path('accounts/', include("allauth.urls")),
@@ -26,24 +34,17 @@ urlpatterns += [
     path('auth-token/', obtain_auth_token),
     # Login via browsable API
     path('api-auth/', include('rest_framework.urls')),
-    # Auth via dj-rest-auth
-    path(
-        'dj-rest-auth/registration/account-confirm-email/<str:key>/',
-        ConfirmEmailView.as_view(),
-    ),  # Needs to be defined before the registration path
-    path('dj-rest-auth/registration/', RegisterView.as_view()),
-    path('dj-rest-auth/login/', LoginView.as_view(), name='dj_rest_login'),
-    path('dj-rest-auth/logout/', LogoutView.as_view(), name='dj_rest_logout'),
-
-    path('dj-rest-auth/verify-email/',
-         VerifyEmailView.as_view(), name='rest_verify_email'),
-    path('dj-rest-auth/account-confirm-email/', VerifyEmailView.as_view(),
-         name='account_email_verification_sent'),
-    re_path(r'^dj-rest-auth/account-confirm-email/(?P<key>[-:\w]+)/$',
-            VerifyEmailView.as_view(), name='account_confirm_email'),
+    # Rest Auth via djoser
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
+    path('auth/', include('djoser.urls.jwt')),
+    path('auth/', include('djoser.social.urls')),
+    path('auth/users/activate/<uid>/<token>/',
+         ActivateUser.as_view(), name='activation'),
     # Simple JWT
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]
 
 if settings.DEBUG:
@@ -65,3 +66,5 @@ if settings.DEBUG:
         ),
         path("500/", default_views.server_error),
     ]
+
+urlpatterns += staticfiles_urlpatterns()
