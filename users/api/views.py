@@ -7,6 +7,14 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from django.conf import settings
+# Social login
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from dj_rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+# from django.views import View
+from django.http import JsonResponse
+
 import requests
 
 
@@ -51,3 +59,26 @@ class ActivateUser(GenericAPIView):
             return Response({}, response.status_code)
         else:
             return Response(response.json())
+
+
+class FacebookLogin(SocialLoginView):
+    authentication_classes = []
+    adapter_class = FacebookOAuth2Adapter
+
+
+class GoogleLogin(SocialLoginView):
+    authentication_classes = []
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = 'http://127.0.0.1:8000/accounts/google/login/callback/'
+    client_class = OAuth2Client
+
+
+class UserRedirectSocial(GenericAPIView):
+
+    def get(self, request, *args, **kwargs):
+        code, state = str(request.GET['code']), str(request.GET['state'])
+        json_obj = {'code': code, 'state': state}
+        print(json_obj)
+        return JsonResponse(json_obj)
+
+

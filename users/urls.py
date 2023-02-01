@@ -1,10 +1,13 @@
 from django.urls import path
+from django.views import View
+from django.http import JsonResponse
 
 from users.views import (
     user_detail_view,
     user_redirect_view,
     user_update_view,
 )
+
 
 app_name = "users"
 urlpatterns = [

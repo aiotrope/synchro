@@ -33,15 +33,19 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
+    'social_django',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'corsheaders',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_extensions',
-    'social_django',
+    'crispy_forms',
 ]
 
 if settings.DEBUG:
@@ -139,15 +143,17 @@ DATABASES = {
 AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-LOGIN_REDIRECT_URL = config(
+""" LOGIN_REDIRECT_URL = config(
     'LOGIN_REDIRECT_URL', default='http://127.0.0.1:8000/auth/users/me/')
 
 LOGIN_URL = config(
-    'LOGIN_URL', default='http://127.0.0.1:8000/auth/jwt/create/')
+    'LOGIN_URL', default='http://127.0.0.1:8000/auth/jwt/create/') """
 
 
 # django-allauth
@@ -160,7 +166,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_USERNAME_REQUIRED = True
 
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
 
@@ -234,7 +240,10 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     'https://nurtsrx.herokuapp.com',
-    'http://localhost',
+    'http://127.0.0.1:3000',
+    'http://localhost:3000',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
 ]
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:3000',
@@ -271,7 +280,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.BasicAuthentication',
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        # "rest_framework.permissions.IsAuthenticated",
+        'rest_framework.permissions.AllowAny'
     ],
     "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
 
@@ -281,10 +290,11 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
-# Djoser & Python Social Auth
+# Djoser & Python Social Auth & dj-rest-auth(Social)
 # ------------------------------------------------------------------------------
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 DJOSER = {
     # 'LOGIN_FIELD': 'email',
@@ -299,21 +309,44 @@ DJOSER = {
     'ACTIVATION_URL': config('ACTIVATION_URL', default='auth/users/activate/{uid}/{token}/'),
     'SEND_ACTIVATION_EMAIL': True,
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
-    """   'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
-        "your redirect url",
-        "your redirect url",
-    ], """
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
+        'https://www.arnelimperial.com',
+        'https://www.arnelimperial.com/login',
+        'http://localhost:3000',
+        'http://localhost:3000/login',
+        'http://127.0.0.1:8000/accounts/google/login/callback/',
+        'http://127.0.0.1:8000/api/social-credentials/',
+    ],
     "SERIALIZERS": {
         "user": "djoser.serializers.UserSerializer",
         "current_user": "djoser.serializers.UserSerializer",
         "user_delete": "djoser.serializers.UserSerializer",
     },
 }
+# Google Credentials
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'openid'
+]
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['first_name', 'last_name']
+
+# FB Credentials
+SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email, username, first_name, last_name',
+}
 
 # Other ENV Vars
 DJOSER_USER_ACTIVATE_URL = config(
     'DJOSER_USER_ACTIVATE_URL', default='http://127.0.0.1:8000/auth/users/activation/')
 
+# dj-rest-auth
+REST_USE_JWT = True
 
 # Simple JWT
 # ------------------------------------------------------------------------------
@@ -322,7 +355,7 @@ SIMPLE_JWT = {
     # 'AUTH_HEADER_TYPES': ('JWT',),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'AUTH_TOKEN_CLASSES': ("rest_framework_simplejwt.tokens.AccessToken",),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
