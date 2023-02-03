@@ -13,7 +13,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView
 )
 
-from users.api.views import ActivateUser, FacebookLogin, GoogleLogin, UserRedirectSocial
+from users.api.views import ActivateUser, UserRedirectSocial
 
 
 urlpatterns = [
@@ -23,7 +23,6 @@ urlpatterns = [
     ),
     path(settings.ADMIN_URL, admin.site.urls),
     path('users/', include('users.urls', namespace='users')),
-    path('api/social-credentials/', UserRedirectSocial.as_view(), name='redirect_social'),
     path('accounts/', include("allauth.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
@@ -42,14 +41,14 @@ urlpatterns += [
     path('auth/', include('djoser.social.urls')),
     path('auth/users/activate/<uid>/<token>/',
          ActivateUser.as_view(), name='activation'),
-    # Social Auth
-    path('social/', include('dj_rest_auth.urls')),
-    path('social/google/', GoogleLogin.as_view(), name='google_login'),
-    path('social/fb/', FacebookLogin.as_view(), name='fb_login'),
+    # Djoser redirect after social login
+    path('api/social-credentials/',
+         UserRedirectSocial.as_view(), name='redirect_social'),
     # Simple JWT
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
 ]
 
 if settings.DEBUG:

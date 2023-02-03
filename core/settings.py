@@ -34,8 +34,6 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'social_django',
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -149,11 +147,11 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-""" LOGIN_REDIRECT_URL = config(
+LOGIN_REDIRECT_URL = config(
     'LOGIN_REDIRECT_URL', default='http://127.0.0.1:8000/auth/users/me/')
 
 LOGIN_URL = config(
-    'LOGIN_URL', default='http://127.0.0.1:8000/auth/jwt/create/') """
+    'LOGIN_URL', default='http://127.0.0.1:8000/auth/jwt/create/')
 
 
 # django-allauth
@@ -345,8 +343,6 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 DJOSER_USER_ACTIVATE_URL = config(
     'DJOSER_USER_ACTIVATE_URL', default='http://127.0.0.1:8000/auth/users/activation/')
 
-# dj-rest-auth
-REST_USE_JWT = True
 
 # Simple JWT
 # ------------------------------------------------------------------------------

@@ -1,7 +1,9 @@
 # synchro-api
 Backend api for FSO capstone project.
 
-Date: 22.1.2023
+Date Started(Backend): 22.1.2023
+
+Date Started(Frontend): 31.1.2023
 
 ## Time Entry
 The links provided include a detailed breakdown of my time allocated to this project.
