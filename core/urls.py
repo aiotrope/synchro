@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 # from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views import defaults as default_views
@@ -17,10 +17,7 @@ from users.api.views import ActivateUser, UserRedirectSocial
 
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
-    path(
-        'about/', TemplateView.as_view(template_name='pages/about.html'), name='about'
-    ),
+    re_path('.*', TemplateView.as_view(template_name='index.html')),
     path(settings.ADMIN_URL, admin.site.urls),
     path('users/', include('users.urls', namespace='users')),
     path('accounts/', include("allauth.urls")),
@@ -48,6 +45,8 @@ urlpatterns += [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    # DJ Social
+    # path('api/google/', GoogleLogin.as_view())
 
 ]
 
@@ -72,3 +71,8 @@ if settings.DEBUG:
     ]
 
 urlpatterns += staticfiles_urlpatterns()
+
+""" path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
+       path(
+           'about/', TemplateView.as_view(template_name='pages/about.html'), name='about'
+       ), """

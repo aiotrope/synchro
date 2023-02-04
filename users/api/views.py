@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
+
+# from django.http import JsonResponse
 from django.conf import settings
-from django.http import JsonResponse
 import requests
 
 from .serializers import UserSerializer
@@ -57,6 +58,13 @@ class UserRedirectSocial(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         code, state = str(request.GET['code']), str(request.GET['state'])
-        json_obj = {'code': code, 'state': state}
-        print(json_obj)
-        return JsonResponse(json_obj)
+        payload = {'code': code, 'state': state}
+        # url = 'http://127.0.0.1:8000/auth/o/google-oauth2/'
+        # req = requests.post(url, data=payload)
+        # return Response(req.json())
+        return Response(payload)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        return context
