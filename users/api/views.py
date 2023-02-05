@@ -82,13 +82,13 @@ class UserRedirectSocialView(TemplateView):
 class UserRedirectSocial(views.APIView):
 
     def get(self, request, code):
-        protocol = 'https://' if request.is_secure() else 'http://'
-        web_url = protocol + request.get_host()
-        post_url = web_url + '/auth/o/google-oauth2/'
+        # protocol = 'https://' if request.is_secure() else 'http://'
+        # web_url = protocol + request.get_host()
+        # post_url = web_url + '/auth/o/google-oauth2/'
         post_data = {'code': code}
-        result = requests.post(post_url, data=post_data)
-        content = result.text
-        return Response(content)
+        # result = requests.post(post_url, data=post_data)
+        # content = result.text
+        return Response(post_data)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

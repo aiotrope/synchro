@@ -8,8 +8,8 @@ Date Started(Frontend): 31.1.2023
 ## Time Entry
 The links provided include a detailed breakdown of my time allocated to this project.
 
-| Date                    | Time (hh:mm) | Details    |
+| Date                    | Time (hours)    | Details    |
 |-------------------------|-----------------|------------|
-| 22.01.2023              | 05:12:35        | [Initial](https://app.clockify.me/shared/63d83b4231f27776430a0a49)|
-| 23.01.2023 - 29.01.2023 | 04:18:26        | [First Week](https://app.clockify.me/shared/63d83b6e4dd73c4f11b8da8b)|
-|                         |                 |            |
+| 22.01.2023              | 5               | [Initial](https://app.clockify.me/shared/63e035c668c29410b9f4d693)|
+| 23.01.2023 - 29.01.2023 | 29.8            | [First Week](https://app.clockify.me/shared/63e035e435504317106a58ef)|
+| 30.1.2023 - 05.02.2023  | 57              | [Second Week](https://app.clockify.me/shared/63e035e435504317106a58ef)|          |

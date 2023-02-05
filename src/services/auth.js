@@ -48,10 +48,20 @@ const getAuthorizationUrl = async () => {
   }
 }
 
+const setAuthTokensFromSocial = async (code) => {
+  try {
+    const response = await http.post('/auth/o/google-oauth2/', code)
+    if (response) return response
+  } catch (error) {
+    toast.error(`Error: ${error.message}`)
+  }
+}
+
 export const authService = {
   setAuthTokens,
   getAuthTokens,
   getAccessToken,
   getRefreshToken,
   getAuthorizationUrl,
+  setAuthTokensFromSocial,
 }
