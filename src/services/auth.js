@@ -1,7 +1,10 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-import { config } from '../utils/config/config'
+import { config } from '../utils/config/index'
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const http = axios.create({
   baseURL: config.base_url,

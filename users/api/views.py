@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model
+from rest_framework import views
+from django.http import HttpResponse
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -6,8 +8,12 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
-
+from django.views.generic.base import TemplateView
 # from django.http import JsonResponse
+from django.views import View
+from social_core.backends import google
+
+
 from django.conf import settings
 import requests
 
@@ -54,15 +60,35 @@ class ActivateUser(GenericAPIView):
             return Response(response.json())
 
 
-class UserRedirectSocial(GenericAPIView):
+class CustomGoogleOAuth2(google.GoogleOAuth2):
+    STATE_PARAMETER = False
 
-    def get(self, request, *args, **kwargs):
-        code, state = str(request.GET['code']), str(request.GET['state'])
-        payload = {'code': code, 'state': state}
-        # url = 'http://127.0.0.1:8000/auth/o/google-oauth2/'
-        # req = requests.post(url, data=payload)
-        # return Response(req.json())
-        return Response(payload)
+
+class UserRedirectSocialClass(object):
+    def __init__(self, code):
+        self.code = code
+
+
+class UserRedirectSocialView(TemplateView):
+    template_name = 'social/redirect.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        code = str(self.request.GET['code'])
+        context['social'] = UserRedirectSocialClass(code=code)
+        return context
+
+
+class UserRedirectSocial(views.APIView):
+
+    def get(self, request, code):
+        protocol = 'https://' if request.is_secure() else 'http://'
+        web_url = protocol + request.get_host()
+        post_url = web_url + '/auth/o/google-oauth2/'
+        post_data = {'code': code}
+        result = requests.post(post_url, data=post_data)
+        content = result.text
+        return Response(content)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

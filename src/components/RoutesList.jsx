@@ -6,6 +6,7 @@ import { Main } from './Main'
 import { Login } from './Login'
 import { Me } from './Me'
 import { NotFound } from './404'
+import { Credentials } from './Credentials'
 
 export const RoutesList = () => {
   const authTokens = authService.getAuthTokens()
@@ -20,6 +21,7 @@ export const RoutesList = () => {
         path="/me"
         element={authTokens ? <Me /> : <Navigate to={'/login'} />}
       />
+      <Route path="/api/social-credentials" element={<Credentials />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )

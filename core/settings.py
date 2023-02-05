@@ -83,7 +83,10 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'build')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'build'),
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,7 +143,8 @@ DATABASES = {
 AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
-    'social_core.backends.google.GoogleOAuth2',
+    # 'social_core.backends.google.GoogleOAuth2',
+    'users.api.views.CustomGoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -150,7 +154,7 @@ LOGIN_REDIRECT_URL = config(
     'LOGIN_REDIRECT_URL', default='http://127.0.0.1:8000/auth/users/me/')
 
 LOGIN_URL = config(
-    'LOGIN_URL', default='http://127.0.0.1:8000/auth/jwt/create/')
+    'LOGIN_URL', default='http://127.0.0.1:8000/login/')
 
 
 # django-allauth
@@ -344,7 +348,7 @@ DJOSER_USER_ACTIVATE_URL = config(
 
 # REST_USE_JWT = True
 
-# SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['state']
+SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['state']
 
 # Simple JWT
 # ------------------------------------------------------------------------------
@@ -449,4 +453,3 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
