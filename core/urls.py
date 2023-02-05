@@ -2,10 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
-# from django.conf.urls import url
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views import defaults as default_views
-from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -14,10 +11,10 @@ from rest_framework_simplejwt.views import (
 )
 
 from users.api.views import ActivateUser, UserRedirectSocial
+from client.views import client_view
 
 
 urlpatterns = [
-    re_path('.*', TemplateView.as_view(template_name='index.html')),
     path(settings.ADMIN_URL, admin.site.urls),
     path('users/', include('users.urls', namespace='users')),
     path('accounts/', include("allauth.urls")),
@@ -45,9 +42,11 @@ urlpatterns += [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    # DJ Social
-    # path('api/google/', GoogleLogin.as_view())
+]
 
+# URL patterns for frontend
+urlpatterns += [
+    re_path(r'^.*$', view=client_view, name='client-app'),
 ]
 
 if settings.DEBUG:
@@ -69,10 +68,3 @@ if settings.DEBUG:
         ),
         path("500/", default_views.server_error),
     ]
-
-urlpatterns += staticfiles_urlpatterns()
-
-""" path('', TemplateView.as_view(template_name='pages/home.html'), name='home'),
-       path(
-           'about/', TemplateView.as_view(template_name='pages/about.html'), name='about'
-       ), """

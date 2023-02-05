@@ -49,7 +49,10 @@ THIRD_PARTY_APPS = [
 if settings.DEBUG:
     THIRD_PARTY_APPS += 'whitenoise.runserver_nostatic',
 
-LOCAL_APPS = ['users.apps.UsersConfig']
+LOCAL_APPS = [
+    'users.apps.UsersConfig',
+    'client.apps.ClientConfig',
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -80,7 +83,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/build'), os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -272,7 +275,6 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         'rest_framework.permissions.AllowAny'
@@ -356,33 +358,6 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-# Static files (CSS, JavaScript, Images) & Media
-# ------------------------------------------------------------------------------
-CRISPY_TEMPLATE_PACK = "bootstrap5"
-
-STATIC_URL = 'static/'
-
-STATIC_ROOT = '.static'
-
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-]
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'frontend/build/'),
-    os.path.join(BASE_DIR, 'static'),
-    
-)
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-MEDIA_URL = "/media/"
-
-if not settings.DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
@@ -450,3 +425,28 @@ if not settings.DEBUG:
     CSP_BASE_URI = ("'none'", )
     CSP_CONNECT_SRC = ("'self'",)
     CSP_FRAME_ANCESTORS = ("'none'", )
+
+# Static files (CSS, JavaScript, Images) & Media
+# ------------------------------------------------------------------------------
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'build', 'static'),
+    os.path.join(BASE_DIR, 'public', 'assets')
+]
+
+MEDIA_URL = "/media/"
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'assets')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'build', 'media')
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
