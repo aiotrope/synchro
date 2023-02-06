@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import { useMutation, QueryCache } from '@tanstack/react-query'
+import { useMutation, QueryCache, useQueryClient } from '@tanstack/react-query'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
@@ -16,11 +16,16 @@ import Stack from 'react-bootstrap/Stack'
 import { authService } from '../services/auth'
 
 export const SocialCredentials = () => {
+  const queryClient = useQueryClient()
+  const queryCache = new QueryCache()
   const [queryParameters] = useSearchParams()
   const { isLoading, mutateAsync } = useMutation({
     mutationFn: authService.setAuthTokensFromSocial,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-account', 'googleUrl'] })
+    },
   })
-  const queryCache = new QueryCache()
+
   const navigate = useNavigate()
 
   const code = queryParameters.get('code')

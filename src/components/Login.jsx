@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useGoogleLogin } from '@react-oauth/google'
 
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
@@ -27,13 +26,13 @@ const schema = yup
 
 export const Login = () => {
   const queryClient = useQueryClient()
+  const queryCache = new QueryCache()
   const { isLoading, mutateAsync } = useMutation({
     mutationFn: authService.setAuthTokens,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['googleUrl'] })
+      queryClient.invalidateQueries({ queryKey: ['user-account', 'googleUrl'] })
     },
   })
-  const queryCache = new QueryCache()
 
   const navigate = useNavigate()
   const { googleLoginUrl } = useCommon()
@@ -59,12 +58,6 @@ export const Login = () => {
       window.location.reload()
     }
   }
-
-  const googleLoginBtn = useGoogleLogin({
-    flow: 'auth-code',
-    onSuccess: (codeResponse) => console.log(codeResponse),
-    onError: (error) => console.error('Login Failed:', error),
-  })
 
   if (isLoading) {
     return (
@@ -145,15 +138,6 @@ export const Login = () => {
           </Button>
         </div>
       </a>
-      <div className="d-grid mt-1">
-        <Button
-          variant="outline-primary"
-          size="lg"
-          onClick={() => googleLoginBtn()}
-        >
-          Signin to Google
-        </Button>
-      </div>
     </Stack>
   )
 }

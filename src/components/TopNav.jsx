@@ -1,6 +1,7 @@
 import React from 'react'
 import { QueryCache } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
 import Stack from 'react-bootstrap/Stack'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
@@ -77,7 +78,9 @@ const AuthMenu = () => {
       </div>
       <div className="ms-auto">
         <NavDropdown title="Account" id="navbarScrollingDropdown">
-          <NavDropdown.Item>Action</NavDropdown.Item>
+          <LinkContainer to={'/me'}>
+            <NavDropdown.Item>Profile</NavDropdown.Item>
+          </LinkContainer>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
         </NavDropdown>

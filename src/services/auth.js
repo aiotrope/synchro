@@ -23,10 +23,6 @@ const setAuthTokens = async (credentials) => {
 
 const removeAuthTokens = () => {
   localStorage.removeItem('tokens')
-  const authTokens = JSON.parse(localStorage.getItem('tokens'))
-  if (!authTokens) {
-    toast.success('Thanks for using Synchro!')
-  }
 }
 
 const getAuthTokens = () => {
@@ -35,8 +31,13 @@ const getAuthTokens = () => {
 }
 
 const getAccessToken = () => {
-  const access_token = getAuthTokens().access
-  if (access_token) return access_token
+  const access_token = JSON.parse(localStorage.getItem('tokens'))
+  console.log(access_token)
+  if (access_token) {
+    return access_token.access
+  } else {
+    return null
+  }
 }
 
 const getRefreshToken = () => {
@@ -72,6 +73,21 @@ const setAuthTokensFromSocial = async (code) => {
   }
 }
 
+const authHttp = axios.create({
+  baseURL: config.base_url,
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + getAccessToken(),
+  },
+})
+
+const authUserAccount = async () => {
+  const response = await authHttp.get('/auth/users/me/')
+  if (response.data) {
+    return response.data
+  }
+}
+
 export const authService = {
   setAuthTokens,
   getAuthTokens,
@@ -80,4 +96,5 @@ export const authService = {
   getAuthorizationUrl,
   setAuthTokensFromSocial,
   removeAuthTokens,
+  authUserAccount,
 }
