@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient, QueryCache } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
@@ -33,6 +33,8 @@ export const Login = () => {
       queryClient.invalidateQueries({ queryKey: ['googleUrl'] })
     },
   })
+  const queryCache = new QueryCache()
+
   const navigate = useNavigate()
   const { googleLoginUrl } = useCommon()
 
@@ -50,9 +52,11 @@ export const Login = () => {
       await mutateAsync(formData)
       reset()
       navigate('/')
-      toast.success(`Hello ${formData.username}!`)
     } catch (error) {
       toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
+    } finally {
+      queryCache.clear()
+      window.location.reload()
     }
   }
 
@@ -134,7 +138,7 @@ export const Login = () => {
       <div className="text-center mt-2">
         <strong>OR</strong>
       </div>
-      <a href={googleLoginUrl} target="_blank" rel="noreferrer">
+      <a href={googleLoginUrl} rel="noreferrer">
         <div className="d-grid mt-1">
           <Button variant="outline-primary" size="lg">
             Login to Google

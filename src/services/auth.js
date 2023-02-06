@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import qs from 'qs'
 
 import { config } from '../utils/config/index'
 
@@ -17,6 +18,14 @@ const setAuthTokens = async (credentials) => {
   const response = await http.post('/auth/jwt/create/', credentials)
   if (response.data.access && response.data.refresh) {
     localStorage.setItem('tokens', JSON.stringify(response.data))
+  }
+}
+
+const removeAuthTokens = () => {
+  localStorage.removeItem('tokens')
+  const authTokens = JSON.parse(localStorage.getItem('tokens'))
+  if (!authTokens) {
+    toast.success('Thanks for using Synchro!')
   }
 }
 
@@ -49,11 +58,17 @@ const getAuthorizationUrl = async () => {
 }
 
 const setAuthTokensFromSocial = async (code) => {
-  try {
-    const response = await http.post('/auth/o/google-oauth2/', code)
-    if (response) return response
-  } catch (error) {
-    toast.error(`Error: ${error.message}`)
+  const config = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  }
+  const url = 'http://127.0.0.1:8000/auth/o/google-oauth2/'
+
+  const response = await http.post(url, qs.stringify(code), config)
+  console.log(response.data)
+  if (response.data.access && response.data.refresh && response.data.user) {
+    localStorage.setItem('tokens', JSON.stringify(response.data))
   }
 }
 
@@ -64,4 +79,5 @@ export const authService = {
   getRefreshToken,
   getAuthorizationUrl,
   setAuthTokensFromSocial,
+  removeAuthTokens,
 }
