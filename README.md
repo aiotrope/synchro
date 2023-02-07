@@ -12,4 +12,4 @@ The links provided include a detailed breakdown of my time allocated to this pro
 |-------------------------|-----------------|------------|
 | 22.01.2023              | 5               | [Initial](https://app.clockify.me/shared/63e035c668c29410b9f4d693)|
 | 23.01.2023 - 29.01.2023 | 29.8            | [First Week](https://app.clockify.me/shared/63e035e435504317106a58ef)|
-| 30.1.2023 - 05.02.2023  | 57              | [Second Week](https://app.clockify.me/shared/63e035e435504317106a58ef)|          |
+| 30.1.2023 - 05.02.2023  | 57              | [Second Week](https://app.clockify.me/shared/63e035e435504317106a58ef)|          
