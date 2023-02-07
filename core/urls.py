@@ -33,7 +33,7 @@ urlpatterns += [
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
     path('auth/', include('djoser.social.urls')),
-    path('auth/users/activate/<uid>/<token>/',
+    path('auth/users/activate/<uid>/<token>',
          ActivateUser.as_view(), name='activation'),
     # Djoser redirect after social login
     path('api/social-credentials/<code>/',

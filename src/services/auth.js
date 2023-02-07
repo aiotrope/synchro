@@ -14,6 +14,13 @@ const http = axios.create({
   },
 })
 
+const createUser = async (info) => {
+  const response = await http.post('/auth/users/', info)
+  if (response.data) {
+    return response.data
+  }
+}
+
 const setAuthTokens = async (credentials) => {
   const response = await http.post('/auth/jwt/create/', credentials)
   if (response.data.access && response.data.refresh) {
@@ -97,4 +104,5 @@ export const authService = {
   setAuthTokensFromSocial,
   removeAuthTokens,
   authUserAccount,
+  createUser,
 }

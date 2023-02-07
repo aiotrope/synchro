@@ -6,6 +6,7 @@ import Stack from 'react-bootstrap/Stack'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
 import { authService } from '../services/auth'
+import { useCommon } from '../contexts/Common'
 
 const UnAuthMenu = () => (
   <Stack
@@ -36,7 +37,7 @@ const UnAuthMenu = () => (
     </div>
     <div>
       <strong>
-        <Link to={'/'}>SIGNUP</Link>
+        <Link to={'/signup'}>SIGNUP</Link>
       </strong>
     </div>
   </Stack>
@@ -45,7 +46,9 @@ const UnAuthMenu = () => (
 const AuthMenu = () => {
   const queryCache = new QueryCache()
   const navigate = useNavigate()
+  const { removeSignedEmail } = useCommon()
   const handleLogout = () => {
+    removeSignedEmail()
     queryCache.clear()
     authService.removeAuthTokens()
     window.location.reload()

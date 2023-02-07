@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useMutation, useQueryClient, QueryCache } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
@@ -19,24 +19,25 @@ import { useCommon } from '../contexts/Common'
 
 const schema = yup
   .object({
-    username: yup.string().required('Enter your registered email or username'),
-    password: yup.string().required(),
+    username: yup.string().trim().min(3).required(),
+    email: yup.string().email().required(),
+    password: yup.string().trim().min(8).required(),
+    re_password: yup
+      .string()
+      .oneOf([yup.ref('password'), null], 'Password must match'),
   })
   .required()
 
-export const Login = () => {
+export const Signup = () => {
   const queryClient = useQueryClient()
-  const queryCache = new QueryCache()
   const { isLoading, mutateAsync } = useMutation({
-    mutationFn: authService.setAuthTokens,
+    mutationFn: authService.createUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-account', 'googleUrl'] })
     },
   })
 
   const navigate = useNavigate()
-  const { googleLoginUrl } = useCommon()
-
   const {
     register,
     handleSubmit,
@@ -46,19 +47,21 @@ export const Login = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   })
-  const onSubmit = async (formData) => {
+
+  const { addSignedEmail } = useCommon()
+
+  const onSubmit = async (userData) => {
     try {
-      await mutateAsync(formData)
-      reset()
-      navigate('/')
+      const result = await mutateAsync(userData)
+      addSignedEmail(userData.email)
+      if (result) {
+        reset()
+        navigate('/signup-activation')
+      }
     } catch (error) {
       toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
-    } finally {
-      queryCache.clear()
-      window.location.reload()
     }
   }
-
   if (isLoading) {
     return (
       <Spinner
@@ -75,13 +78,12 @@ export const Login = () => {
       </Spinner>
     )
   }
-
   return (
     <Stack className="col-md-5 mx-auto">
-      <h2>Login to your account</h2>
+      <h2>Create an account</h2>
       <div>
         <p>
-          New to Synchro? <Link to={'/signup'}>Create an account</Link>
+          Already have an account? <Link to={'/login'}>Login to Synchro</Link>
         </p>
       </div>
       <Form
@@ -91,10 +93,10 @@ export const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <FormGroup>
-          <FormLabel htmlFor="username">Login</FormLabel>
+          <FormLabel htmlFor="username">Username</FormLabel>
           <FormControl
             type="text"
-            placeholder="Enter your email or username"
+            placeholder="Enter username"
             {...register('username')}
             aria-invalid={errors.username?.message ? 'true' : 'false'}
             className={`${errors.username?.message ? 'is-invalid' : ''} `}
@@ -105,7 +107,21 @@ export const Login = () => {
             </FormControl.Feedback>
           )}
         </FormGroup>
-
+        <FormGroup>
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormControl
+            type="text"
+            placeholder="Enter your email"
+            {...register('email')}
+            aria-invalid={errors.email?.message ? 'true' : 'false'}
+            className={`${errors.email?.message ? 'is-invalid' : ''} `}
+          />
+          {errors.email?.message && (
+            <FormControl.Feedback type="invalid">
+              {errors.email?.message}
+            </FormControl.Feedback>
+          )}
+        </FormGroup>
         <FormGroup>
           <FormLabel htmlFor="password">Password</FormLabel>
           <FormControl
@@ -121,23 +137,27 @@ export const Login = () => {
             </FormControl.Feedback>
           )}
         </FormGroup>
-
+        <FormGroup>
+          <FormLabel htmlFor="password">Password Confirmation</FormLabel>
+          <FormControl
+            type="password"
+            placeholder="Re-enter your password"
+            {...register('re_password')}
+            aria-invalid={errors.re_password?.message ? 'true' : 'false'}
+            className={`${errors.re_password?.message ? 'is-invalid' : ''} `}
+          />
+          {errors.re_password?.message && (
+            <FormControl.Feedback type="invalid">
+              {errors.re_password?.message}
+            </FormControl.Feedback>
+          )}
+        </FormGroup>
         <FormGroup className="d-grid mt-3">
           <Button variant="primary" size="lg" type="submit">
-            Submit
+            Submit Registration
           </Button>
         </FormGroup>
       </Form>
-      <div className="text-center mt-2">
-        <strong>OR</strong>
-      </div>
-      <a href={googleLoginUrl} rel="noreferrer">
-        <div className="d-grid mt-1">
-          <Button variant="outline-primary" size="lg">
-            Login to Google
-          </Button>
-        </div>
-      </a>
     </Stack>
   )
 }
