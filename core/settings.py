@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'core.middleware.cors_middleware.AccessControlAllowOriginMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    "django_permissions_policy.PermissionsPolicyMiddleware",
+    'django_permissions_policy.PermissionsPolicyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -71,6 +71,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 if not settings.DEBUG:
@@ -421,7 +422,8 @@ if not settings.DEBUG:
         "fullscreen": []
     }
 
-    CSP_DEFAULT_SRC = ("'self'",)
+    # CSP Config
+    CSP_DEFAULT_SRC = ["'none'"]
     CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.2.3/spacelab/bootstrap.min.css",
                      "'sha512-kb6aHe8Fchic05HVLuEio/LWsmwtNRndUxZ5AqK4IyMG817Dhff2BxuKJCRPWzQ4daCxN5TagQ5s8Hpo9YJgbQ=='",)
     CSP_SCRIPT_SRC = ("'self'", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js", "https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js",
@@ -433,6 +435,8 @@ if not settings.DEBUG:
     CSP_BASE_URI = ("'none'", )
     CSP_CONNECT_SRC = ("'self'",)
     CSP_FRAME_ANCESTORS = ("'none'", )
+    CSP_MANIFEST_SRC = ("'self'",)
+
 
 # Static files (CSS, JavaScript, Images) & Media
 # ------------------------------------------------------------------------------

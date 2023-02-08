@@ -95,6 +95,6 @@ const AuthMenu = () => {
 export const TopNav = () => {
   const authTokens = authService.getAuthTokens()
 
-  console.log(authTokens)
+  //console.log(authTokens)
   return <>{authTokens ? <AuthMenu /> : <UnAuthMenu />}</>
 }

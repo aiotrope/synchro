@@ -39,7 +39,7 @@ const getAuthTokens = () => {
 
 const getAccessToken = () => {
   const access_token = JSON.parse(localStorage.getItem('tokens'))
-  console.log(access_token)
+  //console.log(access_token)
   if (access_token) {
     return access_token.access
   } else {
