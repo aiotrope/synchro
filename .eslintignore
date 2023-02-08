@@ -48,11 +48,16 @@ build/
 dist/
 
 
-*.py
+!.py
 
 core/
 
 users/
 
 client/
+
+venv/
+
+templates/
+
 
