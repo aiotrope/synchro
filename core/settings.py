@@ -231,10 +231,12 @@ EMAIL_TIMEOUT = 3600
 
 # CORS
 # ------------------------------------------------------------------------------
-if not settings.DEBUG:
+""" if not settings.DEBUG:
     CORS_ORIGIN_ALLOW_ALL = False
 else:
-    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ORIGIN_ALLOW_ALL = True """
+
+CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -419,7 +421,8 @@ if not settings.DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = config(
         'SECURE_CONTENT_TYPE_NOSNIFF', default=True, cast=bool)
 
-    SECURE_REFERRER_POLICY = config('REFERRER_POLICY', default='same-origin')
+    SECURE_REFERRER_POLICY = config(
+        'REFERRER_POLICY', default='no-referrer-when-downgrade')
 
     CORS_REPLACE_HTTPS_REFERER = True
 
