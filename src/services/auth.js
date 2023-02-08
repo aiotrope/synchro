@@ -52,10 +52,10 @@ const getRefreshToken = () => {
   if (refresh_token) return refresh_token
 }
 
-const getAuthorizationUrl = async () => {
+const getAuthorizationUrlGoogle = async () => {
   try {
     const response = await http.get(
-      `/auth/o/google-oauth2/?redirect_uri=${config.base_url}/api/social-credentials/`
+      `/auth/o/google-oauth2/?redirect_uri=${config.base_url}/api/social-credentials/google/`
     )
     if (response) {
       return response
@@ -65,13 +65,42 @@ const getAuthorizationUrl = async () => {
   }
 }
 
-const setAuthTokensFromSocial = async (code) => {
+const getAuthorizationUrlFacebook = async () => {
+  try {
+    const response = await http.get(
+      `/auth/o/facebook/?redirect_uri=${config.base_url}/api/social-credentials/facebook/`
+    )
+    if (response) {
+      return response
+    }
+  } catch (error) {
+    toast.error(`Error: ${error.message}`)
+  }
+}
+
+//
+const setAuthTokensFromSocialGoogle = async (code) => {
   const config = {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   }
   const url = config.google_social_oauth_url
+
+  const response = await http.post(url, qs.stringify(code), config)
+  console.log(response.data)
+  if (response.data.access && response.data.refresh && response.data.user) {
+    localStorage.setItem('tokens', JSON.stringify(response.data))
+  }
+}
+
+const setAuthTokensFromSocialFacebook = async (code) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  }
+  const url = config.facebook_social_oauth_url
 
   const response = await http.post(url, qs.stringify(code), config)
   console.log(response.data)
@@ -100,8 +129,10 @@ export const authService = {
   getAuthTokens,
   getAccessToken,
   getRefreshToken,
-  getAuthorizationUrl,
-  setAuthTokensFromSocial,
+  getAuthorizationUrlGoogle,
+  getAuthorizationUrlFacebook,
+  setAuthTokensFromSocialGoogle,
+  setAuthTokensFromSocialFacebook,
   removeAuthTokens,
   authUserAccount,
   createUser,

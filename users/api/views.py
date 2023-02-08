@@ -8,7 +8,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from django.views.generic.base import TemplateView
-from social_core.backends import google
+from social_core.backends import google, facebook
 
 
 from django.conf import settings
@@ -61,19 +61,34 @@ class CustomGoogleOAuth2(google.GoogleOAuth2):
     STATE_PARAMETER = False
 
 
+class CustomFacebookOAuth2(facebook.FacebookOAuth2):
+    # REDIRECT_STATE = False
+    STATE_PARAMETER = False
+
+
 class UserRedirectSocialClass(object):
     def __init__(self, code):
         self.code = code
 
 
-class UserRedirectSocialView(TemplateView):
-    template_name = 'social/redirect.html'
+class UserRedirectSocialViewGoogle(TemplateView):
+    template_name = 'social/redirect_google.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         code = str(self.request.GET['code'])
-        context['social'] = UserRedirectSocialClass(code=code)
+        context['social_google'] = UserRedirectSocialClass(code=code)
         return context
+
+class UserRedirectSocialViewFacebook(TemplateView):
+    template_name = 'social/redirect_facebook.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        code = str(self.request.GET['code'])
+        context['social_facebook'] = UserRedirectSocialClass(code=code)
+        return context
+
 
 
 class UserRedirectSocial(views.APIView):

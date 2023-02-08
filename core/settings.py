@@ -144,9 +144,8 @@ DATABASES = {
 AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
-    # 'social_core.backends.google.GoogleOAuth2',
     'users.api.views.CustomGoogleOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
+    'users.api.views.CustomFacebookOAuth2',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
@@ -317,13 +316,15 @@ DJOSER = {
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
         'https://www.arnelimperial.com',
         'https://www.arnelimperial.com/login',
-        'https://www.arnelimperial.com/api/social-credentials/',
+        'https://www.arnelimperial.com/api/social-credentials/google/',
+        'https://www.arnelimperial.com/api/social-credentials/facebook/',
         'https://synchro-web.onrender.com',
         'https://synchro-web.onrender.com/login',
-        'https://synchro-web.onrender.com/api/social-credentials/',
+        'https://synchro-web.onrender.com/api/social-credentials/google/',
+        'https://synchro-web.onrender.com/api/social-credentials/facebook/',
         'http://localhost:3000',
         'http://localhost:3000/login',
-        'http://127.0.0.1:8000/api/social-credentials/',
+        'http://127.0.0.1:8000/api/social-credentials/google/',
     ],
     "SERIALIZERS": {
         "user": "djoser.serializers.UserSerializer",

@@ -7,7 +7,8 @@ import { Login } from './Login'
 import { Signup } from './Signup'
 import { Me } from './Me'
 import { NotFound } from './404'
-import { SocialCredentials } from './SocialCredentials'
+import { SocialCredentialsGoogle } from './SocialCredentialsGoogle'
+import { SocialCredentialsFacebook } from './SocialCredentialsFacebook'
 import { ActivateUser } from './ActivateUser'
 import { SignupActivation } from './SignupActivation'
 
@@ -25,7 +26,14 @@ export const RoutesList = () => {
         path="/me"
         element={authTokens ? <Me /> : <Navigate to={'/login'} />}
       />
-      <Route path="/api/social-credentials" element={<SocialCredentials />} />
+      <Route
+        path="/api/social-credentials/google"
+        element={<SocialCredentialsGoogle />}
+      />
+      <Route
+        path="/api/social-credentials/facebook"
+        element={<SocialCredentialsFacebook />}
+      />
       <Route path="/signup-activation" element={<SignupActivation />} />
       <Route
         path="/auth/users/activate/:uid/:token"

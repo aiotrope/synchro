@@ -48,7 +48,7 @@ export const Signup = () => {
     mode: 'all',
   })
 
-  const { addSignedEmail } = useCommon()
+  const { addSignedEmail, googleLoginUrl, facebookLoginUrl } = useCommon()
 
   const onSubmit = async (userData) => {
     try {
@@ -81,6 +81,7 @@ export const Signup = () => {
   return (
     <Stack className="col-md-5 mx-auto">
       <h2>Create an account</h2>
+
       <div>
         <p>
           Already have an account? <Link to={'/login'}>Login to Synchro</Link>
@@ -93,7 +94,7 @@ export const Signup = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <FormGroup>
-          <FormLabel htmlFor="username">Username</FormLabel>
+          <FormLabel htmlFor="username">Username*</FormLabel>
           <FormControl
             type="text"
             placeholder="Enter username"
@@ -108,7 +109,7 @@ export const Signup = () => {
           )}
         </FormGroup>
         <FormGroup>
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel htmlFor="email">Email*</FormLabel>
           <FormControl
             type="text"
             placeholder="Enter your email"
@@ -123,7 +124,7 @@ export const Signup = () => {
           )}
         </FormGroup>
         <FormGroup>
-          <FormLabel htmlFor="password">Password</FormLabel>
+          <FormLabel htmlFor="password">Password*</FormLabel>
           <FormControl
             type="password"
             placeholder="Password"
@@ -138,7 +139,7 @@ export const Signup = () => {
           )}
         </FormGroup>
         <FormGroup>
-          <FormLabel htmlFor="password">Password Confirmation</FormLabel>
+          <FormLabel htmlFor="password">Password Confirmation*</FormLabel>
           <FormControl
             type="password"
             placeholder="Re-enter your password"
@@ -158,6 +159,23 @@ export const Signup = () => {
           </Button>
         </FormGroup>
       </Form>
+      <div className="text-center mt-2">
+        <strong>OR</strong>
+      </div>
+      <a href={googleLoginUrl} rel="noreferrer">
+        <div className="d-grid my-2">
+          <Button variant="outline-secondary" size="lg">
+            Signup with Google
+          </Button>
+        </div>
+      </a>
+      <a href={facebookLoginUrl} rel="noreferrer">
+        <div className="d-grid mt-1">
+          <Button variant="outline-secondary" size="lg">
+            Signup with Facebook
+          </Button>
+        </div>
+      </a>
     </Stack>
   )
 }

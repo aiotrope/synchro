@@ -30,12 +30,14 @@ export const Login = () => {
   const { isLoading, mutateAsync } = useMutation({
     mutationFn: authService.setAuthTokens,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-account', 'googleUrl'] })
+      queryClient.invalidateQueries({
+        queryKey: ['user-account', 'googleUrl', 'facebookUrl'],
+      })
     },
   })
 
   const navigate = useNavigate()
-  const { googleLoginUrl } = useCommon()
+  const { googleLoginUrl, facebookLoginUrl } = useCommon()
 
   const {
     register,
@@ -91,7 +93,7 @@ export const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <FormGroup>
-          <FormLabel htmlFor="username">Login</FormLabel>
+          <FormLabel htmlFor="username">Login*</FormLabel>
           <FormControl
             type="text"
             placeholder="Enter your email or username"
@@ -107,7 +109,7 @@ export const Login = () => {
         </FormGroup>
 
         <FormGroup>
-          <FormLabel htmlFor="password">Password</FormLabel>
+          <FormLabel htmlFor="password">Password*</FormLabel>
           <FormControl
             type="password"
             placeholder="Password"
@@ -132,9 +134,16 @@ export const Login = () => {
         <strong>OR</strong>
       </div>
       <a href={googleLoginUrl} rel="noreferrer">
+        <div className="d-grid my-2">
+          <Button variant="outline-secondary" size="lg">
+            Login with Google
+          </Button>
+        </div>
+      </a>
+      <a href={facebookLoginUrl} rel="noreferrer">
         <div className="d-grid mt-1">
-          <Button variant="outline-primary" size="lg">
-            Login to Google
+          <Button variant="outline-secondary" size="lg">
+            Login with Facebook
           </Button>
         </div>
       </a>
