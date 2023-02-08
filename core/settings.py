@@ -151,10 +151,10 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_REDIRECT_URL = config(
-    'LOGIN_REDIRECT_URL', default='http://127.0.0.1:8000/auth/users/me/')
+    'LOGIN_REDIRECT_URL', default='http://127.0.0.1:8000')
 
 LOGIN_URL = config(
-    'LOGIN_URL', default='http://127.0.0.1:8000/login/')
+    'LOGIN_URL', default='http://127.0.0.1:8000/login')
 
 
 # django-allauth
@@ -172,8 +172,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_ADAPTER = 'users.adapters.AccountAdapter'
 
 SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
-
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 ACCOUNT_SESSION_REMEMBER = True
 
@@ -316,9 +314,12 @@ DJOSER = {
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
         'https://www.arnelimperial.com',
         'https://www.arnelimperial.com/login',
+        'https://www.arnelimperial.com/api/social-credentials/',
+        'https://synchro-web.onrender.com',
+        'https://synchro-web.onrender.com/login',
+        'https://synchro-web.onrender.com/api/social-credentials/',
         'http://localhost:3000',
         'http://localhost:3000/login',
-        'http://127.0.0.1:8000/accounts/google/login/callback/',
         'http://127.0.0.1:8000/api/social-credentials/',
     ],
     "SERIALIZERS": {
@@ -386,7 +387,7 @@ CSRF_COOKIE_HTTPONLY = True
 
 if not settings.DEBUG:
 
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     SECURE_SSL_REDIRECT = config(
         'SECURE_SSL_REDIRECT', default=True, cast=bool)

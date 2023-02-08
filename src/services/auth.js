@@ -71,7 +71,7 @@ const setAuthTokensFromSocial = async (code) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   }
-  const url = 'http://127.0.0.1:8000/auth/o/google-oauth2/'
+  const url = config.google_social_oauth_url
 
   const response = await http.post(url, qs.stringify(code), config)
   console.log(response.data)
