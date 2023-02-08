@@ -43,7 +43,6 @@
         fbInitialized = true
         allauth.facebook.onInit()
       }
-
       ;(function (d) {
         var js
         var id = 'facebook-jssdk'
