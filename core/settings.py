@@ -386,6 +386,15 @@ X_FRAME_OPTIONS = 'DENY'
 
 CSRF_COOKIE_HTTPONLY = True
 
+# CSP Config
+CSP_DEFAULT_SRC = ("'none'",)
+CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
+CSP_IMG_SRC = ("'self'",)
+CSP_CONNECT_SRC = ("'self'", "*")
+CSP_MANIFEST_SRC = ("'self'",)
+
 if not settings.DEBUG:
 
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -421,22 +430,6 @@ if not settings.DEBUG:
         "camera": [],
         "fullscreen": []
     }
-
-    # CSP Config
-    CSP_DEFAULT_SRC = ["'none'"]
-    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.2.3/spacelab/bootstrap.min.css",
-                     "'sha512-kb6aHe8Fchic05HVLuEio/LWsmwtNRndUxZ5AqK4IyMG817Dhff2BxuKJCRPWzQ4daCxN5TagQ5s8Hpo9YJgbQ=='",)
-    CSP_SCRIPT_SRC = ("'self'", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js", "https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js",
-                      "'sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN'", "'sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN'",)
-    CSP_FONT_SRC = ("'self'", "fonts.gstatic.com", "*")
-    CSP_IMG_SRC = ("'self'", "*")
-    CSP_INCLUDE_NONCE_IN = ["script-src"]
-    CSP_OBJECT_SRC = ("'none'", )
-    CSP_BASE_URI = ("'none'", )
-    CSP_CONNECT_SRC = ("'self'",)
-    CSP_FRAME_ANCESTORS = ("'none'", )
-    CSP_MANIFEST_SRC = ("'self'",)
-
 
 # Static files (CSS, JavaScript, Images) & Media
 # ------------------------------------------------------------------------------
