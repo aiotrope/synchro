@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useMutation, useQuery, QueryCache } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { useNavigate, Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -51,10 +51,9 @@ export const Me = () => {
     try {
       await deleteAccount.mutateAsync(formData)
       reset()
-      toast.success('Account deleted successfully!')
       authService.removeAuthTokens()
       if (!user || user === null) {
-        navigate('/login')
+        navigate('/')
         queryCache.clear()
       }
     } catch (error) {
@@ -77,10 +76,6 @@ export const Me = () => {
         <span className="visually-hidden">Loading...</span>
       </Spinner>
     )
-  }
-
-  if (!user || user === null) {
-    return <Navigate to="/login" />
   }
 
   return (

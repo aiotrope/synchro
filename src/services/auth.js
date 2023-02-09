@@ -38,18 +38,22 @@ const getAuthTokens = () => {
 }
 
 const getAccessToken = () => {
-  const access_token = JSON.parse(localStorage.getItem('tokens'))
+  const user = JSON.parse(localStorage.getItem('tokens'))
   //console.log(access_token)
-  if (access_token) {
-    return access_token.access
+  if (user) {
+    return user?.access
   } else {
     return null
   }
 }
 
 const getRefreshToken = () => {
-  const refresh_token = getAuthTokens().refresh
-  if (refresh_token) return refresh_token
+  const user = JSON.parse(localStorage.getItem('tokens'))
+  if (user) {
+    return user?.refresh
+  } else {
+    return null
+  }
 }
 
 const getAuthorizationUrlGoogle = async () => {
@@ -128,7 +132,8 @@ const authUserAccount = async () => {
 
 const deleteUser = async (credentials) => {
   const response = await instance.delete('/auth/users/me/', credentials)
-  if (response) {
+  if (response.status === 204) {
+    toast.success('Account deleted!')
     return response
   }
 }
