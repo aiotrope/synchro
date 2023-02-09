@@ -127,7 +127,7 @@ const authUserAccount = async () => {
 }
 
 const deleteUser = async (credentials) => {
-  const response = await instance.get('/auth/users/me/', credentials)
+  const response = await instance.delete('/auth/users/me/', credentials)
   if (response) {
     return response
   }

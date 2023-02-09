@@ -5,7 +5,7 @@ import { useCommon } from '../contexts/Common'
 
 export const SignupActivation = () => {
   const { signedEmail } = useCommon()
-  console.log(signedEmail?.email)
+  //console.log(signedEmail?.email)
   return (
     <Container>
       <h2>Signup Activation</h2>

@@ -65,8 +65,7 @@ export const Signup = () => {
   if (isLoading) {
     return (
       <Spinner
-        animation="grow"
-        role="status"
+        animation="border"
         style={{
           position: 'fixed',
           zIndex: 1031,

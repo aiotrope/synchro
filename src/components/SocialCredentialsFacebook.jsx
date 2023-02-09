@@ -76,7 +76,6 @@ export const SocialCredentialsFacebook = () => {
     return (
       <Spinner
         animation="grow"
-        role="status"
         style={{
           position: 'fixed',
           zIndex: 1031,

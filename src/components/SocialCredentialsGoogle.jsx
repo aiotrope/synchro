@@ -76,7 +76,6 @@ export const SocialCredentialsGoogle = () => {
     return (
       <Spinner
         animation="grow"
-        role="status"
         style={{
           position: 'fixed',
           zIndex: 1031,

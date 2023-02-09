@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useMutation, useQuery, QueryCache } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -36,6 +36,8 @@ export const Me = () => {
   const queryCache = new QueryCache()
   const navigate = useNavigate()
 
+  const user = authService.getAuthTokens()
+
   const {
     register,
     handleSubmit,
@@ -50,25 +52,21 @@ export const Me = () => {
       await deleteAccount.mutateAsync(formData)
       reset()
       toast.success('Account deleted successfully!')
-      let timer
-      timer = setTimeout(() => {
-        authService.removeAuthTokens()
+      authService.removeAuthTokens()
+      if (!user || user === null) {
         navigate('/login')
-        clearTimeout(timer)
-      }, 8000)
+        queryCache.clear()
+      }
     } catch (error) {
       toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
-    } finally {
-      queryCache.clear()
-      window.location.reload()
     }
   }
 
   if (isLoading) {
     return (
       <Spinner
-        animation="grow"
-        role="status"
+        animation="border"
+        variant="danger"
         style={{
           position: 'fixed',
           zIndex: 1031,
@@ -79,6 +77,10 @@ export const Me = () => {
         <span className="visually-hidden">Loading...</span>
       </Spinner>
     )
+  }
+
+  if (!user || user === null) {
+    return <Navigate to="/login" />
   }
 
   return (
