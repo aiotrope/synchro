@@ -118,7 +118,6 @@ const setAuthTokensFromSocialFacebook = async (code) => {
 const instance = axios.create({
   baseURL: config.base_url,
   headers: {
-    'Content-Type': 'application/json',
     Authorization: 'Bearer ' + getAccessToken(),
   },
 })

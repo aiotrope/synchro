@@ -68,7 +68,7 @@ export const SocialCredentialsGoogle = () => {
       toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
     } finally {
       queryCache.clear()
-      window.location.reload()
+      //window.location.reload()
     }
   }
 

@@ -53,11 +53,11 @@ export const Login = () => {
       await mutateAsync(formData)
       reset()
       navigate('/')
+      window.location.reload()
     } catch (error) {
       toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
     } finally {
       queryCache.clear()
-      window.location.reload()
     }
   }
 
