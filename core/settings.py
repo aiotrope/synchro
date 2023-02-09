@@ -394,7 +394,7 @@ CSP_DEFAULT_SRC = ("'none'",)
 CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
 CSP_SCRIPT_SRC = ("'self'",)
 CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
-CSP_IMG_SRC = ("'self'",)
+CSP_IMG_SRC = ("'self'","*", "data:")
 CSP_CONNECT_SRC = ("'self'", "*")
 CSP_MANIFEST_SRC = ("'self'",)
 

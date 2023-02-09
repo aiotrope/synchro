@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
+from django.http import HttpResponseRedirect
 from django.views import defaults as default_views
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import (
@@ -18,6 +19,12 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path('users/', include('users.urls', namespace='users')),
     path('accounts/', include("allauth.urls")),
+    path('favicon.ico', lambda x: HttpResponseRedirect(
+        settings.STATIC_URL + 'favicon.ico')),
+    path('robots.txt', lambda x: HttpResponseRedirect(
+        settings.STATIC_URL + 'robots.txt')),
+    path('manifest.json', lambda x: HttpResponseRedirect(
+        settings.STATIC_URL + 'manifest.json')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS
@@ -49,6 +56,7 @@ urlpatterns += [
 # URL patterns for frontend
 urlpatterns += [
     re_path(r'^.*$', view=client_view, name='client-app'),
+
 ]
 
 if settings.DEBUG:

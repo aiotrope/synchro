@@ -109,7 +109,9 @@ const setAuthTokensFromSocialFacebook = async (code) => {
   }
 }
 
-const authHttp = axios.create({
+// With Auth Headers
+
+const instance = axios.create({
   baseURL: config.base_url,
   headers: {
     'Content-Type': 'application/json',
@@ -118,9 +120,16 @@ const authHttp = axios.create({
 })
 
 const authUserAccount = async () => {
-  const response = await authHttp.get('/auth/users/me/')
+  const response = await instance.get('/auth/users/me/')
   if (response.data) {
     return response.data
+  }
+}
+
+const deleteUser = async (credentials) => {
+  const response = await instance.get('/auth/users/me/', credentials)
+  if (response) {
+    return response
   }
 }
 
@@ -136,4 +145,5 @@ export const authService = {
   removeAuthTokens,
   authUserAccount,
   createUser,
+  deleteUser,
 }
