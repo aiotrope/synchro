@@ -11,8 +11,8 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView
 )
 
-from users.api.views import ActivateUser, UserRedirectSocialViewGoogle, UserRedirectSocialViewFacebook, UserRedirectSocial
 from client.views import client_view
+from users.api.views import ActivateUser, UserRedirectSocialViewGoogle, UserRedirectSocialViewFacebook, UserRedirectSocial
 
 
 urlpatterns = [
@@ -44,9 +44,9 @@ urlpatterns += [
          ActivateUser.as_view(), name='activation'),
     # Djoser redirect after social login
     path('api/social-credentials/google/<code>/',
-         UserRedirectSocialViewGoogle.as_view(), name='redirect_social_google'),
+         UserRedirectSocial.as_view(), name='redirect_social_google'),
     path('api/social-credentials/facebook/<code>/',
-         UserRedirectSocialViewFacebook.as_view(), name='redirect_social_facebook'),
+         UserRedirectSocial.as_view(), name='redirect_social_facebook'),
     # Simple JWT
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

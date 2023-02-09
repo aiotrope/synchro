@@ -115,7 +115,7 @@ const setAuthTokensFromSocialFacebook = async (code) => {
 
 // With Auth Headers
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: config.base_url,
   headers: {
     Authorization: 'Bearer ' + getAccessToken(),
@@ -130,11 +130,7 @@ const authUserAccount = async () => {
 }
 
 const deleteUser = async (credentials) => {
-  const response = await instance.delete('/auth/users/me/', credentials)
-  if (response.status === 204) {
-    toast.success('Account deleted!')
-    return response
-  }
+  return await instance.delete('/auth/users/me/', credentials)
 }
 
 export const authService = {

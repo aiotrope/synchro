@@ -80,6 +80,7 @@ class UserRedirectSocialViewGoogle(TemplateView):
         context['social_google'] = UserRedirectSocialClass(code=code)
         return context
 
+
 class UserRedirectSocialViewFacebook(TemplateView):
     template_name = 'social/redirect_facebook.html'
 
@@ -88,7 +89,6 @@ class UserRedirectSocialViewFacebook(TemplateView):
         code = str(self.request.GET['code'])
         context['social_facebook'] = UserRedirectSocialClass(code=code)
         return context
-
 
 
 class UserRedirectSocial(views.APIView):

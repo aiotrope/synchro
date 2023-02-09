@@ -16,22 +16,28 @@ import { toast } from 'react-toastify'
 
 import { authService } from '../services/auth'
 
-const schema = yup
-  .object({
-    email: yup.string().email().required(),
-    current_password: yup.string().trim().required(),
-  })
-  .required()
-
 export const Me = () => {
-  const { isLoading, data } = useQuery({
+  const profile = useQuery({
     queryKey: ['user-account'],
     queryFn: authService.authUserAccount,
   })
 
-  const deleteAccount = useMutation({
+  const { isLoading, mutateAsync } = useMutation({
     mutationFn: authService.deleteUser,
   })
+
+  React.useEffect(() => {
+    let defaultValues = {}
+    defaultValues.email = profile?.data?.email
+    reset({ ...defaultValues })
+  }, [])
+
+  const schema = yup
+    .object({
+      email: yup.string().email().required().default(profile?.data?.email),
+      current_password: yup.string().trim().required(),
+    })
+    .required()
 
   const queryCache = new QueryCache()
   const navigate = useNavigate()
@@ -49,7 +55,7 @@ export const Me = () => {
   })
   const onDelete = async (formData) => {
     try {
-      await deleteAccount.mutateAsync(formData)
+      await mutateAsync(formData)
       reset()
       authService.removeAuthTokens()
       if (!user || user === null) {
@@ -61,11 +67,10 @@ export const Me = () => {
     }
   }
 
-  if (isLoading) {
+  if (profile.isLoading || isLoading) {
     return (
       <Spinner
-        animation="border"
-        variant="danger"
+        animation="grow"
         style={{
           position: 'fixed',
           zIndex: 1031,
@@ -81,9 +86,9 @@ export const Me = () => {
   return (
     <Stack className="col-md-5 mx-auto">
       <h2>Profile</h2>
-      <p>ID: {data?.id}</p>
-      <p>Username: {data?.username}</p>
-      <p>Email: {data.email}</p>
+      <p>ID: {profile?.data?.id}</p>
+      <p>Username: {profile?.data?.username}</p>
+      <p>Email: {profile?.data.email}</p>
       <div>
         <Form
           className="mt-2"
