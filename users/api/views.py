@@ -1,7 +1,10 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from rest_framework import generics, status
 from rest_framework import views
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -9,9 +12,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from django.views.generic.base import TemplateView
 from social_core.backends import google, facebook
+from django.shortcuts import get_object_or_404
 
-
-from django.conf import settings
 import requests
 
 from .serializers import UserSerializer
@@ -22,11 +24,46 @@ User = get_user_model()
 djoser_user_activate_url = getattr(settings, 'DJOSER_USER_ACTIVATE_URL')
 
 
+class UsersList(generics.ListAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    authentication_classes = [JWTAuthentication,
+                              TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get(self, request, *args, **kwargs):
+        users = User.objects.all()
+        serializer = UserSerializer(
+            users, many=True, context={'request': request})
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserRetrieveDestroy(generics.RetrieveDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication,
+                              TokenAuthentication, SessionAuthentication]
+    serializer_class = UserSerializer
+    lookup_field = 'username'
+
+    def get_queryset(self):
+        user = self.request.user.username
+        return User.objects.filter(username=user)
+
+    def delete(self, request, *args, **kwargs):
+        user = self.get_queryset()
+        if user:
+            user.delete()
+            return Response({'message': 'Account deleted!'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': 'Account not deleted'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    authentication_classes = [TokenAuthentication, SessionAuthentication]
-    permission_classes = [IsAdminUser, IsAuthenticated,]
+    authentication_classes = [JWTAuthentication,
+                              TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated,]
     lookup_field = "username"
 
 
@@ -59,6 +96,7 @@ class ActivateUser(GenericAPIView):
 
 class CustomGoogleOAuth2(google.GoogleOAuth2):
     STATE_PARAMETER = False
+    # REDIRECT_STATE = False
 
 
 class CustomFacebookOAuth2(facebook.FacebookOAuth2):
@@ -91,7 +129,19 @@ class UserRedirectSocialViewFacebook(TemplateView):
         return context
 
 
-class UserRedirectSocial(views.APIView):
+class UserRedirectSocialGoogle(views.APIView):
+
+    def get(self, request, code):
+        post_data = {'code': code}
+        return Response(post_data)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        return context
+
+
+class UserRedirectSocialFacebook(views.APIView):
 
     def get(self, request, code):
         post_data = {'code': code}

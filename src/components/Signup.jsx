@@ -33,7 +33,9 @@ export const Signup = () => {
   const { isLoading, mutateAsync } = useMutation({
     mutationFn: authService.createUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-account', 'googleUrl'] })
+      queryClient.invalidateQueries({
+        queryKey: ['user-account', 'googleUrl', 'facebookUrl'],
+      })
     },
   })
 
@@ -48,7 +50,7 @@ export const Signup = () => {
     mode: 'all',
   })
 
-  const { addSignedEmail, googleLoginUrl, facebookLoginUrl } = useCommon()
+  const { addSignedEmail, googleLoginUrl } = useCommon()
 
   const onSubmit = async (userData) => {
     try {
@@ -110,7 +112,7 @@ export const Signup = () => {
         <FormGroup>
           <FormLabel htmlFor="email">Email*</FormLabel>
           <FormControl
-            type="text"
+            type="email"
             placeholder="Enter your email"
             {...register('email')}
             aria-invalid={errors.email?.message ? 'true' : 'false'}
@@ -168,13 +170,13 @@ export const Signup = () => {
           </Button>
         </div>
       </a>
-      <a href={facebookLoginUrl} rel="noreferrer">
+      {/*  <a href={facebookLoginUrl} rel="noreferrer">
         <div className="d-grid mt-1">
           <Button variant="outline-secondary" size="lg">
             Signup with Facebook
           </Button>
         </div>
-      </a>
+      </a> */}
     </Stack>
   )
 }

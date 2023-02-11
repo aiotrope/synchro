@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import { useMutation, QueryCache, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
@@ -9,21 +9,20 @@ import { toast } from 'react-toastify'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import FormControl from 'react-bootstrap/FormControl'
-import FormGroup from 'react-bootstrap/FormGroup'
 import FormLabel from 'react-bootstrap/FormLabel'
+import FormGroup from 'react-bootstrap/FormGroup'
 import Stack from 'react-bootstrap/Stack'
 
 import { authService } from '../services/auth'
 
 export const SocialCredentialsGoogle = () => {
   const queryClient = useQueryClient()
-  const queryCache = new QueryCache()
   const [queryParameters] = useSearchParams()
-  const { isLoading, mutateAsync } = useMutation({
+  const { isLoading, error, mutateAsync } = useMutation({
     mutationFn: authService.setAuthTokensFromSocialGoogle,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['user-account', 'googleUrl', 'facebookUrl'],
+        queryKey: ['user-account', 'googleUrl'],
       })
     },
   })
@@ -37,8 +36,6 @@ export const SocialCredentialsGoogle = () => {
       code: yup.string().required().default(code),
     })
     .required()
-
-  const currentUser = authService.getAuthTokens()
 
   const {
     register,
@@ -61,15 +58,14 @@ export const SocialCredentialsGoogle = () => {
       await mutateAsync(data)
       reset()
       navigate('/')
-      if (currentUser?.user) {
-        toast.success(`Hi ${currentUser?.user}!`)
-      } else return null
+      window.location.reload()
     } catch (error) {
-      toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
-    } finally {
-      queryCache.clear()
-      //window.location.reload()
+      toast.error(`Error: ${error.message}`)
     }
+  }
+
+  if (error) {
+    toast.error(error.message)
   }
 
   if (isLoading) {
@@ -87,22 +83,21 @@ export const SocialCredentialsGoogle = () => {
       </Spinner>
     )
   }
-
   return (
     <Stack className="col-md-5 mx-auto">
       <h2>Social Authentication (Google)</h2>
       <div>
         <p>Press the ENTER to signin to the site!</p>
-        <p>CODE: {code}</p>
+        <small>CODE: {code}</small>
       </div>
       <Form
         className="mt-2"
         spellCheck="false"
-        noValidate={true}
+        noValidate
         onSubmit={handleSubmit(onSubmit)}
       >
         <FormGroup>
-          <FormLabel htmlFor="code">Login to Synchro</FormLabel>
+          <FormLabel htmlFor="code">Login</FormLabel>
           <FormControl
             type="hidden"
             placeholder={queryParameters.get('code')}

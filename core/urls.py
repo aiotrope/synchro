@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from client.views import client_view
-from users.api.views import ActivateUser, UserRedirectSocialViewGoogle, UserRedirectSocialViewFacebook, UserRedirectSocial
+from users.api.views import ActivateUser, UserRedirectSocialFacebook, UserRedirectSocialGoogle, UserRedirectSocialViewGoogle, UsersList, UserRetrieveDestroy
 
 
 urlpatterns = [
@@ -39,18 +39,22 @@ urlpatterns += [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
-    path('auth/', include('djoser.social.urls')),
+    path('auth/social/', include('djoser.social.urls')),
     path('auth/users/activate/<uid>/<token>',
          ActivateUser.as_view(), name='activation'),
     # Djoser redirect after social login
     path('api/social-credentials/google/<code>/',
-         UserRedirectSocial.as_view(), name='redirect_social_google'),
+         UserRedirectSocialGoogle.as_view(), name='redirect_social_google'),
     path('api/social-credentials/facebook/<code>/',
-         UserRedirectSocial.as_view(), name='redirect_social_facebook'),
+         UserRedirectSocialFacebook.as_view(), name='redirect_social_facebook'),
     # Simple JWT
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
+    # Users
+    path('api/users/list/', UsersList.as_view(), name='users-lists'),
+    path('api/users/retrieve-destroy/<username>/', UserRetrieveDestroy.as_view(), name='users-retrieve-destroy'),
 ]
 
 # URL patterns for frontend

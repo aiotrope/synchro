@@ -10,10 +10,10 @@ export const CommonProvider = ({ children }) => {
     queryKey: ['googleUrl'],
     queryFn: authService.getAuthorizationUrlGoogle,
   })
-  const facebookUrlQuery = useQuery({
+  /* const facebookUrlQuery = useQuery({
     queryKey: ['facebookUrl'],
     queryFn: authService.getAuthorizationUrlFacebook,
-  })
+  }) */
   const isComponentMounted = React.useRef(true)
 
   React.useEffect(() => {
@@ -26,7 +26,7 @@ export const CommonProvider = ({ children }) => {
 
   const googleLoginUrl = googleUrlQuery?.data?.data?.authorization_url
 
-  const facebookLoginUrl = facebookUrlQuery?.data?.data?.authorization_url
+  //const facebookLoginUrl = facebookUrlQuery?.data?.data?.authorization_url
 
   const removeSignedEmail = () => setSignedEmail(null)
 
@@ -35,7 +35,7 @@ export const CommonProvider = ({ children }) => {
   const value = {
     mounted,
     googleLoginUrl,
-    facebookLoginUrl,
+    //facebookLoginUrl,
     signedEmail,
     removeSignedEmail: React.useCallback(() => removeSignedEmail(), []),
     addSignedEmail: React.useCallback((email) => addSignedEmail(email), []),
@@ -50,7 +50,7 @@ export const useCommon = () => {
   const {
     mounted,
     googleLoginUrl,
-    facebookLoginUrl,
+    //facebookLoginUrl,
     signedEmail,
     addSignedEmail,
     removeSignedEmail,
@@ -58,7 +58,7 @@ export const useCommon = () => {
   return {
     mounted,
     googleLoginUrl,
-    facebookLoginUrl,
+    //facebookLoginUrl,
     signedEmail,
     addSignedEmail,
     removeSignedEmail,

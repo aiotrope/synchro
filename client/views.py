@@ -1,4 +1,5 @@
 from django.views.generic.base import TemplateView
+from django.views.decorators.cache import never_cache
 
 
 class IndexTemplateView(TemplateView):
@@ -7,4 +8,4 @@ class IndexTemplateView(TemplateView):
         return template_name
 
 
-client_view = IndexTemplateView.as_view()
+client_view = never_cache(IndexTemplateView.as_view())

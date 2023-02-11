@@ -8,7 +8,7 @@ import { Signup } from './Signup'
 import { Me } from './Me'
 import { NotFound } from './404'
 import { SocialCredentialsGoogle } from './SocialCredentialsGoogle'
-import { SocialCredentialsFacebook } from './SocialCredentialsFacebook'
+//import { SocialCredentialsFacebook } from './SocialCredentialsFacebook'
 import { ActivateUser } from './ActivateUser'
 import { SignupActivation } from './SignupActivation'
 
@@ -30,10 +30,10 @@ export const RoutesList = () => {
         path="/api/social-credentials/google"
         element={<SocialCredentialsGoogle />}
       />
-      <Route
+      {/* <Route
         path="/api/social-credentials/facebook"
         element={<SocialCredentialsFacebook />}
-      />
+      /> */}
       <Route path="/signup-activation" element={<SignupActivation />} />
       <Route
         path="/auth/users/activate/:uid/:token"

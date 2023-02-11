@@ -1,72 +1,44 @@
 import * as React from 'react'
-import { useMutation, useQuery, QueryCache } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
-import FormGroup from 'react-bootstrap/FormGroup'
-import FormLabel from 'react-bootstrap/FormLabel'
+import axios from 'axios'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import Stack from 'react-bootstrap/Stack'
+import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
 import { toast } from 'react-toastify'
 
 import { authService } from '../services/auth'
+import { config } from '../utils/config'
 
 export const Me = () => {
   const profile = useQuery({
     queryKey: ['user-account'],
     queryFn: authService.authUserAccount,
   })
+  const access_token = authService.getAccessToken()
+  const AUTH_TOKEN = `Bearer ${access_token}`
+  axios.defaults.xsrfCookieName = 'csrftoken'
+  axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+  axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
+  axios.defaults.headers.post['Content-Type'] = 'application/json'
 
-  const { isLoading, mutateAsync } = useMutation({
-    mutationFn: authService.deleteUser,
-  })
-
-  React.useEffect(() => {
-    let defaultValues = {}
-    defaultValues.email = profile?.data?.email
-    reset({ ...defaultValues })
-  }, [])
-
-  const schema = yup
-    .object({
-      email: yup.string().email().required().default(profile?.data?.email),
-      current_password: yup.string().trim().required(),
-    })
-    .required()
-
-  const queryCache = new QueryCache()
-  const navigate = useNavigate()
-
-  const user = authService.getAuthTokens()
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-    mode: 'all',
-  })
-  const onDelete = async (formData) => {
-    try {
-      await mutateAsync(formData)
-      reset()
-      authService.removeAuthTokens()
-      if (!user || user === null) {
-        navigate('/')
-        queryCache.clear()
-      }
-    } catch (error) {
-      toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
+  const { isLoading, isError, error, mutate } = useMutation(
+    (username) => {
+      return axios.delete(
+        `${config.base_url}/api/users/retrieve-destroy/${username}/`
+      )
+    },
+    {
+      onSuccess: () => {
+        authService.removeAuthTokens()
+        toast.success('Account deleted')
+        let timer
+        timer = setTimeout(() => {
+          window.location.reload()
+          clearTimeout(timer)
+        }, 8000)
+      },
     }
-  }
-
+  )
   if (profile.isLoading || isLoading) {
     return (
       <Spinner
@@ -83,59 +55,26 @@ export const Me = () => {
     )
   }
 
+  if (isError) {
+    toast.error(`${error.message} - ${error.response.data.message}`)
+  }
+
   return (
     <Stack className="col-md-5 mx-auto">
       <h2>Profile</h2>
       <p>ID: {profile?.data?.id}</p>
       <p>Username: {profile?.data?.username}</p>
       <p>Email: {profile?.data.email}</p>
-      <div>
-        <Form
-          className="mt-2"
-          spellCheck="false"
-          noValidate
-          onSubmit={handleSubmit(onDelete)}
+      <hr />
+      <div className="my-3">
+        <h3>Account deletion</h3>
+        <Button
+          variant="danger"
+          size="md"
+          onClick={() => mutate(profile?.data?.username)}
         >
-          <FormGroup>
-            <FormLabel htmlFor="email">Email*</FormLabel>
-            <FormControl
-              type="text"
-              placeholder="Enter your email"
-              {...register('email')}
-              aria-invalid={errors.email?.message ? 'true' : 'false'}
-              className={`${errors.email?.message ? 'is-invalid' : ''} `}
-            />
-            {errors.email?.message && (
-              <FormControl.Feedback type="invalid">
-                {errors.email?.message}
-              </FormControl.Feedback>
-            )}
-          </FormGroup>
-
-          <FormGroup>
-            <FormLabel htmlFor="password">Password*</FormLabel>
-            <FormControl
-              type="password"
-              placeholder="Password"
-              {...register('current_password')}
-              aria-invalid={errors.current_password?.message ? 'true' : 'false'}
-              className={`${
-                errors.current_password?.message ? 'is-invalid' : ''
-              } `}
-            />
-            {errors.current_password?.message && (
-              <FormControl.Feedback type="invalid">
-                {errors.current_password?.message}
-              </FormControl.Feedback>
-            )}
-          </FormGroup>
-
-          <FormGroup className="d-grid mt-3">
-            <Button variant="danger" size="lg" type="submit">
-              Delete your account
-            </Button>
-          </FormGroup>
-        </Form>
+          Delete
+        </Button>
       </div>
     </Stack>
   )

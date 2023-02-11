@@ -1,4 +1,7 @@
 build/* linguist-vendored
 build/ linguist-vendored
+build linguist-vendored
 build/ linguist-documentation=false
 build/* linguist-documentation=false
+build linguist-documentation=false
+build -export-ignore

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useMutation, useQueryClient, QueryCache } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
@@ -26,18 +26,17 @@ const schema = yup
 
 export const Login = () => {
   const queryClient = useQueryClient()
-  const queryCache = new QueryCache()
   const { isLoading, mutateAsync } = useMutation({
     mutationFn: authService.setAuthTokens,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['user-account', 'googleUrl', 'facebookUrl'],
+        queryKey: ['user-account', 'googleUrl'],
       })
     },
   })
 
   const navigate = useNavigate()
-  const { googleLoginUrl, facebookLoginUrl } = useCommon()
+  const { googleLoginUrl } = useCommon()
 
   const {
     register,
@@ -56,8 +55,6 @@ export const Login = () => {
       window.location.reload()
     } catch (error) {
       toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
-    } finally {
-      queryCache.clear()
     }
   }
 
@@ -139,13 +136,13 @@ export const Login = () => {
           </Button>
         </div>
       </a>
-      <a href={facebookLoginUrl} rel="noreferrer">
+      {/*  <a href={facebookLoginUrl} rel="noreferrer">
         <div className="d-grid mt-1">
           <Button variant="outline-secondary" size="lg">
             Login with Facebook
           </Button>
         </div>
-      </a>
+      </a> */}
     </Stack>
   )
 }

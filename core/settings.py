@@ -31,6 +31,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'corsheaders',
+    'whitenoise.runserver_nostatic',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
@@ -45,9 +46,6 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'crispy_forms',
 ]
-
-if settings.DEBUG:
-    THIRD_PARTY_APPS += 'whitenoise.runserver_nostatic',
 
 LOCAL_APPS = [
     'users.apps.UsersConfig',
@@ -73,9 +71,6 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'csp.middleware.CSPMiddleware',
 ]
-
-if not settings.DEBUG:
-    MIDDLEWARE += 'csp.middleware.CSPMiddleware',
 
 # Common & Templates
 # ------------------------------------------------------------------------------
@@ -230,12 +225,16 @@ EMAIL_TIMEOUT = 3600
 
 # CORS
 # ------------------------------------------------------------------------------
-""" if not settings.DEBUG:
-    CORS_ORIGIN_ALLOW_ALL = False
-else:
-    CORS_ORIGIN_ALLOW_ALL = True """
-
 CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_HEADER_NAME = 'X-CSRFToken'
+
+CSRF_COOKIE_NAME = 'csrftoken'
+
+CORS_EXPOSE_HEADERS = ['Content-Type',
+                       'X-CSRFToken', 'Access-Control-Allow-Origin: *',]
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -256,13 +255,23 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
 )
 
-CORS_EXPOSE_HEADERS = (
-    'Access-Control-Allow-Origin: *',
-)
-
-CORS_ALLOW_HEADERS = default_headers + (
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
     'Access-Control-Allow-Origin',
-)
+    'cache-control',
+    'if-modified-since',
+    'keep-alive',
+    'X-Mx-ReqToken',
+    'XMLHttpRequest'
+]
 
 CORS_PREFLIGHT_MAX_AGE = 86400
 
@@ -318,13 +327,20 @@ DJOSER = {
         'https://www.arnelimperial.com/login',
         'https://www.arnelimperial.com/api/social-credentials/google/',
         'https://www.arnelimperial.com/api/social-credentials/facebook/',
+        'https://www.arnelimperial.com/accounts/google/login/callback/',
+        'https://www.arnelimperial.com/auth/users/activate',
         'https://synchro-web.onrender.com',
         'https://synchro-web.onrender.com/login',
         'https://synchro-web.onrender.com/api/social-credentials/google/',
         'https://synchro-web.onrender.com/api/social-credentials/facebook/',
-        'http://localhost:3000',
-        'http://localhost:3000/login',
+        'https://synchro-web.onrender.com/accounts/google/login/callback/',
+        'https://synchro-web.onrender.com/auth/users/activate',
+        'http://127.0.0.1:8000/',
+        'http://127.0.0.1:8000/login',
         'http://127.0.0.1:8000/api/social-credentials/google/',
+        'http://127.0.0.1:8000/api/social-credentials/facebook/',
+        'http://127.0.0.1:8000/accounts/google/login/callback/',
+        'http://127.0.0.1:8000/auth/users/activate',
     ],
     "SERIALIZERS": {
         "user": "djoser.serializers.UserSerializer",
@@ -381,22 +397,21 @@ MANAGERS = ADMINS
 
 # Security
 # ------------------------------------------------------------------------------
-SESSION_COOKIE_HTTPONLY = True
-
-SECURE_BROWSER_XSS_FILTER = True
+SESSION_COOKIE_HTTPONLY = False
 
 X_FRAME_OPTIONS = 'DENY'
 
-CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = False
 
 # CSP Config
 CSP_DEFAULT_SRC = ("'none'",)
 CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
 CSP_SCRIPT_SRC = ("'self'",)
 CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
-CSP_IMG_SRC = ("'self'","*", "data:")
+CSP_IMG_SRC = ("'self'", "*", "data:")
 CSP_CONNECT_SRC = ("'self'", "*")
 CSP_MANIFEST_SRC = ("'self'",)
+CSP_OBJECT_SRC = ("'none'",)
 
 if not settings.DEBUG:
 
@@ -426,6 +441,11 @@ if not settings.DEBUG:
         'REFERRER_POLICY', default='no-referrer-when-downgrade')
 
     CORS_REPLACE_HTTPS_REFERER = True
+
+    CSRF_TRUSTED_ORIGINS = [
+        'https://www.arnelimperial.com',
+        'https://synchro-web.onrender.com',
+    ]
 
     PERMISSIONS_POLICY = {
         "geolocation": [],
