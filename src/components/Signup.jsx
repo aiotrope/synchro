@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
@@ -14,6 +15,7 @@ import Stack from 'react-bootstrap/Stack'
 import Spinner from 'react-bootstrap/Spinner'
 import { toast } from 'react-toastify'
 
+import { config } from '../utils/config'
 import { authService } from '../services/auth'
 import { useCommon } from '../contexts/Common'
 
@@ -49,6 +51,10 @@ export const Signup = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   })
+
+  const responseFacebook = (response) => {
+    console.log(response)
+  }
 
   const { addSignedEmail, googleLoginUrl } = useCommon()
 
@@ -165,18 +171,23 @@ export const Signup = () => {
       </div>
       <a href={googleLoginUrl} rel="noreferrer">
         <div className="d-grid my-2">
-          <Button variant="outline-secondary" size="lg">
+          <Button variant="light" size="lg">
             Signup via Google
           </Button>
         </div>
       </a>
-      {/*  <a href={facebookLoginUrl} rel="noreferrer">
-        <div className="d-grid mt-1">
-          <Button variant="outline-secondary" size="lg">
-            Signup with Facebook
-          </Button>
-        </div>
-      </a> */}
+      <div className="d-grid mt-1">
+        <FacebookLogin
+          appId={config.facebook_client_id}
+          autoLoad
+          callback={responseFacebook}
+          render={(renderProps) => (
+            <Button variant="light" size="lg" onClick={renderProps.onClick}>
+              Signup via Facebook
+            </Button>
+          )}
+        />
+      </div>
     </Stack>
   )
 }

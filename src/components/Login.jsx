@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useLogin } from 'react-facebook'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
@@ -17,7 +17,7 @@ import { toast } from 'react-toastify'
 
 import { authService } from '../services/auth'
 import { useCommon } from '../contexts/Common'
-//import { config } from '../utils/config'
+import { config } from '../utils/config'
 const schema = yup
   .object({
     username: yup.string().required('Enter your registered email or username'),
@@ -37,8 +37,12 @@ export const Login = () => {
   })
 
   const navigate = useNavigate()
-  const fb = useLogin()
+
   const { googleLoginUrl } = useCommon()
+
+  const responseFacebook = (response) => {
+    console.log(response)
+  }
 
   const {
     register,
@@ -60,21 +64,7 @@ export const Login = () => {
     }
   }
 
-  const handleFBLogin = async () => {
-    try {
-      const response = await fb.login({
-        scope: 'email',
-      })
-      console.log('FB Response', response)
-      console.log('FB AuthResponse', response.authResponse)
-      console.log('FB AuthResponseCode', response.authResponse.code)
-      console.log('FB Status', response.status)
-    } catch (error) {
-      toast.error(error.message)
-    }
-  }
-
-  if (isLoading || fb.isLoading) {
+  if (isLoading) {
     return (
       <Spinner
         animation="border"
@@ -147,16 +137,23 @@ export const Login = () => {
       </div>
       <a href={googleLoginUrl} rel="noreferrer">
         <div className="d-grid my-2">
-          <Button variant="outline-secondary" size="lg">
+          <Button variant="light" size="lg">
             Login via Google
           </Button>
         </div>
       </a>
 
       <div className="d-grid mt-1">
-        <Button variant="outline-secondary" size="lg" onClick={handleFBLogin}>
-          Login via Facebook
-        </Button>
+        <FacebookLogin
+          appId={config.facebook_client_id}
+          autoLoad
+          callback={responseFacebook}
+          render={(renderProps) => (
+            <Button variant="light" size="lg" onClick={renderProps.onClick}>
+              Login via Facebook
+            </Button>
+          )}
+        />
       </div>
     </Stack>
   )
