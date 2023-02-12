@@ -176,13 +176,13 @@ export const Signup = () => {
       </div>
       <div className="d-grid my-2">
         <Button variant="light" size="lg" onClick={handleGoogleLogin}>
-          Login via Google
+          Signup via Google
         </Button>
       </div>
 
       <div className="d-grid mt-1">
         <Button variant="light" size="lg" onClick={handleFBLogin}>
-          Login via Facebook
+          Signup via Facebook
         </Button>
       </div>
     </Stack>

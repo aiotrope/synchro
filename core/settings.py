@@ -347,6 +347,7 @@ DJOSER = {
         'http://127.0.0.1:8000/api/social/facebook/',
         'http://127.0.0.1:8000/accounts/google/login/callback/',
         'http://127.0.0.1:8000/auth/users/activate',
+        'https://www.facebook.com/'
     ],
     "SERIALIZERS": {
         "user": "djoser.serializers.UserSerializer",
