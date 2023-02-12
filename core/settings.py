@@ -41,7 +41,6 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-    # 'allauth.socialaccount.providers.twitter',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_extensions',
@@ -143,7 +142,6 @@ AUTH_USER_MODEL = 'users.User'
 AUTHENTICATION_BACKENDS = [
     'users.api.views.CustomGoogleOAuth2',
     'users.api.views.CustomFacebookOAuth2',
-    # 'users.api.views.CustomTwitterOAuth2',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
@@ -331,9 +329,7 @@ DJOSER = {
         'https://www.arnelimperial.com/login',
         'https://www.arnelimperial.com/api/social-credentials/google/',
         'https://www.arnelimperial.com/api/social/facebook/',
-        'https://www.arnelimperial.com/api/social-credentials/twitter/',
         'https://www.arnelimperial.com/accounts/google/login/callback/',
-        'https://www.arnelimperial.com/accounts/twitter/login/callback/',
         'https://www.arnelimperial.com/auth/users/activate',
         'https://synchro-web.onrender.com',
         'https://synchro-web.onrender.com/login',
@@ -347,7 +343,7 @@ DJOSER = {
         'http://127.0.0.1:8000/api/social/facebook/',
         'http://127.0.0.1:8000/accounts/google/login/callback/',
         'http://127.0.0.1:8000/auth/users/activate',
-        'https://www.facebook.com/'
+
     ],
     "SERIALIZERS": {
         "user": "djoser.serializers.UserSerializer",
@@ -370,7 +366,7 @@ SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id, name, email, username, first_name, last_name',
+    'fields': 'email, name, username'
 }
 
 # Other ENV Vars
@@ -419,7 +415,7 @@ CSP_IMG_SRC = ("'self'", "*", "data:",)
 CSP_CONNECT_SRC = ("'self'", "*")
 CSP_MANIFEST_SRC = ("'self'",)
 CSP_OBJECT_SRC = ("'none'",)
- 
+
 if not settings.DEBUG:
 
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

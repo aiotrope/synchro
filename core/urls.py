@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from client.views import client_view
-from users.api.views import ActivateUser, UserRedirectSocialFacebook, UserRedirectSocialGoogle, UserRedirectSocialViewGoogle, UsersList, UserRetrieveDestroy, FacebookLogin
+from users.api.views import ActivateUser, UserRedirectSocialFacebook, UserRedirectSocialGoogle, UsersList, UserRetrieveDestroy
 
 
 urlpatterns = [
@@ -45,22 +45,17 @@ urlpatterns += [
     # Djoser redirect after social login
     path('api/social-credentials/google/<code>/',
          UserRedirectSocialGoogle.as_view(), name='redirect_social_google'),
-    path('api/social-credentials/facebook/<code>/',
+    path('api/social/facebook/<code>/',
          UserRedirectSocialFacebook.as_view(), name='redirect_social_facebook'),
     # Simple JWT
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
-     # dj-rest-auth (Social)
-    path('api/rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
-
     # Users
     path('api/users/list/', UsersList.as_view(), name='users-lists'),
     path('api/users/retrieve-destroy/<username>/',
          UserRetrieveDestroy.as_view(), name='users-retrieve-destroy'),
-
-   
 ]
 
 # URL patterns for frontend

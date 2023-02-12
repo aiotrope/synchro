@@ -104,13 +104,14 @@ const getAuthorizationUrlFacebook = async () => {
 }
 
 // Social
-const setAuthTokensFromSocialFacebook = async (code) => {
+const setAuthTokensFromSocialFacebook = async (data) => {
+  const dataObj = { code: data.code, state: data.state }
   const response = await httpSocial.post(
     '/auth/social/o/facebook/',
-    qs.stringify(code)
+    qs.stringify(dataObj)
   )
   console.log(response.data)
-  if (response.data.access && response.data.refresh && response.data.user) {
+  if (response.data) {
     localStorage.setItem('tokens', JSON.stringify(response.data))
     return response.data
   }
