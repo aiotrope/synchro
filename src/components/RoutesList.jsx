@@ -11,6 +11,7 @@ import { SocialCredentialsGoogle } from './SocialCredentialsGoogle'
 //import { SocialCredentialsFacebook } from './SocialCredentialsFacebook'
 import { ActivateUser } from './ActivateUser'
 import { SignupActivation } from './SignupActivation'
+import { PrivacyPolicy } from './PrivacyPolicy'
 
 export const RoutesList = () => {
   const authTokens = authService.getAuthTokens()
@@ -36,6 +37,7 @@ export const RoutesList = () => {
       /> */}
       <Route path="/signup-activation" element={<SignupActivation />} />
       <Route path="/auth/users/activate" element={<ActivateUser />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )
