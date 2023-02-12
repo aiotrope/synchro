@@ -35,10 +35,7 @@ export const RoutesList = () => {
         element={<SocialCredentialsFacebook />}
       /> */}
       <Route path="/signup-activation" element={<SignupActivation />} />
-      <Route
-        path="/auth/users/activate/:uid/:token"
-        element={<ActivateUser />}
-      />
+      <Route path="/auth/users/activate" element={<ActivateUser />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )

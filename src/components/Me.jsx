@@ -30,7 +30,7 @@ export const Me = () => {
     {
       onSuccess: () => {
         authService.removeAuthTokens()
-        toast.success('Account deleted')
+        toast.success('Account deleted from Synchro')
         let timer
         timer = setTimeout(() => {
           window.location.reload()

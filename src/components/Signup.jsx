@@ -166,7 +166,7 @@ export const Signup = () => {
       <a href={googleLoginUrl} rel="noreferrer">
         <div className="d-grid my-2">
           <Button variant="outline-secondary" size="lg">
-            Signup with Google
+            Signup via Google
           </Button>
         </div>
       </a>

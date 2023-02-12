@@ -45,6 +45,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'django_extensions',
     'crispy_forms',
+    'dj_rest_auth',
 ]
 
 LOCAL_APPS = [
@@ -289,6 +290,7 @@ if DEBUG:
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
@@ -370,7 +372,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 DJOSER_USER_ACTIVATE_URL = config(
     'DJOSER_USER_ACTIVATE_URL', default='http://127.0.0.1:8000/auth/users/activation/')
 
-# REST_USE_JWT = True
+REST_USE_JWT = True
 
 SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['state']
 
@@ -406,13 +408,13 @@ CSRF_COOKIE_HTTPONLY = False
 # CSP Config
 CSP_DEFAULT_SRC = ("'none'",)
 CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
-CSP_SCRIPT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://connect.facebook.net/en_US/sdk.js',)
 CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
-CSP_IMG_SRC = ("'self'", "*", "data:")
+CSP_IMG_SRC = ("'self'", "*", "data:",)
 CSP_CONNECT_SRC = ("'self'", "*")
 CSP_MANIFEST_SRC = ("'self'",)
 CSP_OBJECT_SRC = ("'none'",)
-
+ 
 if not settings.DEBUG:
 
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

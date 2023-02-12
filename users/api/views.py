@@ -2,9 +2,11 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import generics, status
 from rest_framework import views
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, DestroyModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from dj_rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -12,7 +14,6 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from django.views.generic.base import TemplateView
 from social_core.backends import google, facebook
-from django.shortcuts import get_object_or_404
 
 import requests
 
@@ -127,6 +128,10 @@ class UserRedirectSocialViewFacebook(TemplateView):
         code = str(self.request.GET['code'])
         context['social_facebook'] = UserRedirectSocialClass(code=code)
         return context
+
+
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter
 
 
 class UserRedirectSocialGoogle(views.APIView):

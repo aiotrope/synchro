@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from client.views import client_view
-from users.api.views import ActivateUser, UserRedirectSocialFacebook, UserRedirectSocialGoogle, UserRedirectSocialViewGoogle, UsersList, UserRetrieveDestroy
+from users.api.views import ActivateUser, UserRedirectSocialFacebook, UserRedirectSocialGoogle, UserRedirectSocialViewGoogle, UsersList, UserRetrieveDestroy, FacebookLogin
 
 
 urlpatterns = [
@@ -52,9 +52,15 @@ urlpatterns += [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
+     # dj-rest-auth (Social)
+    path('api/rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
+
     # Users
     path('api/users/list/', UsersList.as_view(), name='users-lists'),
-    path('api/users/retrieve-destroy/<username>/', UserRetrieveDestroy.as_view(), name='users-retrieve-destroy'),
+    path('api/users/retrieve-destroy/<username>/',
+         UserRetrieveDestroy.as_view(), name='users-retrieve-destroy'),
+
+   
 ]
 
 # URL patterns for frontend

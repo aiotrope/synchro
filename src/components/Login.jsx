@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { FacebookProvider, LoginButton } from 'react-facebook'
 
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
@@ -16,7 +17,7 @@ import { toast } from 'react-toastify'
 
 import { authService } from '../services/auth'
 import { useCommon } from '../contexts/Common'
-
+import { config } from '../utils/config'
 const schema = yup
   .object({
     username: yup.string().required('Enter your registered email or username'),
@@ -56,6 +57,14 @@ export const Login = () => {
     } catch (error) {
       toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
     }
+  }
+
+  const handleFBSuccess = (response) => {
+    console.log(response)
+  }
+
+  const handleFBError = (error) => {
+    toast.error(error)
   }
 
   if (isLoading) {
@@ -131,18 +140,23 @@ export const Login = () => {
       </div>
       <a href={googleLoginUrl} rel="noreferrer">
         <div className="d-grid my-2">
-          <Button variant="outline-secondary" size="lg">
-            Login with Google
+          <Button variant="outline-secondary" size="md">
+            Login via Google
           </Button>
         </div>
       </a>
-      {/*  <a href={facebookLoginUrl} rel="noreferrer">
-        <div className="d-grid mt-1">
-          <Button variant="outline-secondary" size="lg">
-            Login with Facebook
-          </Button>
-        </div>
-      </a> */}
+
+      <div className="d-grid mt-1">
+        <FacebookProvider appId={config.facebook_client_id}>
+          <LoginButton
+            scope="email"
+            onError={handleFBError}
+            onSuccess={handleFBSuccess}
+          >
+            Login via Facebook
+          </LoginButton>
+        </FacebookProvider>
+      </div>
     </Stack>
   )
 }
