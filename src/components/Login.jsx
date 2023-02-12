@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
@@ -16,8 +15,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import { toast } from 'react-toastify'
 
 import { authService } from '../services/auth'
-import { useCommon } from '../contexts/Common'
-import { config } from '../utils/config'
+
 const schema = yup
   .object({
     username: yup.string().required('Enter your registered email or username'),
@@ -31,18 +29,12 @@ export const Login = () => {
     mutationFn: authService.setAuthTokens,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['user-account', 'googleUrl'],
+        queryKey: ['user-account'],
       })
     },
   })
 
   const navigate = useNavigate()
-
-  const { googleLoginUrl } = useCommon()
-
-  const responseFacebook = (response) => {
-    console.log(response)
-  }
 
   const {
     register,
@@ -62,6 +54,18 @@ export const Login = () => {
     } catch (error) {
       toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
     }
+  }
+
+  const handleFBLogin = async () => {
+    const req = await authService.getAuthorizationUrlFacebook()
+    const url = req?.data?.authorization_url
+    window.location.href = url
+  }
+
+  const handleGoogleLogin = async () => {
+    const req = await authService.getAuthorizationUrlGoogle()
+    const url = req?.data?.authorization_url
+    window.location.href = url
   }
 
   if (isLoading) {
@@ -135,25 +139,17 @@ export const Login = () => {
       <div className="text-center mt-2">
         <strong>OR</strong>
       </div>
-      <a href={googleLoginUrl} rel="noreferrer">
-        <div className="d-grid my-2">
-          <Button variant="light" size="lg">
-            Login via Google
-          </Button>
-        </div>
-      </a>
+
+      <div className="d-grid my-2">
+        <Button variant="light" size="lg" onClick={handleGoogleLogin}>
+          Login via Google
+        </Button>
+      </div>
 
       <div className="d-grid mt-1">
-        <FacebookLogin
-          appId={config.facebook_client_id}
-          autoLoad
-          callback={responseFacebook}
-          render={(renderProps) => (
-            <Button variant="light" size="lg" onClick={renderProps.onClick}>
-              Login via Facebook
-            </Button>
-          )}
-        />
+        <Button variant="light" size="lg" onClick={handleFBLogin}>
+          Login via Facebook
+        </Button>
       </div>
     </Stack>
   )

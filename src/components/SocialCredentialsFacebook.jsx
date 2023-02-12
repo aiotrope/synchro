@@ -15,11 +15,11 @@ import Stack from 'react-bootstrap/Stack'
 
 import { authService } from '../services/auth'
 
-export const SocialCredentialsGoogle = () => {
+export const SocialCredentialsFacebook = () => {
   const queryClient = useQueryClient()
   const [queryParameters] = useSearchParams()
   const { isLoading, error, mutateAsync } = useMutation({
-    mutationFn: authService.setAuthTokensFromSocialGoogle,
+    mutationFn: authService.setAuthTokensFromSocialFacebook,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['user-account'],
@@ -85,7 +85,7 @@ export const SocialCredentialsGoogle = () => {
   }
   return (
     <Stack className="col-md-5 mx-auto">
-      <h2>Social Authentication (Google)</h2>
+      <h2>Social Authentication (Facebook)</h2>
       <div>
         <p>Press the ENTER to signin to the site!</p>
         <small>CODE: {code}</small>

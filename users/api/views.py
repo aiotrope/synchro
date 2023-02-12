@@ -13,7 +13,7 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from django.views.generic.base import TemplateView
-from social_core.backends import google, facebook
+from social_core.backends import google, facebook, twitter
 
 import requests
 
@@ -101,9 +101,11 @@ class CustomGoogleOAuth2(google.GoogleOAuth2):
 
 
 class CustomFacebookOAuth2(facebook.FacebookOAuth2):
-    # REDIRECT_STATE = False
+    REDIRECT_STATE = False
     STATE_PARAMETER = False
 
+class CustomTwitterOAuth2(twitter.TwitterOAuth):
+    STATE_PARAMETER = False
 
 class UserRedirectSocialClass(object):
     def __init__(self, code):

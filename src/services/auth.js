@@ -93,7 +93,7 @@ const getAuthorizationUrlGoogle = async () => {
 const getAuthorizationUrlFacebook = async () => {
   try {
     const response = await http.get(
-      `/auth/social/o/facebook/?redirect_uri=${config.base_url}/api/social-credentials/facebook/`
+      `/auth/social/o/facebook/?redirect_uri=${config.base_url}/api/social/facebook/`
     )
     if (response) {
       return response
