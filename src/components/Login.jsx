@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { FacebookProvider, LoginButton } from 'react-facebook'
+import { useLogin } from 'react-facebook'
 
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
@@ -17,7 +17,7 @@ import { toast } from 'react-toastify'
 
 import { authService } from '../services/auth'
 import { useCommon } from '../contexts/Common'
-import { config } from '../utils/config'
+//import { config } from '../utils/config'
 const schema = yup
   .object({
     username: yup.string().required('Enter your registered email or username'),
@@ -37,6 +37,7 @@ export const Login = () => {
   })
 
   const navigate = useNavigate()
+  const fb = useLogin()
   const { googleLoginUrl } = useCommon()
 
   const {
@@ -59,15 +60,21 @@ export const Login = () => {
     }
   }
 
-  const handleFBSuccess = (response) => {
-    console.log(response)
+  const handleFBLogin = async () => {
+    try {
+      const response = await fb.login({
+        scope: 'email',
+      })
+      console.log('FB Response', response)
+      console.log('FB AuthResponse', response.authResponse)
+      console.log('FB AuthResponseCode', response.authResponse.code)
+      console.log('FB Status', response.status)
+    } catch (error) {
+      toast.error(error.message)
+    }
   }
 
-  const handleFBError = (error) => {
-    toast.error(error)
-  }
-
-  if (isLoading) {
+  if (isLoading || fb.isLoading) {
     return (
       <Spinner
         animation="border"
@@ -140,22 +147,16 @@ export const Login = () => {
       </div>
       <a href={googleLoginUrl} rel="noreferrer">
         <div className="d-grid my-2">
-          <Button variant="outline-secondary" size="md">
+          <Button variant="outline-secondary" size="lg">
             Login via Google
           </Button>
         </div>
       </a>
 
       <div className="d-grid mt-1">
-        <FacebookProvider appId={config.facebook_client_id}>
-          <LoginButton
-            scope="email"
-            onError={handleFBError}
-            onSuccess={handleFBSuccess}
-          >
-            Login via Facebook
-          </LoginButton>
-        </FacebookProvider>
+        <Button variant="outline-secondary" size="lg" onClick={handleFBLogin}>
+          Login via Facebook
+        </Button>
       </div>
     </Stack>
   )
