@@ -141,9 +141,10 @@ AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
     'users.api.views.CustomGoogleOAuth2',
-    'users.api.views.CustomFacebookOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
+    # 'users.api.views.CustomFacebookOAuth2',
 ]
 
 LOGIN_REDIRECT_URL = config(
@@ -366,7 +367,7 @@ SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'email, name, username'
+    'fields': 'email, name'
 }
 
 # Other ENV Vars
