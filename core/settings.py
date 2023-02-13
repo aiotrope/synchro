@@ -141,10 +141,11 @@ AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
     'users.api.views.CustomGoogleOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
+    'users.api.views.CustomFacebookOAuth2',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
     # 'users.api.views.CustomFacebookOAuth2',
+    # 'social_core.backends.facebook.FacebookOAuth2',
 ]
 
 LOGIN_REDIRECT_URL = config(
@@ -330,12 +331,14 @@ DJOSER = {
         'https://www.arnelimperial.com/login',
         'https://www.arnelimperial.com/api/social-credentials/google/',
         'https://www.arnelimperial.com/api/social/facebook/',
+        'https://www.arnelimperial.com/api/social/facebook',
         'https://www.arnelimperial.com/accounts/google/login/callback/',
         'https://www.arnelimperial.com/auth/users/activate',
         'https://synchro-web.onrender.com',
         'https://synchro-web.onrender.com/login',
         'https://synchro-web.onrender.com/api/social-credentials/google/',
         'https://synchro-web.onrender.com/api/social/facebook/',
+        'https://synchro-web.onrender.com/api/social/facebook',
         'https://synchro-web.onrender.com/accounts/google/login/callback/',
         'https://synchro-web.onrender.com/auth/users/activate',
         'http://127.0.0.1:8000/',

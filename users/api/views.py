@@ -147,8 +147,8 @@ class UserRedirectSocialGoogle(views.APIView):
 
 class UserRedirectSocialFacebook(views.APIView):
 
-    def get(self, request, code):
-        post_data = {'code': code}
+    def get(self, request, code, state):
+        post_data = {'code': code, 'state': state}
         return Response(post_data)
 
     def get_context_data(self, **kwargs):

@@ -45,7 +45,7 @@ urlpatterns += [
     # Djoser redirect after social login
     path('api/social-credentials/google/<code>/',
          UserRedirectSocialGoogle.as_view(), name='redirect_social_google'),
-    path('api/social/facebook/<code>/',
+    path('api/social/facebook/<code>/<state>/',
          UserRedirectSocialFacebook.as_view(), name='redirect_social_facebook'),
     # Simple JWT
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
