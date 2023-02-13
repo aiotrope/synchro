@@ -35,6 +35,7 @@ export const SocialCredentialsFacebook = () => {
   const schema = yup
     .object({
       code: yup.string().required().default(code),
+      state: yup.string().required().default(state),
     })
     .required()
 

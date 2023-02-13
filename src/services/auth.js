@@ -104,11 +104,11 @@ const getAuthorizationUrlFacebook = async () => {
 }
 
 // Social
-const setAuthTokensFromSocialFacebook = async (data) => {
-  const dataObj = { code: data.code, state: data.state }
+const setAuthTokensFromSocialFacebook = async (dataObj) => {
+  //const dataObj = { code: data.code, state: data.state }
   const response = await httpSocial.post(
     '/auth/social/o/facebook/',
-    qs.stringify(dataObj)
+    qs.stringify({ code: dataObj.code, state: dataObj.state })
   )
   console.log(response.data)
   if (response.data) {
