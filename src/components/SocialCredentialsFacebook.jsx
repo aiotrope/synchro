@@ -30,12 +30,10 @@ export const SocialCredentialsFacebook = () => {
   const navigate = useNavigate()
 
   const code = queryParameters.get('code')
-  const state = queryParameters.get('state')
 
   const schema = yup
     .object({
       code: yup.string().required().default(code),
-      state: yup.string().required().default(state),
     })
     .required()
 
@@ -52,7 +50,6 @@ export const SocialCredentialsFacebook = () => {
   React.useEffect(() => {
     let defaultValues = {}
     defaultValues.code = code
-    defaultValues.code = state
     reset({ ...defaultValues })
   }, [])
 
@@ -92,7 +89,6 @@ export const SocialCredentialsFacebook = () => {
       <div>
         <p>Press the ENTER to signin to the site!</p>
         <small>CODE: {code}</small>
-        <small>STATE: {state}</small>
       </div>
       <Form
         className="mt-2"
@@ -115,21 +111,7 @@ export const SocialCredentialsFacebook = () => {
             </FormControl.Feedback>
           )}
         </FormGroup>
-        <FormGroup>
-          <FormLabel htmlFor="state">State</FormLabel>
-          <FormControl
-            type="hidden"
-            placeholder={queryParameters.get('state')}
-            {...register('state')}
-            aria-invalid={errors.state?.message ? 'true' : 'false'}
-            className={`${errors.state?.message ? 'is-invalid' : ''} `}
-          />
-          {errors.state?.message && (
-            <FormControl.Feedback type="invalid">
-              {errors.state?.message}
-            </FormControl.Feedback>
-          )}
-        </FormGroup>
+
         <FormGroup className="d-grid mt-3">
           <Button variant="primary" size="lg" type="submit">
             ENTER

@@ -9,7 +9,9 @@ Date Started(Backend): 22.1.2023
 
 Date Started(Frontend): 31.1.2023
 
-The links provided include a detailed breakdown of my time allocated to this project.
+Time entries are tracked, summarised (weekly) and aggregated using [Clockify](https://clockify.me). Links are provided for viewing my daily activities, which include a detailed breakdown of the time I allocate to this project.
+
+Learning and configuring the underlying technologies are also included in the time entries in addition to coding. Every minute is counted as long as the activities allotted are spent or related to the project.
 
 | Date                    | Time (hours) | Details                                                                |
 | ----------------------- | ------------ | ---------------------------------------------------------------------- |
@@ -21,3 +23,5 @@ The links provided include a detailed breakdown of my time allocated to this pro
 ## 💫 Deploy
 
 Full stack app deployed in [render.io](https://render.com) @ [https://www.arnelimperial.com](https://www.arnelimperial.com)
+
+It should be noted that the live site may load quite slowly because this is a free plan. So please be patient if you ever click on a URL link or use the website to submit a request.

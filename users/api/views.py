@@ -101,7 +101,8 @@ class CustomGoogleOAuth2(google.GoogleOAuth2):
 
 
 class CustomFacebookOAuth2(facebook.FacebookOAuth2):
-    REDIRECT_STATE = False
+    STATE_PARAMETER = False
+    # REDIRECT_STATE = False
 
 
 class UserRedirectSocialClass(object):
@@ -147,8 +148,8 @@ class UserRedirectSocialGoogle(views.APIView):
 
 class UserRedirectSocialFacebook(views.APIView):
 
-    def get(self, request, code, state):
-        post_data = {'code': code, 'state': state}
+    def get(self, request, code):
+        post_data = {'code': code}
         return Response(post_data)
 
     def get_context_data(self, **kwargs):
