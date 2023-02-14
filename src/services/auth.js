@@ -89,6 +89,25 @@ const submitPasswordResetConfirmation = async (data) => {
   }
 }
 
+const requestUsernameReset = async (data) => {
+  const response = await http.post('/auth/users/reset_username/', data)
+  if (response) return response.data
+}
+
+const submitUsernameResetConfirmation = async (data) => {
+  const response = await http.post('/auth/users/reset_username_confirm/', data)
+  if (response.status === 204) {
+    return response.data
+  }
+}
+
+const requestEmailReset = async (email) => {
+  const response = await httpAuth.patch('/auth/users/me/', email)
+  if (response.status === 200) {
+    return response.data
+  }
+}
+
 const getAuthorizationUrlGoogle = async () => {
   try {
     const response = await http.get(
@@ -117,7 +136,6 @@ const getAuthorizationUrlFacebook = async () => {
 
 // Social
 const setAuthTokensFromSocialFacebook = async (code) => {
-  //const dataObj = { code: data.code, state: data.state }
   const response = await httpSocial.post(
     '/auth/social/o/facebook/',
     qs.stringify(code)
@@ -134,7 +152,7 @@ const setAuthTokensFromSocialGoogle = async (code) => {
     '/auth/social/o/google-oauth2/',
     qs.stringify(code)
   )
-  console.log(response.data)
+  //console.log(response.data)
   if (response.data.access && response.data.refresh && response.data.user) {
     localStorage.setItem('tokens', JSON.stringify(response.data))
   }
@@ -152,7 +170,7 @@ const deleteUser = async (username) => {
   const response = await httpAuth.delete(
     `/api/users/retrieve-destroy/${username}/`
   )
-  console.log(response.data.message)
+  //console.log(response.data.message)
   if (response.status === 204) {
     return response
   }
@@ -169,6 +187,9 @@ export const authService = {
   setAuthTokensFromSocialFacebook,
   requestPasswordReset,
   submitPasswordResetConfirmation,
+  requestEmailReset,
+  requestUsernameReset,
+  submitUsernameResetConfirmation,
   removeAuthTokens,
   authUserAccount,
   createUser,

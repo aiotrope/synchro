@@ -17,16 +17,16 @@ import { toast } from 'react-toastify'
 import { authService } from '../services/auth'
 import { useCommon } from '../contexts/Common'
 
-export const PasswordResetConfirm = () => {
+export const UsernameResetConfirm = () => {
   const { uid, token } = useParams()
   const { removeSignedEmail } = useCommon()
   const navigate = useNavigate()
 
   const { isLoading, mutateAsync } = useMutation({
-    mutationFn: authService.submitPasswordResetConfirmation,
+    mutationFn: authService.submitUsernameResetConfirmation,
     onSuccess: () => {
       navigate('/login')
-      toast.success('Password reset! Login using your new password')
+      toast.success('Username reset! Login using your new username')
       removeSignedEmail()
     },
   })
@@ -40,10 +40,10 @@ export const PasswordResetConfirm = () => {
 
   const schema = yup
     .object({
-      new_password: yup.string().required(),
-      re_new_password: yup
+      new_username: yup.string().required(),
+      re_new_username: yup
         .string()
-        .oneOf([yup.ref('new_password'), null], 'Password must match'),
+        .oneOf([yup.ref('new_username'), null], 'Username must match'),
       uid: yup.string().required().default(uid),
       token: yup.string().required().default(token),
     })
@@ -87,7 +87,7 @@ export const PasswordResetConfirm = () => {
 
   return (
     <Stack className="col-md-5 mx-auto">
-      <h2>Password Reset Confirmation</h2>
+      <h2>Username Reset Confirmation</h2>
       <Form
         className="mt-2"
         spellCheck="false"
@@ -95,34 +95,34 @@ export const PasswordResetConfirm = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <FormGroup>
-          <FormLabel htmlFor="new_password">New Password</FormLabel>
+          <FormLabel htmlFor="new_username">New Username</FormLabel>
           <FormControl
-            type="password"
-            placeholder="Enter new password"
-            {...register('new_password')}
-            aria-invalid={errors?.new_password?.message ? 'true' : 'false'}
-            className={`${errors?.new_password?.message ? 'is-invalid' : ''} `}
+            type="text"
+            placeholder="Enter new username"
+            {...register('new_username')}
+            aria-invalid={errors?.new_username?.message ? 'true' : 'false'}
+            className={`${errors?.new_username?.message ? 'is-invalid' : ''} `}
           />
-          {errors?.new_password?.message && (
+          {errors?.new_username?.message && (
             <FormControl.Feedback type="invalid">
-              {errors?.new_password?.message}
+              {errors?.new_username?.message}
             </FormControl.Feedback>
           )}
         </FormGroup>
         <FormGroup>
-          <FormLabel htmlFor="re_new_password">Re-type new password</FormLabel>
+          <FormLabel htmlFor="re_new_username">Re-type new username</FormLabel>
           <FormControl
-            type="password"
-            placeholder="Re-enter your new password"
-            {...register('re_new_password')}
-            aria-invalid={errors?.re_new_password?.message ? 'true' : 'false'}
+            type="text"
+            placeholder="Re-enter your new username"
+            {...register('re_new_username')}
+            aria-invalid={errors?.re_new_username?.message ? 'true' : 'false'}
             className={`${
-              errors?.re_new_password?.message ? 'is-invalid' : ''
+              errors?.re_new_username?.message ? 'is-invalid' : ''
             } `}
           />
-          {errors?.re_new_password?.message && (
+          {errors?.re_new_username?.message && (
             <FormControl.Feedback type="invalid">
-              {errors?.re_new_password?.message}
+              {errors?.re_new_username?.message}
             </FormControl.Feedback>
           )}
         </FormGroup>

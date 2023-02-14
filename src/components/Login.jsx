@@ -142,6 +142,12 @@ export const Login = () => {
           <Link to={'/password-reset-form'}>Reset password</Link>
         </small>
       </div>
+      <div className="my-1">
+        <small>
+          Forget your login username?{' '}
+          <Link to={'/username-reset-form'}>Reset username</Link>
+        </small>
+      </div>
       <div className="text-center mt-4">
         <strong>OR</strong>
       </div>

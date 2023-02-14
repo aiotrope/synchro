@@ -15,6 +15,9 @@ import { PrivacyPolicy } from './PrivacyPolicy'
 import { PasswordResetForm } from './PasswordResetForm'
 import { PasswordResetSubmission } from './PasswordResetSubmission'
 import { PasswordResetConfirm } from './PasswordResetConfirm'
+import { UsernameResetForm } from './UsernameResetForm'
+import { UsernameResetSubmission } from './UsernameResetSubmission'
+import { UsernameResetConfirm } from './UsernameResetConfirm'
 
 export const RoutesList = () => {
   const authTokens = authService.getAuthTokens()
@@ -48,6 +51,15 @@ export const RoutesList = () => {
       <Route
         path="/auth/password/reset/confirm/:uid/:token"
         element={<PasswordResetConfirm />}
+      />
+      <Route path="/username-reset-form" element={<UsernameResetForm />} />
+      <Route
+        path="/username-reset-submission"
+        element={<UsernameResetSubmission />}
+      />
+      <Route
+        path="/auth/username/reset/confirm/:uid/:token"
+        element={<UsernameResetConfirm />}
       />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="*" element={<NotFound />} />

@@ -3,15 +3,15 @@ import Container from 'react-bootstrap/Container'
 
 import { useCommon } from '../contexts/Common'
 
-export const PasswordResetSubmission = () => {
+export const UsernameResetSubmission = () => {
   const { signedEmail } = useCommon()
   return (
     <Container>
-      <h2>Password Reset Request Submitted</h2>
+      <h2>Username Reset Request Submitted</h2>
       <div>
         <p>
           We sent an email @ <strong>{signedEmail?.email}</strong> with link to
-          reset your password.
+          reset your username.
         </p>
       </div>
     </Container>
