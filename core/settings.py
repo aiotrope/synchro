@@ -144,8 +144,6 @@ AUTHENTICATION_BACKENDS = [
     'users.api.views.CustomFacebookOAuth2',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
-    # 'users.api.views.CustomFacebookOAuth2',
-    # 'social_core.backends.facebook.FacebookOAuth2',
 ]
 
 LOGIN_REDIRECT_URL = config(
@@ -334,10 +332,11 @@ DJOSER = {
     'SEND_CONFIRMATION_EMAIL': True,
     'SET_USERNAME_RETYPE': True,
     'SET_PASSWORD_RETYPE': True,
-    'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',
-    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'auth/username/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'auth/password/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': config('ACTIVATION_URL', default='auth/users/activate/{uid}/{token}'),
     'SEND_ACTIVATION_EMAIL': True,
+    'HIDE_USERS': False,
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
         'https://www.arnelimperial.com',
@@ -362,11 +361,12 @@ DJOSER = {
         'http://127.0.0.1:8000/auth/users/activate',
 
     ],
-    "SERIALIZERS": {
-        "user": "djoser.serializers.UserSerializer",
-        "current_user": "djoser.serializers.UserSerializer",
-        "user_delete": "djoser.serializers.UserSerializer",
+    'SERIALIZERS': {
+        'user': 'djoser.serializers.UserSerializer',
+        'current_user': 'djoser.serializers.UserSerializer',
+        'user_delete': 'djoser.serializers.UserSerializer',
     },
+
 }
 # Google Credentials
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')

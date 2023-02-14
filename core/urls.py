@@ -58,11 +58,6 @@ urlpatterns += [
     path('api/users/list/', UsersList.as_view(), name='users-lists'),
     path('api/users/retrieve-destroy/<username>/',
          UserRetrieveDestroy.as_view(), name='users-retrieve-destroy'),
-
-    # dj-rest-auth
-    path('rest-auth/', include('dj_rest_auth.urls')),
-    path('rest-auth/password/reset/confirm/<uid>/<token>', PasswordResetConfirmView.as_view(),
-         name='password_reset_confirm'),
 ]
 
 # URL patterns for frontend

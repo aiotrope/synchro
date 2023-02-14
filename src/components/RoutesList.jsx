@@ -46,7 +46,7 @@ export const RoutesList = () => {
         element={<PasswordResetSubmission />}
       />
       <Route
-        path="/rest-auth/password/reset/confirm/"
+        path="/auth/password/reset/confirm/:uid/:token"
         element={<PasswordResetConfirm />}
       />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
