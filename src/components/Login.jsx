@@ -136,7 +136,13 @@ export const Login = () => {
           </Button>
         </FormGroup>
       </Form>
-      <div className="text-center mt-2">
+      <div className="mt-1">
+        <small>
+          Forget your password?{' '}
+          <Link to={'/password-reset-form'}>Reset password</Link>
+        </small>
+      </div>
+      <div className="text-center mt-4">
         <strong>OR</strong>
       </div>
 

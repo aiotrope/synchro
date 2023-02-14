@@ -156,3 +156,5 @@ class UserRedirectSocialFacebook(views.APIView):
         context = super().get_context_data(**kwargs)
         print(context)
         return context
+
+

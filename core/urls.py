@@ -11,6 +11,8 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView
 )
 
+from dj_rest_auth.views import PasswordResetConfirmView
+
 from client.views import client_view
 from users.api.views import ActivateUser, UserRedirectSocialFacebook, UserRedirectSocialGoogle, UsersList, UserRetrieveDestroy
 
@@ -56,6 +58,11 @@ urlpatterns += [
     path('api/users/list/', UsersList.as_view(), name='users-lists'),
     path('api/users/retrieve-destroy/<username>/',
          UserRetrieveDestroy.as_view(), name='users-retrieve-destroy'),
+
+    # dj-rest-auth
+    path('rest-auth/', include('dj_rest_auth.urls')),
+    path('rest-auth/password/reset/confirm/<uid>/<token>', PasswordResetConfirmView.as_view(),
+         name='password_reset_confirm'),
 ]
 
 # URL patterns for frontend

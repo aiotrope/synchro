@@ -77,6 +77,18 @@ const setAuthTokens = async (credentials) => {
   }
 }
 
+const requestPasswordReset = async (data) => {
+  const response = await http.post('/rest-auth/password/reset/', data)
+  if (response) return response.data
+}
+
+const submitPasswordConfirmation = async (data) => {
+  const response = await http.post('/rest-auth/password/reset/confirm/', data)
+  if (response) {
+    return response.data
+  }
+}
+
 const getAuthorizationUrlGoogle = async () => {
   try {
     const response = await http.get(
@@ -155,6 +167,8 @@ export const authService = {
   getAuthorizationUrlFacebook,
   setAuthTokensFromSocialGoogle,
   setAuthTokensFromSocialFacebook,
+  requestPasswordReset,
+  submitPasswordConfirmation,
   removeAuthTokens,
   authUserAccount,
   createUser,

@@ -307,7 +307,19 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
-# Djoser & Python Social Auth & dj-rest-auth(Social)
+# Simple JWT
+# ------------------------------------------------------------------------------
+
+SIMPLE_JWT = {
+    # 'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
+
+# Djoser & Python Social Auth
 # ------------------------------------------------------------------------------
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
@@ -318,11 +330,12 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
     'SEND_CONFIRMATION_EMAIL': True,
     'SET_USERNAME_RETYPE': True,
     'SET_PASSWORD_RETYPE': True,
-    'USERNAME_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
-    'PASSWORD_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': config('ACTIVATION_URL', default='auth/users/activate/{uid}/{token}'),
     'SEND_ACTIVATION_EMAIL': True,
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
@@ -377,20 +390,17 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 DJOSER_USER_ACTIVATE_URL = config(
     'DJOSER_USER_ACTIVATE_URL', default='http://127.0.0.1:8000/auth/users/activation/')
 
-REST_USE_JWT = True
 
 SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['state']
 
-# Simple JWT
+# dj-rest-auth
 # ------------------------------------------------------------------------------
 
-SIMPLE_JWT = {
-    # 'AUTH_HEADER_TYPES': ('JWT',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': config('JWT_AUTH_COOKIE'),
+    'JWT_AUTH_REFRESH_COOKIE': config('JWT_AUTH_REFRESH_COOKIE'),
+    'PASSWORD_RESET_USE_SITES_DOMAIN': False,
 }
 
 # ADMIN

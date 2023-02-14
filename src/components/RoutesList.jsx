@@ -12,6 +12,9 @@ import { SocialCredentialsFacebook } from './SocialCredentialsFacebook'
 import { ActivateUser } from './ActivateUser'
 import { SignupActivation } from './SignupActivation'
 import { PrivacyPolicy } from './PrivacyPolicy'
+import { PasswordResetForm } from './PasswordResetForm'
+import { PasswordResetSubmission } from './PasswordResetSubmission'
+import { PasswordResetConfirm } from './PasswordResetConfirm'
 
 export const RoutesList = () => {
   const authTokens = authService.getAuthTokens()
@@ -37,6 +40,15 @@ export const RoutesList = () => {
       />
       <Route path="/signup-activation" element={<SignupActivation />} />
       <Route path="/auth/users/activate" element={<ActivateUser />} />
+      <Route path="/password-reset-form" element={<PasswordResetForm />} />
+      <Route
+        path="/password-reset-submission"
+        element={<PasswordResetSubmission />}
+      />
+      <Route
+        path="/rest-auth/password/reset/confirm/"
+        element={<PasswordResetConfirm />}
+      />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
