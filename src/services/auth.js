@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import qs from 'qs'
+import createAuthRefreshInterceptor from 'axios-auth-refresh'
 
 import { config } from '../utils/config/index'
 
@@ -50,18 +51,41 @@ const httpSocial = axios.create({
   },
 })
 
-const access_token = getAccessToken()
-const TOKEN = `Bearer ${access_token}`
-
-const httpAuth = axios.create({
-  baseURL: config.base_url,
-  withCredentials: true,
-  xsrfHeaderName: 'X-CSRFToken',
-  xsrfCookieName: 'csrftoken',
-  headers: {
-    Authorization: TOKEN,
+// interceptor
+// GET
+http.interceptors.request.use(
+  (config) => {
+    const _access = getAccessToken()
+    if (_access) {
+      config.headers['Authorization'] = `Bearer ${_access}`
+    }
+    return config
   },
-})
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
+// POST
+
+const refreshAuthLogic = async (failedRequest) => {
+  const response = await http.post('/auth/jwt/refresh/', {
+    refresh: getRefreshToken(),
+  })
+
+  const user = JSON.parse(localStorage.getItem('tokens'))
+  user.access = response?.data?.access
+  localStorage.setItem('tokens', JSON.stringify(user))
+  failedRequest.response.config.headers['Authorization'] =
+    'Bearer ' + response?.data?.access
+
+  return Promise.resolve()
+}
+
+createAuthRefreshInterceptor(http, refreshAuthLogic)
+
+// Requests
+// ------------------------------------------------------------------------------
 
 const createUser = async (info) => {
   const response = await http.post('/auth/users/', info)
@@ -102,7 +126,7 @@ const submitUsernameResetConfirmation = async (data) => {
 }
 
 const requestEmailReset = async (email) => {
-  const response = await httpAuth.patch('/auth/users/me/', email)
+  const response = await http.patch('/auth/users/me/', email)
   if (response.status === 200) {
     return response.data
   }
@@ -159,17 +183,16 @@ const setAuthTokensFromSocialGoogle = async (code) => {
 }
 
 // With Auth Headers
+
 const authUserAccount = async () => {
-  const response = await httpAuth.get('/auth/users/me/')
+  const response = await http.get('/auth/users/me/')
   if (response.data) {
     return response.data
   }
 }
 
 const deleteUser = async (username) => {
-  const response = await httpAuth.delete(
-    `/api/users/retrieve-destroy/${username}/`
-  )
+  const response = await http.delete(`/api/users/retrieve-destroy/${username}/`)
   //console.log(response.data.message)
   if (response.status === 204) {
     return response
