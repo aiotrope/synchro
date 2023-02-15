@@ -1,10 +1,11 @@
 import * as React from 'react'
 
 import Container from 'react-bootstrap/Container'
-import { authService } from '../services/auth'
+
+import tokenService from '../services/token'
 
 export const Main = () => {
-  const authTokens = authService.getAuthTokens()
+  const authTokens = tokenService.getAuthTokens()
   return (
     <Container className="wrapper">
       {authTokens ? <h2>Home (Auth)</h2> : <h2>Home</h2>}

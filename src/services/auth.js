@@ -1,88 +1,9 @@
-import axios from 'axios'
 import { toast } from 'react-toastify'
 import qs from 'qs'
-import createAuthRefreshInterceptor from 'axios-auth-refresh'
 
 import { config } from '../utils/config/index'
 
-const getAuthTokens = () => {
-  const authTokens = JSON.parse(localStorage.getItem('tokens'))
-  if (authTokens) return authTokens
-}
-
-const getAccessToken = () => {
-  const user = JSON.parse(localStorage.getItem('tokens'))
-  //console.log(access_token)
-  if (user) {
-    return user?.access
-  }
-}
-
-const getRefreshToken = () => {
-  const user = JSON.parse(localStorage.getItem('tokens'))
-  if (user) {
-    return user?.refresh
-  } else {
-    toast.error('Refresh token missing!')
-  }
-}
-
-const removeAuthTokens = () => {
-  localStorage.removeItem('tokens')
-}
-
-const http = axios.create({
-  baseURL: config.base_url,
-  withCredentials: true,
-  xsrfHeaderName: 'X-CSRFToken',
-  xsrfCookieName: 'csrftoken',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-
-const httpSocial = axios.create({
-  baseURL: config.base_url,
-  withCredentials: true,
-  xsrfHeaderName: 'X-CSRFToken',
-  xsrfCookieName: 'csrftoken',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-})
-
-// interceptor
-// GET
-http.interceptors.request.use(
-  (config) => {
-    const _access = getAccessToken()
-    if (_access) {
-      config.headers['Authorization'] = `Bearer ${_access}`
-    }
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  }
-)
-
-// POST
-
-const refreshAuthLogic = async (failedRequest) => {
-  const response = await http.post('/auth/jwt/refresh/', {
-    refresh: getRefreshToken(),
-  })
-
-  const user = JSON.parse(localStorage.getItem('tokens'))
-  user.access = response?.data?.access
-  localStorage.setItem('tokens', JSON.stringify(user))
-  failedRequest.response.config.headers['Authorization'] =
-    'Bearer ' + response?.data?.access
-
-  return Promise.resolve()
-}
-
-createAuthRefreshInterceptor(http, refreshAuthLogic)
+import http, { httpSocial } from './http'
 
 // Requests
 // ------------------------------------------------------------------------------
@@ -201,9 +122,6 @@ const deleteUser = async (username) => {
 
 export const authService = {
   setAuthTokens,
-  getAuthTokens,
-  getAccessToken,
-  getRefreshToken,
   getAuthorizationUrlGoogle,
   getAuthorizationUrlFacebook,
   setAuthTokensFromSocialGoogle,
@@ -213,10 +131,7 @@ export const authService = {
   requestEmailReset,
   requestUsernameReset,
   submitUsernameResetConfirmation,
-  removeAuthTokens,
   authUserAccount,
   createUser,
   deleteUser,
 }
-
-export default http

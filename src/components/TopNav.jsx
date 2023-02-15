@@ -5,8 +5,9 @@ import { LinkContainer } from 'react-router-bootstrap'
 import Stack from 'react-bootstrap/Stack'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
-import { authService } from '../services/auth'
 import { useCommon } from '../contexts/Common'
+import tokenService from '../services/token'
+import http from '../services/http'
 
 const UnAuthMenu = () => (
   <Stack
@@ -50,9 +51,10 @@ const AuthMenu = () => {
   const handleLogout = () => {
     removeSignedEmail()
     queryCache.clear()
-    authService.removeAuthTokens()
+    tokenService.removeAuthTokens()
+    http.defaults.headers.common['Authorization'] = null
     window.location.reload()
-    const authTokens = authService.getAuthTokens()
+    const authTokens = tokenService.getAuthTokens()
     if (!authTokens) {
       navigate('/login')
     }
@@ -93,7 +95,7 @@ const AuthMenu = () => {
 }
 
 export const TopNav = () => {
-  const authTokens = authService.getAuthTokens()
+  const authTokens = tokenService.getAuthTokens()
 
   //console.log(authTokens)
   return <>{authTokens ? <AuthMenu /> : <UnAuthMenu />}</>

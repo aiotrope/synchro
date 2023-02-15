@@ -1,15 +1,18 @@
 @import './variables';
 
-html,
-body {
+html {
   box-sizing: border-box;
+}
+
+body {
   font-family: $font-main !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: $color-text-primary !important;
   line-height: 1.8;
   font-weight: 400;
   margin: 0;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 a {

@@ -98,7 +98,7 @@ export const Login = () => {
         noValidate
         onSubmit={handleSubmit(onSubmit)}
       >
-        <FormGroup>
+        <FormGroup className="mb-2">
           <FormLabel htmlFor="username">Login*</FormLabel>
           <FormControl
             type="text"
@@ -114,7 +114,7 @@ export const Login = () => {
           )}
         </FormGroup>
 
-        <FormGroup>
+        <FormGroup className="mb-4">
           <FormLabel htmlFor="password">Password*</FormLabel>
           <FormControl
             type="password"
@@ -158,7 +158,7 @@ export const Login = () => {
         </Button>
       </div>
 
-      <div className="d-grid mt-1">
+      <div className="d-grid mt-1 mb-5">
         <Button variant="light" size="lg" onClick={handleFBLogin}>
           Login via Facebook
         </Button>

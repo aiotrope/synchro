@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
-import { authService } from '../services/auth'
+import tokenService from '../services/token'
 import { Main } from './Main'
 import { Login } from './Login'
 import { Signup } from './Signup'
@@ -20,7 +20,7 @@ import { UsernameResetSubmission } from './UsernameResetSubmission'
 import { UsernameResetConfirm } from './UsernameResetConfirm'
 
 export const RoutesList = () => {
-  const authTokens = authService.getAuthTokens()
+  const authTokens = tokenService.getAuthTokens()
   return (
     <Routes>
       <Route path="/" element={<Main />} />

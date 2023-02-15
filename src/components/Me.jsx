@@ -14,7 +14,8 @@ import FormLabel from 'react-bootstrap/FormLabel'
 import Spinner from 'react-bootstrap/Spinner'
 import { toast } from 'react-toastify'
 
-import http, { authService } from '../services/auth'
+import { authService } from '../services/auth'
+import http from '../services/http'
 import { config } from '../utils/config'
 
 const schema = yup
@@ -167,7 +168,7 @@ export const Me = () => {
           noValidate
           onSubmit={handleSubmit(onSubmit)}
         >
-          <FormGroup>
+          <FormGroup className="mb-4">
             <FormLabel htmlFor="email">Email</FormLabel>
             <FormControl
               type="email"
@@ -182,14 +183,14 @@ export const Me = () => {
               </FormControl.Feedback>
             )}
           </FormGroup>
-          <FormGroup className="d-grid mt-3">
+          <FormGroup className="d-grid mt-3 mb-5">
             <Button variant="warning" size="lg" type="submit">
               Update Email
             </Button>
           </FormGroup>
         </Form>
       </div>
-      <div className="my-3">
+      <div className="my-5">
         <h3>Password Update</h3>
         <p>This action will log you out of the system.</p>
         <Form
@@ -198,7 +199,7 @@ export const Me = () => {
           noValidate
           onSubmit={passwordResetForm.handleSubmit(onPasswordReset)}
         >
-          <FormGroup>
+          <FormGroup className="mb-2">
             <FormLabel htmlFor="current_password">Current Password</FormLabel>
             <FormControl
               type="password"
@@ -221,7 +222,7 @@ export const Me = () => {
               </FormControl.Feedback>
             )}
           </FormGroup>
-          <FormGroup>
+          <FormGroup className="mb-2">
             <FormLabel htmlFor="new_password">New Password</FormLabel>
             <FormControl
               type="password"
@@ -244,7 +245,7 @@ export const Me = () => {
               </FormControl.Feedback>
             )}
           </FormGroup>
-          <FormGroup>
+          <FormGroup className="mb-4">
             <FormLabel htmlFor="re_new_password">
               Re-type new password
             </FormLabel>

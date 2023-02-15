@@ -105,7 +105,7 @@ export const Signup = () => {
         noValidate
         onSubmit={handleSubmit(onSubmit)}
       >
-        <FormGroup>
+        <FormGroup className="mb-2">
           <FormLabel htmlFor="username">Username*</FormLabel>
           <FormControl
             type="text"
@@ -120,7 +120,7 @@ export const Signup = () => {
             </FormControl.Feedback>
           )}
         </FormGroup>
-        <FormGroup>
+        <FormGroup className="mb-2">
           <FormLabel htmlFor="email">Email*</FormLabel>
           <FormControl
             type="email"
@@ -135,7 +135,7 @@ export const Signup = () => {
             </FormControl.Feedback>
           )}
         </FormGroup>
-        <FormGroup>
+        <FormGroup className="mb-2">
           <FormLabel htmlFor="password">Password*</FormLabel>
           <FormControl
             type="password"
@@ -150,7 +150,7 @@ export const Signup = () => {
             </FormControl.Feedback>
           )}
         </FormGroup>
-        <FormGroup>
+        <FormGroup className="mb-4">
           <FormLabel htmlFor="password">Password Confirmation*</FormLabel>
           <FormControl
             type="password"
@@ -180,7 +180,7 @@ export const Signup = () => {
         </Button>
       </div>
 
-      <div className="d-grid mt-1">
+      <div className="d-grid mt-1 mb-5">
         <Button variant="light" size="lg" onClick={handleFBLogin}>
           Signup via Facebook
         </Button>
