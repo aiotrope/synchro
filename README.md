@@ -12,7 +12,7 @@ Date Started(Frontend): 31.1.2023
 
 Time entries are tracked, summarised (weekly) and aggregated using [Clockify](https://clockify.me). Links are provided for viewing my daily activities, which include a detailed breakdown of the time I allocate to this project.
 
-Learning and configuring the underlying technologies are also included in the time entries in addition to coding. Every minute is counted as long as the activities allotted are spent or related to the project.
+Learning and configuring the underlying technologies are also included in the time entries in addition to coding.
 
 | Date                    | Time (hours) | Details                                                                |
 | ----------------------- | ------------ | ---------------------------------------------------------------------- |

@@ -218,3 +218,5 @@ export const authService = {
   createUser,
   deleteUser,
 }
+
+export default http

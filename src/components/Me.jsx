@@ -1,5 +1,4 @@
 import * as React from 'react'
-import axios from 'axios'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -15,7 +14,7 @@ import FormLabel from 'react-bootstrap/FormLabel'
 import Spinner from 'react-bootstrap/Spinner'
 import { toast } from 'react-toastify'
 
-import { authService } from '../services/auth'
+import http, { authService } from '../services/auth'
 import { config } from '../utils/config'
 
 const schema = yup
@@ -38,18 +37,12 @@ export const Me = () => {
     queryKey: ['user-account'],
     queryFn: authService.authUserAccount,
   })
-  const access_token = authService.getAccessToken()
-  const AUTH_TOKEN = `Bearer ${access_token}`
-  axios.defaults.xsrfCookieName = 'csrftoken'
-  axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-  axios.defaults.headers.common['Authorization'] = AUTH_TOKEN
-  axios.defaults.headers.post['Content-Type'] = 'application/json'
 
   const navigate = useNavigate()
 
   const { isLoading, isError, error, mutate } = useMutation(
     (username) => {
-      return axios.delete(
+      return http.delete(
         `${config.base_url}/api/users/retrieve-destroy/${username}/`
       )
     },
@@ -68,7 +61,7 @@ export const Me = () => {
 
   const emailReset = useMutation(
     (email) => {
-      return axios.patch(`${config.base_url}/auth/users/me/`, email)
+      return http.patch(`${config.base_url}/auth/users/me/`, email)
     },
     {
       onSuccess: () => {
@@ -87,7 +80,7 @@ export const Me = () => {
 
   const passwordUpdate = useMutation(
     (data) => {
-      return axios.post(`${config.base_url}/auth/users/set_password/`, data)
+      return http.post(`${config.base_url}/auth/users/set_password/`, data)
     },
     {
       onSuccess: () => {
