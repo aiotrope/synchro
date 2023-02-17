@@ -95,8 +95,17 @@ const AuthMenu = () => {
 }
 
 export const TopNav = () => {
-  const authTokens = tokenService.getAuthTokens()
+  const { mounted } = useCommon()
+  const navigate = useNavigate()
+  const authUser = tokenService.getAuthTokens()
+  React.useEffect(() => {
+    const prepare = async () => {
+      if (!authUser && mounted) {
+        navigate('/login')
+      }
+    }
+    prepare()
+  }, [authUser, mounted])
 
-  //console.log(authTokens)
-  return <>{authTokens ? <AuthMenu /> : <UnAuthMenu />}</>
+  return <>{authUser ? <AuthMenu /> : <UnAuthMenu />}</>
 }

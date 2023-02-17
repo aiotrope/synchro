@@ -11,7 +11,7 @@ from .managers import UserManager
 class User(AbstractUser):
     validate_username = UnicodeUsernameValidator()
 
-    username = CharField(_("username"), max_length=150, blank=False,
+    username = CharField(_('username'), max_length=150, blank=False,
                          unique=True, validators=[validate_username])
     email = EmailField(_('email address'), unique=True,
                        blank=False, validators=[validate_email])

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from users.api.views import UserViewSet, UserCountView, UserRetrieveDestroy
+from contacts.api.views import ContactViewSet
 
 
 if settings.DEBUG:
@@ -10,9 +10,7 @@ if settings.DEBUG:
 else:
     router = SimpleRouter()
 
-# router.register(r"users", UserViewSet, basename='users')
-# router.register(r"user-counts", UserCountView, basename='user-counts')
-# router.register(r"user-retrieve", UserRetrieveDestroy, basename='user-retrieve-destroy')
+router.register(r"contacts", ContactViewSet, basename='contacts')
 
 app_name = 'api'
 urlpatterns = [

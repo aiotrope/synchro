@@ -5,8 +5,6 @@ from rest_framework import views
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from dj_rest_auth.registration.views import SocialLoginView
-from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -130,10 +128,6 @@ class UserRedirectSocialViewFacebook(TemplateView):
         return context
 
 
-class FacebookLogin(SocialLoginView):
-    adapter_class = FacebookOAuth2Adapter
-
-
 class UserRedirectSocialGoogle(views.APIView):
 
     def get(self, request, code):
@@ -156,5 +150,4 @@ class UserRedirectSocialFacebook(views.APIView):
         context = super().get_context_data(**kwargs)
         print(context)
         return context
-
 

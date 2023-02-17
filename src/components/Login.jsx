@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useNavigate, Link } from 'react-router-dom'
@@ -15,6 +15,8 @@ import Spinner from 'react-bootstrap/Spinner'
 import { toast } from 'react-toastify'
 
 import { authService } from '../services/auth'
+import tokenService from '../services/token'
+import { useCommon } from '../contexts/Common'
 
 const schema = yup
   .object({
@@ -29,13 +31,14 @@ export const Login = () => {
     mutationFn: authService.setAuthTokens,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['user-account'],
+        queryKey: ['user-account', 'user-messages'],
       })
     },
   })
 
   const navigate = useNavigate()
-
+  const { mounted } = useCommon()
+  const authUser = tokenService.getAuthTokens()
   const {
     register,
     handleSubmit,
@@ -45,16 +48,32 @@ export const Login = () => {
     resolver: yupResolver(schema),
     mode: 'all',
   })
+
   const onSubmit = async (formData) => {
     try {
-      await mutateAsync(formData)
-      reset()
-      navigate('/')
-      window.location.reload()
+      const res = await mutateAsync(formData)
+      if (res) {
+        toast.success(`Hi ${formData.username} you're signed in to Synchro`)
+        reset()
+        let timer
+        setTimeout(() => {
+          window.location.reload()
+          clearTimeout(timer)
+        }, 7000)
+      }
     } catch (error) {
       toast.error(`Error: ${error.message} - ${error.response.data.detail}`)
     }
   }
+
+  useEffect(() => {
+    const prepare = async () => {
+      if (authUser && mounted) {
+        navigate('/')
+      }
+    }
+    prepare()
+  }, [authUser, mounted])
 
   const handleFBLogin = async () => {
     const req = await authService.getAuthorizationUrlFacebook()
@@ -70,15 +89,7 @@ export const Login = () => {
 
   if (isLoading) {
     return (
-      <Spinner
-        animation="border"
-        style={{
-          position: 'fixed',
-          zIndex: 1031,
-          top: '50%',
-          left: '50%',
-        }}
-      >
+      <Spinner animation="grow" className="spinner">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
     )

@@ -11,7 +11,7 @@ export const httpSocial = axios.create({
   withCredentials: true,
   xsrfHeaderName: 'X-CSRFToken',
   xsrfCookieName: 'csrftoken',
-  timeout: 180000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
   },
@@ -22,7 +22,7 @@ const http = axios.create({
   withCredentials: true,
   xsrfHeaderName: 'X-CSRFToken',
   xsrfCookieName: 'csrftoken',
-  timeout: 180000,
+  timeout: 60000,
 })
 
 // Interceptor

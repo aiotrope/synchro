@@ -19,6 +19,7 @@ const setAuthTokens = async (credentials) => {
   const response = await http.post('/auth/jwt/create/', credentials)
   if (response.data.access && response.data.refresh) {
     localStorage.setItem('tokens', JSON.stringify(response.data))
+    return response.data
   }
 }
 

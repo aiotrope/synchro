@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Synchro - Senders Copy</title>
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+    </style>
+
+</head>
+<body style="font-family:Verdana, Geneva, Tahoma, sans-serif;">
+    <div style="padding:0.01em 16px;">
+        <h4>Thank you {{ usernameInfo }} / {{ first_name }} {{ last_name }} - {{ emailInfo }}</h4>
+        <p>We have received your message and would like to thank you for taking the time writing on us.</p>
+        <p>Below is the outline information that you provided from the site contact form.</p><br>
+        <hr>
+        <div style="background-color:#f2f2f2;font-style:italic;padding:0.01em 4px;">
+            <h5>Subject: {{ subject }}</h5>
+            <p> {{ messageBody }} </p>
+        </div>
+        <hr>
+        <p><strong>We will reply to you as soon as possible when needed.</strong></p>
+        <p>Sincerely,<br><br><a href="https://www.arnelimperial.com"><strong>Synchro Team</strong></a></p>
+        
+    </div>
+</body>
+</html>

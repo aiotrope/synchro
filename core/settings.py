@@ -45,12 +45,13 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'django_extensions',
     'crispy_forms',
-    'dj_rest_auth',
+    'django_userforeignkey',
 ]
 
 LOCAL_APPS = [
     'users.apps.UsersConfig',
     'client.apps.ClientConfig',
+    'contacts.apps.ContactsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -71,6 +72,7 @@ MIDDLEWARE = [
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'csp.middleware.CSPMiddleware',
+    'django_userforeignkey.middleware.UserForeignKeyMiddleware',
 ]
 
 # Common & Templates
@@ -104,9 +106,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-TIME_ZONE = "Europe/Helsinki"
+TIME_ZONE = 'UTC'
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
@@ -208,6 +210,8 @@ EMAIL_BACKEND = config(
     'EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend'
 )
 
+EMAIL_RECEIVER = config('EMAIL_RECEIVER')
+
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', cast=str)
 
 SERVER_EMAIL = config('SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
@@ -290,7 +294,6 @@ if DEBUG:
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
@@ -300,7 +303,6 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 
     'PAGE_SIZE': 10
 }
@@ -309,8 +311,8 @@ REST_FRAMEWORK = {
 # ------------------------------------------------------------------------------
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -390,16 +392,6 @@ DJOSER_USER_ACTIVATE_URL = config(
 
 
 SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['state']
-
-# dj-rest-auth
-# ------------------------------------------------------------------------------
-
-REST_AUTH = {
-    'USE_JWT': True,
-    'JWT_AUTH_COOKIE': config('JWT_AUTH_COOKIE'),
-    'JWT_AUTH_REFRESH_COOKIE': config('JWT_AUTH_REFRESH_COOKIE'),
-    'PASSWORD_RESET_USE_SITES_DOMAIN': False,
-}
 
 # ADMIN
 # ------------------------------------------------------------------------------

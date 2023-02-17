@@ -11,7 +11,6 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView
 )
 
-from dj_rest_auth.views import PasswordResetConfirmView
 
 from client.views import client_view
 from users.api.views import ActivateUser, UserRedirectSocialFacebook, UserRedirectSocialGoogle, UsersList, UserRetrieveDestroy

@@ -77,15 +77,7 @@ export const Signup = () => {
   }
   if (isLoading) {
     return (
-      <Spinner
-        animation="border"
-        style={{
-          position: 'fixed',
-          zIndex: 1031,
-          top: '50%',
-          left: '50%',
-        }}
-      >
+      <Spinner animation="border" className="spinner">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
     )
@@ -105,6 +97,9 @@ export const Signup = () => {
         noValidate
         onSubmit={handleSubmit(onSubmit)}
       >
+        <div className="mb-2">
+          <em>* Required</em>
+        </div>
         <FormGroup className="mb-2">
           <FormLabel htmlFor="username">Username*</FormLabel>
           <FormControl

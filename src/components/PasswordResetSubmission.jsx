@@ -1,12 +1,12 @@
 import * as React from 'react'
-import Container from 'react-bootstrap/Container'
+import Stack from 'react-bootstrap/Stack'
 
 import { useCommon } from '../contexts/Common'
 
 export const PasswordResetSubmission = () => {
   const { signedEmail } = useCommon()
   return (
-    <Container>
+    <Stack className="col-md-5 mx-auto">
       <h2>Password Reset Request Submitted</h2>
       <div>
         <p>
@@ -14,6 +14,6 @@ export const PasswordResetSubmission = () => {
           reset your password.
         </p>
       </div>
-    </Container>
+    </Stack>
   )
 }

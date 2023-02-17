@@ -54,15 +54,7 @@ export const UsernameResetForm = () => {
 
   if (isLoading) {
     return (
-      <Spinner
-        animation="border"
-        style={{
-          position: 'fixed',
-          zIndex: 1031,
-          top: '50%',
-          left: '50%',
-        }}
-      >
+      <Spinner animation="border" className="spinner">
         <span className="visually-hidden">Submitting...</span>
       </Spinner>
     )

@@ -9,7 +9,6 @@ from django.forms import (
     EmailInput,
 )
 
-
 User = get_user_model()
 
 

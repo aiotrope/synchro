@@ -10,9 +10,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.8;
   font-weight: 400;
+  letter-spacing: 0.013m;
   margin: 0;
   background-attachment: fixed;
   min-height: 100vh;
+  color: $color-text-primary !important;
 }
 
 a {

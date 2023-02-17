@@ -70,15 +70,7 @@ export const SocialCredentialsFacebook = () => {
 
   if (isLoading) {
     return (
-      <Spinner
-        animation="grow"
-        style={{
-          position: 'fixed',
-          zIndex: 1031,
-          top: '50%',
-          left: '50%',
-        }}
-      >
+      <Spinner animation="grow" className="spinner">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
     )

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
+import moment from 'moment'
 
 import Stack from 'react-bootstrap/Stack'
 import Button from 'react-bootstrap/Button'
@@ -12,9 +13,12 @@ import FormControl from 'react-bootstrap/FormControl'
 import FormGroup from 'react-bootstrap/FormGroup'
 import FormLabel from 'react-bootstrap/FormLabel'
 import Spinner from 'react-bootstrap/Spinner'
+import Table from 'react-bootstrap/Table'
 import { toast } from 'react-toastify'
+//import { map } from 'lodash'
 
 import { authService } from '../services/auth'
+import contactService from '../services/contact'
 import http from '../services/http'
 import { config } from '../utils/config'
 
@@ -38,6 +42,13 @@ export const Me = () => {
     queryKey: ['user-account'],
     queryFn: authService.authUserAccount,
   })
+
+  const contactMessagesByUser = useQuery({
+    queryKey: ['user-messages'],
+    queryFn: contactService.fetchContactMessagesByUser,
+  })
+
+  const messages = contactMessagesByUser?.data
 
   const navigate = useNavigate()
 
@@ -130,15 +141,7 @@ export const Me = () => {
     passwordUpdate.isLoading
   ) {
     return (
-      <Spinner
-        animation="grow"
-        style={{
-          position: 'fixed',
-          zIndex: 1031,
-          top: '50%',
-          left: '50%',
-        }}
-      >
+      <Spinner animation="grow" className="spinner">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
     )
@@ -149,13 +152,39 @@ export const Me = () => {
   }
 
   return (
-    <Stack className="col-md-5 mx-auto">
-      <h2>Profile</h2>
-      <p>ID: {profile?.data?.id}</p>
-      <p>Username: {profile?.data?.username}</p>
-      <p>Email: {profile?.data.email}</p>
-      <hr />
-      <div className="my-3">
+    <Stack className="col-lg-7 mx-auto" style={{ marginBottom: '7rem' }}>
+      <div className="mb-4">
+        <h2>Profile</h2>
+        <p>User ID: {profile?.data?.id}</p>
+        <p>Username: {profile?.data?.username}</p>
+        <p>Email: {profile?.data.email}</p>
+        <hr />
+      </div>
+
+      <div className="my-4">
+        <h3>Message Sent</h3>
+        <Table responsive="xl" size="xl" className="mb-4">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Subject</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {messages?.map(({ id, subject, messageBody, created }) => (
+              <tr key={id}>
+                <td>{moment(created.toString()).format('DD-MM-YYYY')}</td>
+                <td>{subject}</td>
+                <td>{messageBody}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+
+      <div className="mb-4">
         <h3>Email Update</h3>
         <p>
           This action will log you out of the system and deactivate your
@@ -176,6 +205,7 @@ export const Me = () => {
               {...register('email')}
               aria-invalid={errors.email?.message ? 'true' : 'false'}
               className={`${errors.email?.message ? 'is-invalid' : ''} `}
+              size="lg"
             />
             {errors.email?.message && (
               <FormControl.Feedback type="invalid">
@@ -189,8 +219,9 @@ export const Me = () => {
             </Button>
           </FormGroup>
         </Form>
+        <hr />
       </div>
-      <div className="my-5">
+      <div className="mb-4">
         <h3>Password Update</h3>
         <p>This action will log you out of the system.</p>
         <Form
@@ -215,6 +246,7 @@ export const Me = () => {
                   ? 'is-invalid'
                   : ''
               } `}
+              size="lg"
             />
             {passwordResetForm.formState.errors?.current_password?.message && (
               <FormControl.Feedback type="invalid">
@@ -238,6 +270,7 @@ export const Me = () => {
                   ? 'is-invalid'
                   : ''
               } `}
+              size="lg"
             />
             {passwordResetForm.formState.errors?.new_password?.message && (
               <FormControl.Feedback type="invalid">
@@ -263,6 +296,7 @@ export const Me = () => {
                   ? 'is-invalid'
                   : ''
               } `}
+              size="lg"
             />
             {passwordResetForm.formState.errors?.re_new_password?.message && (
               <FormControl.Feedback type="invalid">
@@ -279,11 +313,27 @@ export const Me = () => {
         </Form>
       </div>
       <hr />
-      <div className="my-5">
+      <div className="mt-5">
         <h3>Account Deletion</h3>
+
+        <div className="mb-3">
+          <p>
+            We appreciate having you with us, but we understand that we
+            can&apos;t keep you forever.
+          </p>
+          <small>
+            Users who created their accounts using Synchro&apos;s user
+            registration system can delete their accounts. Account deletions
+            made through social authentication (Google & Facebook) are not yet
+            supported by our API. Please contact Synchro if you want to delete
+            your account this way or if you are having difficulty deleting your
+            account using both methods.
+          </small>
+        </div>
+
         <Button
           variant="danger"
-          size="md"
+          size="lg"
           onClick={() => mutate(profile?.data?.username)}
         >
           Delete

@@ -9,8 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-        # depth = 1
 
         extra_kwargs = {
-            "url": {"view_name": "api:user-detail", "lookup_field": "username"}
-        } 
+            'url': {'view_name': 'api:user-detail', 'lookup_field': 'username'}
+        }

@@ -18,6 +18,8 @@ import { PasswordResetConfirm } from './PasswordResetConfirm'
 import { UsernameResetForm } from './UsernameResetForm'
 import { UsernameResetSubmission } from './UsernameResetSubmission'
 import { UsernameResetConfirm } from './UsernameResetConfirm'
+//import { ContactForm } from './ContactForm'
+import { ContactFormSubmitted } from './ContactFormSubmitted'
 
 export const RoutesList = () => {
   const authTokens = tokenService.getAuthTokens()
@@ -60,6 +62,13 @@ export const RoutesList = () => {
       <Route
         path="/auth/username/reset/confirm/:uid/:token"
         element={<UsernameResetConfirm />}
+      />
+
+      <Route
+        path="/contact-form-submitted"
+        element={
+          authTokens ? <ContactFormSubmitted /> : <Navigate to={'/login'} />
+        }
       />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="*" element={<NotFound />} />
