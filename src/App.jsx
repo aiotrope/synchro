@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify'
 
 import { TopNav } from './components/TopNav'
 import { RoutesList } from './components/RoutesList'
+import { Footer } from './components/Footer'
 import 'react-toastify/dist/ReactToastify.css'
 
 import './utils/scss/_App.scss'
@@ -19,6 +20,10 @@ const App = () => {
         <main style={{ marginTop: '6rem' }}>
           <RoutesList />
         </main>
+        <footer>
+          <hr />
+          <Footer />
+        </footer>
       </Container>
     </>
   )

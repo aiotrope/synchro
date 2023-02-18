@@ -11,7 +11,6 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView
 )
 
-
 from client.views import client_view
 from users.api.views import ActivateUser, UserRedirectSocialFacebook, UserRedirectSocialGoogle, UsersList, UserRetrieveDestroy
 
@@ -62,7 +61,6 @@ urlpatterns += [
 # URL patterns for frontend
 urlpatterns += [
     re_path(r'^.*$', view=client_view, name='client-app'),
-
 ]
 
 if settings.DEBUG:

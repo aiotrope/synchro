@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import moment from 'moment'
 
 import Stack from 'react-bootstrap/Stack'
@@ -325,9 +325,9 @@ export const Me = () => {
             Users who created their accounts using Synchro&apos;s user
             registration system can delete their accounts. Account deletions
             made through social authentication (Google & Facebook) are not yet
-            supported by our API. Please contact Synchro if you want to delete
-            your account this way or if you are having difficulty deleting your
-            account using both methods.
+            supported by our API. Please <Link to={'/'}>contact Synchro</Link>{' '}
+            if you want to delete your account this way or if you are having
+            difficulty deleting your account using both methods.
           </small>
         </div>
 

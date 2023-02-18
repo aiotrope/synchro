@@ -5,10 +5,15 @@ const FACEBOOK_CLIENT_ID = process.env.REACT_APP_SOCIAL_AUTH_FACEBOOK_KEY
 const FACEBOOK_SOCIAL_OAUTH_URL =
   process.env.REACT_APP_FACEBOOK_SOCIAL_OAUTH_URL
 
+const CONTENTFUL_SPACE_ID = process.env.REACT_APP_CONTENTFUL_SPACE_ID
+const CONTENTFUL_ACCESS_TOKEN = process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN
+
 export const config = {
   base_url: BASE_URL,
   google_client_id: GOOGLE_CLIENT_ID,
   google_social_oauth_url: GOOGLE_SOCIAL_OAUTH_URL,
   facebook_social_oauth_url: FACEBOOK_SOCIAL_OAUTH_URL,
   facebook_client_id: FACEBOOK_CLIENT_ID,
+  contentful_spaceId: CONTENTFUL_SPACE_ID,
+  contentful_accessToken: CONTENTFUL_ACCESS_TOKEN,
 }
