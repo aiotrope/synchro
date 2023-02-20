@@ -79,6 +79,32 @@ class UserCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         return Response(content)
 
 
+class UserFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(fabricated=True)
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [IsAdminUser, IsAuthenticated,]
+
+    def list(self, request, *args, **kwargs):
+        obj = User.objects.filter(is_staff=False).count()
+
+        content = {"active_users": obj}
+        return Response(content)
+
+
+class UserUnFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(fabricated=False)
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [IsAdminUser, IsAuthenticated,]
+
+    def list(self, request, *args, **kwargs):
+        obj = User.objects.filter(is_staff=False).count()
+
+        content = {"active_users": obj}
+        return Response(content)
+
+
 class ActivateUser(GenericAPIView):
 
     def get(self, request, uid, token, format=None):
@@ -150,4 +176,3 @@ class UserRedirectSocialFacebook(views.APIView):
         context = super().get_context_data(**kwargs)
         print(context)
         return context
-

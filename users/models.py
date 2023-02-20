@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField, EmailField
+from django.db.models import CharField, EmailField, BooleanField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -15,6 +15,7 @@ class User(AbstractUser):
                          unique=True, validators=[validate_username])
     email = EmailField(_('email address'), unique=True,
                        blank=False, validators=[validate_email])
+    fabricated = BooleanField(_('fabricated'), default=False)
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'

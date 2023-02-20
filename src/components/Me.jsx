@@ -231,7 +231,9 @@ export const Me = () => {
           onSubmit={passwordResetForm.handleSubmit(onPasswordReset)}
         >
           <FormGroup className="mb-2">
-            <FormLabel htmlFor="current_password">Current Password</FormLabel>
+            <FormLabel htmlFor="current_password">
+              Current Password<span className="text-danger">*</span>
+            </FormLabel>
             <FormControl
               type="password"
               placeholder="Enter current password"
@@ -255,7 +257,9 @@ export const Me = () => {
             )}
           </FormGroup>
           <FormGroup className="mb-2">
-            <FormLabel htmlFor="new_password">New Password</FormLabel>
+            <FormLabel htmlFor="new_password">
+              New Password<span className="text-danger">*</span>
+            </FormLabel>
             <FormControl
               type="password"
               placeholder="Enter a new password"
@@ -280,7 +284,7 @@ export const Me = () => {
           </FormGroup>
           <FormGroup className="mb-4">
             <FormLabel htmlFor="re_new_password">
-              Re-type new password
+              Re-type new password<span className="text-danger">*</span>
             </FormLabel>
             <FormControl
               type="password"
@@ -325,9 +329,10 @@ export const Me = () => {
             Users who created their accounts using Synchro&apos;s user
             registration system can delete their accounts. Account deletions
             made through social authentication (Google & Facebook) are not yet
-            supported by our API. Please <Link to={'/'}>contact Synchro</Link>{' '}
-            if you want to delete your account this way or if you are having
-            difficulty deleting your account using both methods.
+            supported by our API. Please{' '}
+            <Link to={'/contact'}>contact Synchro</Link> if you want to delete
+            your account this way or if you are having difficulty deleting your
+            account using both methods.
           </small>
         </div>
 

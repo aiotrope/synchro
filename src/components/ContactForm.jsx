@@ -105,11 +105,15 @@ export const ContactForm = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="mb-2">
-          <em>* Required</em>
+          <em>
+            <span className="text-danger">*</span> Required
+          </em>
         </div>
 
         <InputGroup className="mb-3" size="lg">
-          <InputGroup.Text>Subject*</InputGroup.Text>
+          <InputGroup.Text>
+            Subject<span className="text-danger">*</span>
+          </InputGroup.Text>
           <FormControl
             type="text"
             placeholder="Enter subject"
@@ -142,7 +146,9 @@ export const ContactForm = () => {
           />
         </InputGroup>
         <InputGroup size="lg" className="mb-4">
-          <InputGroup.Text>Message*</InputGroup.Text>
+          <InputGroup.Text>
+            Message<span className="text-danger">*</span>
+          </InputGroup.Text>
           <FormControl
             as="textarea"
             {...register('messageBody')}

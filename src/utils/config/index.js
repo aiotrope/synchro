@@ -8,6 +8,10 @@ const FACEBOOK_SOCIAL_OAUTH_URL =
 const CONTENTFUL_SPACE_ID = process.env.REACT_APP_CONTENTFUL_SPACE_ID
 const CONTENTFUL_ACCESS_TOKEN = process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN
 
+const FABRICATOR_USERNAME = process.env.REACT_APP_FABRICATOR_USERNAME
+const FABRICATOR_EMAIL = process.env.REACT_APP_FABRICATOR_EMAIL
+const FABRICATOR_PASSWORD = process.env.REACT_APP_FABRICATOR_PASSWORD
+
 export const config = {
   base_url: BASE_URL,
   google_client_id: GOOGLE_CLIENT_ID,
@@ -16,4 +20,7 @@ export const config = {
   facebook_client_id: FACEBOOK_CLIENT_ID,
   contentful_spaceId: CONTENTFUL_SPACE_ID,
   contentful_accessToken: CONTENTFUL_ACCESS_TOKEN,
+  fabricator_username: FABRICATOR_USERNAME,
+  fabricator_email: FABRICATOR_EMAIL,
+  fabricator_password: FABRICATOR_PASSWORD,
 }

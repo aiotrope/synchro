@@ -8,6 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import { useCommon } from '../contexts/Common'
 import tokenService from '../services/token'
 import http from '../services/http'
+import { fabricatorService } from '../services/fabricator'
 
 const UnAuthMenu = () => (
   <Stack
@@ -20,11 +21,6 @@ const UnAuthMenu = () => (
       <h1 className="title">
         <Link to={'/'}>Synchro</Link>
       </h1>
-    </div>
-    <div>
-      <strong>
-        <Link to={'/'}>Home</Link>
-      </strong>
     </div>
     <div>
       <strong>
@@ -48,17 +44,24 @@ const AuthMenu = () => {
   const queryCache = new QueryCache()
   const navigate = useNavigate()
   const { removeSignedEmail } = useCommon()
+  const auth_token = fabricatorService.getAuthToken()
+  const authTokens = tokenService.getAuthTokens()
+
   const handleLogout = () => {
     removeSignedEmail()
     queryCache.clear()
     tokenService.removeAuthTokens()
+    fabricatorService.tokenAuthLogout()
     http.defaults.headers.common['Authorization'] = null
-    window.location.reload()
-    const authTokens = tokenService.getAuthTokens()
     if (!authTokens) {
-      navigate('/login')
+      navigate('/')
+      window.location.reload()
+    } else if (auth_token !== null) {
+      fabricatorService.removeAuthToken()
+      window.location.reload()
     }
   }
+
   return (
     <Stack
       direction="horizontal"
@@ -73,7 +76,7 @@ const AuthMenu = () => {
       </div>
       <div>
         <strong>
-          <Link to={'/'}>Home</Link>
+          <Link to={'/contact'}>Contact</Link>
         </strong>
       </div>
       <div>
@@ -95,17 +98,11 @@ const AuthMenu = () => {
 }
 
 export const TopNav = () => {
-  const { mounted } = useCommon()
-  const navigate = useNavigate()
   const authUser = tokenService.getAuthTokens()
-  React.useEffect(() => {
-    const prepare = async () => {
-      if (!authUser && mounted) {
-        navigate('/login')
-      }
-    }
-    prepare()
-  }, [authUser, mounted])
 
-  return <>{authUser ? <AuthMenu /> : <UnAuthMenu />}</>
+  if (!authUser) {
+    return <UnAuthMenu />
+  }
+
+  return <AuthMenu />
 }

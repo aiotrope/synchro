@@ -110,7 +110,9 @@ export const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <FormGroup className="mb-2">
-          <FormLabel htmlFor="username">Login*</FormLabel>
+          <FormLabel htmlFor="username">
+            Login<span className="text-danger">*</span>
+          </FormLabel>
           <FormControl
             type="text"
             placeholder="Enter your email or username"
@@ -126,7 +128,9 @@ export const Login = () => {
         </FormGroup>
 
         <FormGroup className="mb-4">
-          <FormLabel htmlFor="password">Password*</FormLabel>
+          <FormLabel htmlFor="password">
+            Password<span className="text-danger">*</span>
+          </FormLabel>
           <FormControl
             type="password"
             placeholder="Password"

@@ -46,12 +46,15 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'crispy_forms',
     'django_userforeignkey',
+    'djmoney',
 ]
 
 LOCAL_APPS = [
     'users.apps.UsersConfig',
     'client.apps.ClientConfig',
     'contacts.apps.ContactsConfig',
+    'items.apps.ItemsConfig',
+    'initial.apps.InitialConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -117,8 +120,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-USE_THOUSAND_SEPARATOR = True
 
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
@@ -485,3 +486,9 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# django-money
+# ------------------------------------------------------------------------------
+CURRENCIES = ('EUR')
+
+CURRENCY_CHOICES = [('EUR', 'EUR €')]

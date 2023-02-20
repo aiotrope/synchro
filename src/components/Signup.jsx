@@ -101,7 +101,9 @@ export const Signup = () => {
           <em>* Required</em>
         </div>
         <FormGroup className="mb-2">
-          <FormLabel htmlFor="username">Username*</FormLabel>
+          <FormLabel htmlFor="username">
+            Username<span className="text-danger">*</span>
+          </FormLabel>
           <FormControl
             type="text"
             placeholder="Enter username"
@@ -116,7 +118,9 @@ export const Signup = () => {
           )}
         </FormGroup>
         <FormGroup className="mb-2">
-          <FormLabel htmlFor="email">Email*</FormLabel>
+          <FormLabel htmlFor="email">
+            Email<span className="text-danger">*</span>
+          </FormLabel>
           <FormControl
             type="email"
             placeholder="Enter your email"
@@ -131,7 +135,9 @@ export const Signup = () => {
           )}
         </FormGroup>
         <FormGroup className="mb-2">
-          <FormLabel htmlFor="password">Password*</FormLabel>
+          <FormLabel htmlFor="password">
+            Password<span className="text-danger">*</span>
+          </FormLabel>
           <FormControl
             type="password"
             placeholder="Password"
@@ -146,7 +152,9 @@ export const Signup = () => {
           )}
         </FormGroup>
         <FormGroup className="mb-4">
-          <FormLabel htmlFor="password">Password Confirmation*</FormLabel>
+          <FormLabel htmlFor="password">
+            Password Confirmation<span className="text-danger">*</span>
+          </FormLabel>
           <FormControl
             type="password"
             placeholder="Re-enter your password"
