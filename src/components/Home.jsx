@@ -7,7 +7,7 @@ import Stack from 'react-bootstrap/Stack'
 import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner'
 
-import { fabricatorService } from '../services/fabricator'
+import { fabricatorService, instance } from '../services/fabricator'
 import { config } from '../utils/config'
 
 export const Home = () => {
@@ -23,7 +23,12 @@ export const Home = () => {
       password: config.fabricator_password,
     }
     try {
-      await tokenMutation.mutateAsync(obj)
+      const response = await tokenMutation.mutateAsync(obj)
+      if (response) {
+        const initObj = { name: 'init' }
+        const initialize = await instance.post('/api/initial/', initObj)
+        if (initialize) return initialize
+      }
     } catch (error) {
       toast.error(error.message)
     }

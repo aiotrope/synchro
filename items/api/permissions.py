@@ -42,10 +42,10 @@ class UserPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
 
         if view.action in ['update', 'partial_update',]:
-            return obj.user == request.user or request.user.is_staff
+            return obj.merchant == request.user or request.user.is_staff
 
         if view.action == 'destroy':
-            return obj.user == request.user.is_staff
+            return obj.merchant == request.user.is_staff
 
         elif request.method in permissions.SAFE_METHODS or view.action == 'retrieve':
             return True

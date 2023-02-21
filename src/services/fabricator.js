@@ -15,12 +15,12 @@ const removeAuthToken = () => {
   localStorage.removeItem('fabricatorAuthtoken')
 }
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: baseURL,
   withCredentials: true,
   xsrfHeaderName: 'X-CSRFToken',
   xsrfCookieName: 'csrftoken',
-  timeout: 60000,
+  timeout: 80000,
 })
 
 // Interceptor
@@ -56,6 +56,8 @@ const tokenAuthLogout = async () => {
       const response = await instance.post('/auth/token/logout/')
       if (response.status === 204) {
         return response
+      } else if (response.status === 404) {
+        return null
       }
     }
   } catch (error) {

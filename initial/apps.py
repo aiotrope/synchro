@@ -9,6 +9,6 @@ class InitialConfig(AppConfig):
 
     def ready(self):
         try:
-            import initial.signals  # noqa F401
+            import initial.signals
         except ImportError:
             pass

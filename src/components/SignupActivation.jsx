@@ -11,7 +11,7 @@ export const SignupActivation = () => {
       <h2>Signup Activation</h2>
       <div>
         <p>
-          Please verify your email address by clicking the link we sent to it @{' '}
+          Please verify your email address by clicking the link we sent to it at{' '}
           <strong>{signedEmail?.email}</strong>
         </p>
         <p>

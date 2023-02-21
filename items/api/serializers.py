@@ -10,12 +10,10 @@ class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ['id', 'name', 'slug', 'description', 'price', 'merchant',
-                  'created', 'updated', 'product_image', 'merchant_email', 'merchant_username', 'on_stock']
+        fields = ['id', 'name', 'slug', 'description', 'price', 'merchant', 'created',
+                  'updated', 'item_image', 'merchant_email', 'merchant_username', 'on_stock', 'currency', 'price_entry']
         read_only_fields = ('on_stock',)
-        extra_kwargs = {
-            'url': {'view_name': 'api:items-detail', 'lookup_field': 'slug'}
-        }
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
 
     def get_created(self, instance):
         return instance.created.strftime('%B %d %Y')

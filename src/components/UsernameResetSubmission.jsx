@@ -10,7 +10,7 @@ export const UsernameResetSubmission = () => {
       <h2>Username Reset Request Submitted</h2>
       <div>
         <p>
-          We sent an email @ <strong>{signedEmail?.email}</strong> with link to
+          We sent an email at <strong>{signedEmail?.email}</strong> with link to
           reset your username.
         </p>
       </div>

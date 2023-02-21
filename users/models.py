@@ -18,6 +18,7 @@ class User(AbstractUser):
     fabricated = BooleanField(_('fabricated'), default=False)
 
     USERNAME_FIELD = 'username'
+    
     EMAIL_FIELD = 'email'
 
     REQUIRED_FIELDS = ['email']

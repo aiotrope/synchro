@@ -14,7 +14,7 @@ class ContactViewSet(mixins.CreateModelMixin,
                      mixins.RetrieveModelMixin,
                      mixins.DestroyModelMixin,
                      viewsets.GenericViewSet):
-    
+
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
     authentication_classes = [JWTAuthentication,

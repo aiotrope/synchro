@@ -16,6 +16,7 @@ from social_core.backends import google, facebook
 import requests
 
 from .serializers import UserSerializer
+from .permissions import IsOwnerOrAdmin
 
 
 UserModel = getattr(settings, 'AUTH_USER_MODEL')
@@ -27,8 +28,8 @@ class UsersList(generics.ListAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     authentication_classes = [JWTAuthentication,
-                              TokenAuthentication, SessionAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+                              TokenAuthentication, SessionAuthentication,]
+    permission_classes = [IsAuthenticated, IsAdminUser,]
 
     def get(self, request, *args, **kwargs):
         users = User.objects.all()
@@ -41,7 +42,7 @@ class UsersList(generics.ListAPIView):
 class UserRetrieveDestroy(generics.RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication,
-                              TokenAuthentication, SessionAuthentication]
+                              TokenAuthentication, SessionAuthentication,]
     serializer_class = UserSerializer
     lookup_field = 'username'
 
@@ -61,8 +62,8 @@ class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     authentication_classes = [JWTAuthentication,
-                              TokenAuthentication, SessionAuthentication]
-    permission_classes = [IsAuthenticated,]
+                              TokenAuthentication, SessionAuthentication,]
+    permission_classes = [IsOwnerOrAdmin, IsAuthenticated,]
     lookup_field = "username"
 
 

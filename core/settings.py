@@ -46,7 +46,7 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'crispy_forms',
     'django_userforeignkey',
-    'djmoney',
+   
 ]
 
 LOCAL_APPS = [
@@ -117,7 +117,15 @@ SITE_ID = 1
 
 USE_I18N = True
 
-USE_L10N = True
+# USE_L10N = True
+
+USE_DECIMAL_SEPARATOR = True
+
+DECIMAL_SEPARATOR = ","
+
+USE_THOUSAND_SEPARATOR = True
+
+THOUSAND_SEPARATOR = "."
 
 USE_TZ = True
 

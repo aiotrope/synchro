@@ -11,7 +11,7 @@ export const ContactFormSubmitted = () => {
       <div>
         <p>
           A copy of the letter addressed to Synchro will also be forwarded to
-          you via email @ <strong>{signedEmail?.email}</strong>. Thank you for
+          you via email at <strong>{signedEmail?.email}</strong>. Thank you for
           emailing us.
         </p>
       </div>

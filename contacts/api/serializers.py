@@ -7,6 +7,4 @@ class ContactSerializer(serializers.ModelSerializer):
         model = Contact
         fields = '__all__'
 
-        extra_kwargs = {
-            'url': {'view_name': 'api:contact-detail', 'lookup_field': 'usernameInfo'}
-        }
+        extra_kwargs = {'url': {'lookup_field': 'usernameInfo'}}
