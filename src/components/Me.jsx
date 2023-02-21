@@ -15,7 +15,6 @@ import FormLabel from 'react-bootstrap/FormLabel'
 import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
 import { toast } from 'react-toastify'
-//import { map } from 'lodash'
 
 import { authService } from '../services/auth'
 import contactService from '../services/contact'

@@ -11,27 +11,20 @@ User = get_user_model()
 
 
 @receiver(post_save, sender=Initial)
-def delete_users(sender, instance, created, **kwargs):
-    users = User.objects.filter(fabricated=True)
+def delete_users_and_items(sender, instance=None, created=False, **kwargs):
 
     if created:
-        users.delete()
-
-
-def delete_items(sender, instance, created, **kwargs):
-    users = User.objects.filter(fabricated=True)
-    items = Item.objects.filter(merchant=users.id)
-
-    if created:
-        items.delete()
+        Item.objects.filter(merchant__fabricated=True).delete()
+        User.objects.filter(fabricated=True).delete()
+        
 
 
 @receiver(post_save, sender=Initial)
-def create_users(sender, instance, created, **kwargs):
+def create_users(sender, instance=None, created=True, **kwargs):
 
     users_count = User.objects.filter(fabricated=True).count()
 
-    if created and users_count == 0:
+    if created:
 
         User.objects.bulk_create([
             User(

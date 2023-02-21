@@ -82,7 +82,7 @@ const allItemsCount = async () => {
   return response.data
 }
 const fabricatedItemsCount = async () => {
-  const response = await instance.get('/api/item-fabricated-counts')
+  const response = await instance.get('/api/item-fabricated-counts/')
   return response.data
 }
 const unfabricatedItemsCount = async () => {

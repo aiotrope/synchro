@@ -21,7 +21,7 @@ class ItemViewset(ModelViewSet):
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication]
     lookup_field = 'slug'
-    permission_classes = [IsAuthenticated, IsVendorOrReadOnly,]
+    permission_classes = [IsVendorOrReadOnly,]
     search_fields = ['name',]
     filter_backends = (filters.SearchFilter,)
 
@@ -47,40 +47,38 @@ class ItemCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = Item.objects.all()
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication,]
-    permission_classes = [IsAdminUser, IsAuthenticated,]
+    permission_classes = [IsVendorOrReadOnly,]
 
     def list(self, request, *args, **kwargs):
-        product_count = Item.objects.all().count()
+        
+        product_count = self.queryset.count()
         content = {'item_count': product_count}
         return Response(content)
 
 
 class ItemFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ItemSerializer
-    fabUsers = User.objects.filter(fabricated=True)
-    queryset = Item.objects.filter(merchant=fabUsers)
-    authentication_classes = [JWTAuthentication,
-                              TokenAuthentication, SessionAuthentication,]
-    permission_classes = [IsAdminUser, IsAuthenticated,]
-
-    def list(self, request, *args, **kwargs):
-        fabUsers = User.objects.filter(fabricated=True)
-        product_count = Item.objects.filter(merchant=fabUsers).count()
-        content = {'item_count': product_count}
-        return Response(content)
-
-
-class ItemUnFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
-    serializer_class = ItemSerializer
-    users = User.objects.filter(fabricated=False)
     queryset = Item.objects.all()
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication,]
     permission_classes = [IsAdminUser, IsAuthenticated,]
 
     def list(self, request, *args, **kwargs):
-        users = User.objects.filter(fabricated=False)
-        product_count = Item.objects.all(merchant=users).count()
+        product_count = self.queryset.filter(merchant__fabricated=True).count()
+        content = {'item_count': product_count}
+        return Response(content)
+
+
+class ItemUnFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    serializer_class = ItemSerializer
+
+    queryset = Item.objects.all()
+    authentication_classes = [JWTAuthentication,
+                              TokenAuthentication, SessionAuthentication,]
+    permission_classes = [IsAdminUser, IsAuthenticated,]
+
+    def list(self, request, *args, **kwargs):
+        product_count = self.queryset.filter(merchant__fabricated=False).count()
         content = {'item_count': product_count}
         return Response(content)
 
@@ -97,5 +95,5 @@ class ItemOwnedByUserView(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
         user = self.request.user
 
         product_owned_by_user = Item.objects.filter(merchant=user).values(
-            'id', 'name', 'slug', 'description', 'price', 'item_image', 'created', 'updated', 'merchant', 'currency')
+            'id', 'name', 'slug', 'description', 'price', 'item_image', 'created', 'updated', 'merchant',)
         return Response(product_owned_by_user)

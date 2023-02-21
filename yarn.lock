@@ -8153,6 +8153,14 @@ react-refresh@^0.11.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.11.0.tgz#77198b944733f0f1f1a90e791de4541f9f074046"
   integrity sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==
 
+react-responsive-pagination@^1.10.1:
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/react-responsive-pagination/-/react-responsive-pagination-1.10.1.tgz#f7b408b6845e4ae451b13cbbe9a9cef979ccab48"
+  integrity sha512-mj0MR7zaGxJcq9LxQblMZt6D59ENWBJmTRaPI/1B++Hn6yfuR3pOsk75OFmS63SzSCbXFcLgfFroAgGgBRzBug==
+  dependencies:
+    prop-types "^15.8.1"
+    resize-observer-polyfill "^1.5.1"
+
 react-router-bootstrap@^0.26.2:
   version "0.26.2"
   resolved "https://registry.yarnpkg.com/react-router-bootstrap/-/react-router-bootstrap-0.26.2.tgz#255ffb662b77141624d89d97105ba4f93863e664"
@@ -8421,6 +8429,11 @@ requires-port@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==
+
+resize-observer-polyfill@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
+  integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
 
 resolve-cwd@^3.0.0:
   version "3.0.0"

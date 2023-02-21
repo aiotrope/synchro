@@ -12,6 +12,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from django.views.generic.base import TemplateView
 from social_core.backends import google, facebook
+from django.db.models import Q
 
 import requests
 
@@ -82,12 +83,13 @@ class UserCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 class UserFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = UserSerializer
-    queryset = User.objects.filter(fabricated=True)
+    queryset = User.objects.filter(
+        fabricated=True) & User.objects.filter(is_staff=False)
     authentication_classes = [TokenAuthentication,]
     permission_classes = [IsAdminUser, IsAuthenticated,]
 
     def list(self, request, *args, **kwargs):
-        obj = User.objects.filter(is_staff=False).count()
+        obj = self.queryset.count()
 
         content = {"active_users": obj}
         return Response(content)
@@ -95,12 +97,13 @@ class UserFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet
 
 class UserUnFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = UserSerializer
-    queryset = User.objects.filter(fabricated=False)
+    queryset = User.objects.filter(
+        fabricated=False) & User.objects.filter(is_staff=False)
     authentication_classes = [TokenAuthentication,]
     permission_classes = [IsAdminUser, IsAuthenticated,]
 
     def list(self, request, *args, **kwargs):
-        obj = User.objects.filter(is_staff=False).count()
+        obj = self.queryset.count()
 
         content = {"active_users": obj}
         return Response(content)

@@ -3,7 +3,6 @@ from decouple import config, Csv
 from django.conf import settings
 from pathlib import Path
 import dj_database_url
-from corsheaders.defaults import default_headers
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

@@ -53,6 +53,7 @@ const AuthMenu = () => {
     tokenService.removeAuthTokens()
     fabricatorService.tokenAuthLogout()
     http.defaults.headers.common['Authorization'] = null
+    localStorage.removeItem('init')
     if (!authTokens) {
       navigate('/')
       window.location.reload()
