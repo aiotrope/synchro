@@ -73,24 +73,3 @@ Time entries are tracked, summarised (weekly) and aggregated using [Clockify](ht
 | 06.2.2023 - 12.02.2023  | 58.3         | [Third Week](https://app.clockify.me/shared/63e96492f20fb758f25bf78e)  |
 | 13.2.2023 - 19.02.2023  | 66.7         | [Fourth Week](https://app.clockify.me/shared/63f2d435f20fb758f276f8de) |
 
-### Breakdown
-
-#### Initial
-
-[![Initial Work](https://mega.nz/file/XR0jEKLR#XjJ9-kcUu2MkXX-epkzXAhX9-u4xe2_I_C06M1cyN74)](https://app.clockify.me/shared/63e035c668c29410b9f4d693)
-
-#### Week 1
-
-[![First Week](https://mega.nz/file/DJUCRCgC#m2rvAJeWHMDhyd7Vu3rtig8wWP9VY0O3p1Cwgw_4Zf0)](https://app.clockify.me/shared/63e035e435504317106a58ef)
-
-#### Week 2
-
-[![Second Week](https://mega.nz/file/XZdRTbaQ#7RsMv8F-TsmYRadPPnh31cao46m04T5xYlIUnKHtp68)](https://app.clockify.me/shared/63eba186f20fb758f2644190)
-
-#### Week 3
-
-[![Third Week](https://mega.nz/file/WA81ATDb#6EcfRnW8pMzxPKqORI-t_C23bAMxMD7iuF-SEMZ3Ox4)](https://app.clockify.me/shared/63e96492f20fb758f25bf78e)
-
-#### Week 4
-
-[![Fourth Week](https://mega.nz/file/qJFgEAJI#X8T9MaHeiviixfrVY2Ow0Ns0IjcNHP19jryH9blgwEM)](https://app.clockify.me/shared/63f2d435f20fb758f276f8de)
