@@ -1,19 +1,19 @@
 import * as React from 'react'
-/* import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { LinkContainer } from 'react-router-bootstrap'
-import { useLocation } from 'react-router-dom' */
+import { useLocation } from 'react-router-dom'
 
 import Stack from 'react-bootstrap/Stack'
-//import Button from 'react-bootstrap/Button'
-/* import Spinner from 'react-bootstrap/Spinner'
+import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
-import Alert from 'react-bootstrap/Alert' */
+import Alert from 'react-bootstrap/Alert'
 
-/* import { fabricatorService, instance } from '../services/fabricator'
+import { fabricatorService, instance } from '../services/fabricator'
 import { config } from '../utils/config'
- */
-/* const DBRecords = () => {
+
+const DBRecords = () => {
   const allUsers = useQuery({
     queryKey: ['all-users'],
     queryFn: fabricatorService.allUsersCount,
@@ -77,9 +77,9 @@ import { config } from '../utils/config'
     </>
   )
 }
- */
+
 export const Home = () => {
-  /* const tokenMutation = useMutation({
+  const tokenMutation = useMutation({
     mutationFn: fabricatorService.tokenAuthLogin,
   })
 
@@ -131,12 +131,12 @@ export const Home = () => {
   }
 
   const init = localStorage.getItem('init')
- */
+
   return (
     <Stack>
       <h2>Home</h2>
 
-      {/* <div className="mt-3" style={{ marginBottom: '9rem' }}>
+      <div className="mt-3" style={{ marginBottom: '9rem' }}>
         {init ? (
           <div className="gap-2">
             <h3>DB Records</h3>
@@ -195,7 +195,7 @@ export const Home = () => {
             </div>
           </div>
         )}
-      </div> */}
+      </div>
     </Stack>
   )
 }

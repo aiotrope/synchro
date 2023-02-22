@@ -1,9 +1,9 @@
 import * as React from 'react'
-/* import { useQuery } from '@tanstack/react-query'
-import Pagination from 'react-responsive-pagination' */
+import { useQuery } from '@tanstack/react-query'
+import Pagination from 'react-responsive-pagination'
 
 import Stack from 'react-bootstrap/Stack'
-/*
+
 import Spinner from 'react-bootstrap/Spinner'
 import Card from 'react-bootstrap/Card'
 import ListGroup from 'react-bootstrap/ListGroup'
@@ -11,10 +11,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import shopService from '../services/shop'
-import { fabricatorService } from '../services/fabricator' */
+import { fabricatorService } from '../services/fabricator'
 
 export const Shop = () => {
-  /*  const [currentPage, setCurrentPage] = React.useState(1)
+  const [currentPage, setCurrentPage] = React.useState(1)
 
   const { isLoading, data } = useQuery(['all-shop-items', currentPage], () =>
     shopService.fetchItems(currentPage)
@@ -35,11 +35,11 @@ export const Shop = () => {
 
   const allShopItemsCount = allItemsCount?.data?.item_count
   const pageSize = 10
-  const totalPages = allShopItemsCount / pageSize */
+  const totalPages = allShopItemsCount / pageSize
   return (
     <Stack>
       <h2>Shop</h2>
-      {/* <div className="my-1">
+      <div className="my-1">
         <Pagination
           current={currentPage}
           total={totalPages}
@@ -74,7 +74,7 @@ export const Shop = () => {
           total={totalPages}
           onPageChange={setCurrentPage}
         />
-      </div> */}
+      </div>
     </Stack>
   )
 }
