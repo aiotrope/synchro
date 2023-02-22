@@ -1,9 +1,9 @@
 import { toast } from 'react-toastify'
 import qs from 'qs'
 
-import { config } from '../utils/config/index'
-
 import http, { httpSocial } from './http'
+import { config } from '../utils/config/index'
+import tokenService from './token'
 
 // Requests
 // ------------------------------------------------------------------------------
@@ -117,7 +117,8 @@ const deleteUser = async (username) => {
   const response = await http.delete(`/api/users/retrieve-destroy/${username}/`)
   //console.log(response.data.message)
   if (response.status === 204) {
-    return response
+    tokenService.removeAuthTokens()
+    return response?.data?.message
   }
 }
 

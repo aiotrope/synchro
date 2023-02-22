@@ -4,6 +4,7 @@ from django.conf import settings
 from pathlib import Path
 import dj_database_url
 from datetime import timedelta
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,7 +46,7 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'crispy_forms',
     'django_userforeignkey',
-   
+
 ]
 
 LOCAL_APPS = [
@@ -246,7 +247,7 @@ CSRF_HEADER_NAME = 'X-CSRFToken'
 
 CSRF_COOKIE_NAME = 'csrftoken'
 
-CORS_EXPOSE_HEADERS = ['Content-Type',
+CORS_EXPOSE_HEADERS = ['Content-Type', 'authorization',
                        'X-CSRFToken', 'Access-Control-Allow-Origin: *',]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -268,14 +269,8 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
 )
 
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
+CORS_ALLOW_HEADERS = default_headers + (
+    'Access-Control-Allow-Origin',
     'x-csrftoken',
     'x-requested-with',
     'Access-Control-Allow-Origin',
@@ -283,8 +278,9 @@ CORS_ALLOW_HEADERS = [
     'if-modified-since',
     'keep-alive',
     'X-Mx-ReqToken',
-    'XMLHttpRequest'
-]
+    'XMLHttpRequest',
+)
+
 
 CORS_PREFLIGHT_MAX_AGE = 86400
 

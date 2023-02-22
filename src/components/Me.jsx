@@ -17,6 +17,7 @@ import Table from 'react-bootstrap/Table'
 import { toast } from 'react-toastify'
 
 import { authService } from '../services/auth'
+import tokenService from '../services/token'
 import contactService from '../services/contact'
 import http from '../services/http'
 import { config } from '../utils/config'
@@ -59,10 +60,11 @@ export const Me = () => {
     },
     {
       onSuccess: () => {
-        authService.removeAuthTokens()
         toast.success('Account deleted from Synchro')
         let timer
         timer = setTimeout(() => {
+          navigate('/')
+          tokenService.removeAuthTokens()
           window.location.reload()
           clearTimeout(timer)
         }, 8000)
@@ -80,7 +82,7 @@ export const Me = () => {
         let timer
         timer = setTimeout(() => {
           navigate('/')
-          authService.removeAuthTokens()
+          tokenService.removeAuthTokens()
           window.location.reload()
           clearTimeout(timer)
         }, 8000)
@@ -99,7 +101,7 @@ export const Me = () => {
         let timer
         timer = setTimeout(() => {
           navigate('/login')
-          authService.removeAuthTokens()
+          tokenService.removeAuthTokens()
           window.location.reload()
           clearTimeout(timer)
         }, 8000)

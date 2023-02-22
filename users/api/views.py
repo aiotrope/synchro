@@ -12,12 +12,13 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import GenericAPIView
 from django.views.generic.base import TemplateView
 from social_core.backends import google, facebook
-from django.db.models import Q
+
 
 import requests
 
 from .serializers import UserSerializer
 from .permissions import IsOwnerOrAdmin
+from items.models import Item
 
 
 UserModel = getattr(settings, 'AUTH_USER_MODEL')
@@ -41,7 +42,7 @@ class UsersList(generics.ListAPIView):
 
 
 class UserRetrieveDestroy(generics.RetrieveDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwnerOrAdmin, IsAuthenticated]
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication,]
     serializer_class = UserSerializer
@@ -54,6 +55,7 @@ class UserRetrieveDestroy(generics.RetrieveDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         user = self.get_queryset()
         if user:
+            Item.objects.filter(merchant__username=self.request.user.username)
             user.delete()
             return Response({'message': 'Account deleted!'}, status=status.HTTP_204_NO_CONTENT)
         return Response({'message': 'Account not deleted'}, status=status.HTTP_400_BAD_REQUEST)
