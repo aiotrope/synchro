@@ -97,9 +97,6 @@ export const Signup = () => {
         noValidate
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="mb-2">
-          <em>* Required</em>
-        </div>
         <FormGroup className="mb-2">
           <FormLabel htmlFor="username">
             Username<span className="text-danger">*</span>

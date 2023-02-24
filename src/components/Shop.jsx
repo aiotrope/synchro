@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import Pagination from 'react-js-pagination'
 import { LinkContainer } from 'react-router-bootstrap'
 import { toast } from 'react-toastify'
+import { useLocation } from 'react-router-dom'
 
 import Spinner from 'react-bootstrap/Spinner'
 import Card from 'react-bootstrap/Card'
@@ -18,6 +19,7 @@ import Container from 'react-bootstrap/Container'
 import shopService from '../services/shop'
 import { fabricatorService } from '../services/fabricator'
 import tokenService from '../services/token'
+import { config } from '../utils/config'
 
 export const Shop = () => {
   const [currentPage, setCurrentPage] = React.useState(1)
@@ -26,18 +28,46 @@ export const Shop = () => {
     shopService.fetchItems(currentPage)
   )
 
+  const authTokens = tokenService.getAuthTokens()
+  const authUser = tokenService.getAuthUser()
+
   const allItemsCount = useQuery({
     queryKey: ['all-items'],
     queryFn: fabricatorService.allItemsCount,
   })
-  const authTokens = tokenService.getAuthTokens()
-  const authUser = tokenService.getAuthUser()
+
+  const tokenMutation = useMutation({
+    mutationFn: fabricatorService.tokenAuthLogin,
+  })
 
   const handleLoginToBuy = () => {
     if (!authTokens) {
       toast.warning('Login to select the item!')
     }
   }
+
+  const location = useLocation()
+
+  const auth_token = fabricatorService.getAuthToken()
+
+  React.useEffect(() => {
+    if (location.pathname === '/shop' && !auth_token) {
+      const obj = {
+        username: config.fabricator_username,
+        password: config.fabricator_password,
+      }
+      tokenMutation.mutate(obj)
+      let timer
+      timer = setTimeout(() => {
+        window.location.reload()
+        clearTimeout(timer)
+      }, 1000)
+    }
+  }, [
+    config.fabricator_username,
+    config.fabricator_password,
+    location.pathname,
+  ])
 
   if (isLoading) {
     return (

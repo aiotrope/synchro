@@ -99,7 +99,7 @@ export const Home = () => {
           timer = setTimeout(() => {
             window.location.reload()
             clearTimeout(timer)
-          }, 2000)
+          }, 1000)
           return initialize
         }
       }
@@ -121,7 +121,11 @@ export const Home = () => {
         clearTimeout(timer)
       }, 2000)
     }
-  }, [])
+  }, [
+    config.fabricator_username,
+    config.fabricator_password,
+    location.pathname,
+  ])
 
   if (tokenMutation.isLoading) {
     return (

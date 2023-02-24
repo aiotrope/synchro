@@ -64,6 +64,12 @@ const AuthMenu = () => {
     }
   }
 
+  React.useEffect(() => {
+    if (!authTokens) {
+      navigate('/')
+    }
+  }, [navigate])
+
   return (
     <Stack
       direction="horizontal"
