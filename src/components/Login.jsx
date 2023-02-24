@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { useNavigate, Link, useLocation } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -17,8 +17,6 @@ import { toast } from 'react-toastify'
 import { authService } from '../services/auth'
 import tokenService from '../services/token'
 import { useCommon } from '../contexts/Common'
-import { fabricatorService } from '../services/fabricator'
-import { config } from '../utils/config'
 
 const schema = yup
   .object({
@@ -31,8 +29,6 @@ export const Login = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { mounted } = useCommon()
-  const location = useLocation()
-  const auth_token = fabricatorService.getAuthToken()
   const { isLoading, mutateAsync } = useMutation({
     mutationFn: authService.setAuthTokens,
     onSuccess: () => {
@@ -41,29 +37,6 @@ export const Login = () => {
       })
     },
   })
-
-  const tokenMutation = useMutation({
-    mutationFn: fabricatorService.tokenAuthLogin,
-  })
-
-  React.useEffect(() => {
-    if (location.pathname === '/shop' && !auth_token) {
-      const obj = {
-        username: config.fabricator_username,
-        password: config.fabricator_password,
-      }
-      tokenMutation.mutate(obj)
-      let timer
-      timer = setTimeout(() => {
-        window.location.reload()
-        clearTimeout(timer)
-      }, 1000)
-    }
-  }, [
-    config.fabricator_username,
-    config.fabricator_password,
-    location.pathname,
-  ])
 
   const authUser = tokenService.getAuthTokens()
   const {

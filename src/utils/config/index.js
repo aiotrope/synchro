@@ -11,6 +11,7 @@ const CONTENTFUL_ACCESS_TOKEN = process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN
 const FABRICATOR_USERNAME = process.env.REACT_APP_FABRICATOR_USERNAME
 const FABRICATOR_EMAIL = process.env.REACT_APP_FABRICATOR_EMAIL
 const FABRICATOR_PASSWORD = process.env.REACT_APP_FABRICATOR_PASSWORD
+const FABRICATOR_TOKEN = process.env.REACT_APP_FABRICATOR_TOKEN
 
 export const config = {
   base_url: BASE_URL,
@@ -23,4 +24,5 @@ export const config = {
   fabricator_username: FABRICATOR_USERNAME,
   fabricator_email: FABRICATOR_EMAIL,
   fabricator_password: FABRICATOR_PASSWORD,
+  fabricator_token: FABRICATOR_TOKEN,
 }

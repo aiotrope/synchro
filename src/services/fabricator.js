@@ -6,15 +6,6 @@ const baseURL = config.base_url
 
 // Token-Based Auth
 
-const getAuthToken = () => {
-  const user = JSON.parse(localStorage.getItem('fabricatorAuthtoken'))
-  if (user) return user
-}
-
-const removeAuthToken = () => {
-  localStorage.removeItem('fabricatorAuthtoken')
-}
-
 export const instance = axios.create({
   baseURL: baseURL,
   withCredentials: true,
@@ -26,9 +17,9 @@ export const instance = axios.create({
 // Interceptor
 instance.interceptors.request.use(
   (config) => {
-    const _auth_token = getAuthToken()
-    if (_auth_token) {
-      config.headers['Authorization'] = `Token ${_auth_token}`
+    const generatorToken = config.fabricator_token
+    if (generatorToken) {
+      config.headers['Authorization'] = `Token ${generatorToken}`
     }
 
     return config
@@ -37,33 +28,6 @@ instance.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-
-const tokenAuthLogin = async (credentials) => {
-  const response = await instance.post('/auth/token/login/', credentials)
-
-  if (response?.data?.auth_token) {
-    localStorage.setItem(
-      'fabricatorAuthtoken',
-      JSON.stringify(response?.data?.auth_token)
-    )
-    return response?.data?.auth_token
-  }
-}
-
-const tokenAuthLogout = async () => {
-  try {
-    if (getAuthToken() !== null) {
-      const response = await instance.post('/auth/token/logout/')
-      if (response.status === 204) {
-        return response
-      } else if (response.status === 404) {
-        return null
-      }
-    }
-  } catch (error) {
-    return null
-  }
-}
 
 const allUsersCount = async () => {
   const response = await instance.get('/api/user-counts/')
@@ -79,7 +43,7 @@ const unfabricatedUsersCount = async () => {
 }
 const allItemsCount = async () => {
   const response = await instance.get('/api/item-counts/')
-  return response.data
+  if (response?.data) return response?.data?.item_count
 }
 const fabricatedItemsCount = async () => {
   const response = await instance.get('/api/item-fabricated-counts/')
@@ -91,10 +55,6 @@ const unfabricatedItemsCount = async () => {
 }
 
 export const fabricatorService = {
-  tokenAuthLogin,
-  tokenAuthLogout,
-  getAuthToken,
-  removeAuthToken,
   allUsersCount,
   allItemsCount,
   fabricatedUsersCount,

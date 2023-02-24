@@ -1,17 +1,15 @@
 import * as React from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { LinkContainer } from 'react-router-bootstrap'
-import { useLocation } from 'react-router-dom'
 
 import Stack from 'react-bootstrap/Stack'
 import Button from 'react-bootstrap/Button'
-import Spinner from 'react-bootstrap/Spinner'
+//import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
 import Alert from 'react-bootstrap/Alert'
 
 import { fabricatorService, instance } from '../services/fabricator'
-import { config } from '../utils/config'
 
 const DBRecords = () => {
   const allUsers = useQuery({
@@ -62,7 +60,7 @@ const DBRecords = () => {
             <td>Number of Items</td>
             <td>{fabricatedItems?.data?.item_count}</td>
             <td>{definedItems?.data?.item_count}</td>
-            <td>{allItems?.data?.item_count}</td>
+            <td>{allItems?.data}</td>
           </tr>
         </tbody>
       </Table>
@@ -72,67 +70,31 @@ const DBRecords = () => {
       </small>
       <br />
       <small>
-        *Defined: As in user-defined. Requests made by manually authenticated
-        users and objects related to it.
+        *Defined: Queries defined by users who manually registered with the
+        authentication system rather than making requests using auto-generated
+        users.
       </small>
     </>
   )
 }
 
 export const Home = () => {
-  const tokenMutation = useMutation({
-    mutationFn: fabricatorService.tokenAuthLogin,
-  })
-
-  const location = useLocation()
-
-  const auth_token = fabricatorService.getAuthToken()
-
   const handleInitial = async () => {
     try {
-      if (auth_token) {
-        const initObj = { name: 'init' }
-        const initialize = await instance.post('/api/initial/', initObj)
-        if (initialize) {
-          localStorage.setItem('init', 'init')
-          let timer
-          timer = setTimeout(() => {
-            window.location.reload()
-            clearTimeout(timer)
-          }, 1000)
-          return initialize
-        }
+      const initObj = { name: 'init' }
+      const initialize = await instance.post('/api/initial/', initObj)
+      if (initialize) {
+        localStorage.setItem('init', 'init')
+        let timer
+        timer = setTimeout(() => {
+          window.location.reload()
+          clearTimeout(timer)
+        }, 1000)
+        return initialize
       }
     } catch (error) {
       toast.error(error.message)
     }
-  }
-
-  React.useEffect(() => {
-    if (location.pathname === '/' && !auth_token) {
-      const obj = {
-        username: config.fabricator_username,
-        password: config.fabricator_password,
-      }
-      tokenMutation.mutate(obj)
-      let timer
-      timer = setTimeout(() => {
-        window.location.reload()
-        clearTimeout(timer)
-      }, 2000)
-    }
-  }, [
-    config.fabricator_username,
-    config.fabricator_password,
-    location.pathname,
-  ])
-
-  if (tokenMutation.isLoading) {
-    return (
-      <Spinner animation="grow" className="spinner">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-    )
   }
 
   const init = localStorage.getItem('init')

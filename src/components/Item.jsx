@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -20,8 +20,6 @@ import FormLabel from 'react-bootstrap/FormLabel'
 import itemService from '../services/item'
 import tokenService from '../services/token'
 import http from '../services/http'
-import { config } from '../utils/config'
-import { fabricatorService } from '../services/fabricator'
 
 const regx = /^[0-9]+(\.[0-9][0-9]?)?$/gm
 
@@ -29,8 +27,6 @@ export const Item = () => {
   const [show, setShow] = React.useState(false)
   const queryClient = useQueryClient()
   const { id } = useParams()
-  const location = useLocation()
-  const auth_token = fabricatorService.getAuthToken()
   const { isLoading, data } = useQuery(['item', id], () =>
     itemService.fetchItem(id)
   )
@@ -75,10 +71,6 @@ export const Item = () => {
     },
   })
 
-  const tokenMutation = useMutation({
-    mutationFn: fabricatorService.tokenAuthLogin,
-  })
-
   const deleteItemMutation = useMutation({
     mutationFn: () => http.delete(`/api/items/${id}/`),
     onSuccess: () => {
@@ -97,25 +89,6 @@ export const Item = () => {
     defaultValues.price_entry = data?.price_entry
     reset({ ...defaultValues })
   }, [data?.name, data?.description, data?.price_entry])
-
-  React.useEffect(() => {
-    if (location.pathname === `/item/${id}` && !auth_token) {
-      const obj = {
-        username: config.fabricator_username,
-        password: config.fabricator_password,
-      }
-      tokenMutation.mutate(obj)
-      let timer
-      timer = setTimeout(() => {
-        window.location.reload()
-        clearTimeout(timer)
-      }, 1000)
-    }
-  }, [
-    config.fabricator_username,
-    config.fabricator_password,
-    location.pathname,
-  ])
 
   const onSubmit = (data) => {
     updateItemMutation.mutate(data)

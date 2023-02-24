@@ -8,7 +8,6 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import { useCommon } from '../contexts/Common'
 import tokenService from '../services/token'
 import http from '../services/http'
-import { fabricatorService } from '../services/fabricator'
 
 const UnAuthMenu = () => (
   <Stack
@@ -44,31 +43,23 @@ const AuthMenu = () => {
   const queryCache = new QueryCache()
   const navigate = useNavigate()
   const { removeSignedEmail } = useCommon()
-  const auth_token = fabricatorService.getAuthToken()
   const authTokens = tokenService.getAuthTokens()
+
+  React.useEffect(() => {
+    if (!authTokens) {
+      navigate('/login')
+    }
+  }, [navigate, authTokens])
 
   const handleLogout = () => {
     queryCache.clear()
     tokenService.removeAuthTokens()
     tokenService.removeAuthUser()
     removeSignedEmail()
-    fabricatorService.tokenAuthLogout()
     http.defaults.headers.common['Authorization'] = null
     localStorage.removeItem('init')
-    if (!authTokens) {
-      navigate('/')
-      window.location.reload()
-    } else if (auth_token !== null) {
-      fabricatorService.removeAuthToken()
-      window.location.reload()
-    }
+    window.location.reload()
   }
-
-  React.useEffect(() => {
-    if (!authTokens) {
-      navigate('/')
-    }
-  }, [navigate])
 
   return (
     <Stack
