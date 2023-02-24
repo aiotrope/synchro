@@ -19,7 +19,7 @@ class ItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'slug', 'description', 'price', 'merchant', 'created',
                   'updated', 'item_image', 'merchant_email', 'merchant_username', 'on_stock', 'price_entry',]
         read_only_fields = ('on_stock',)
-        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+        extra_kwargs = {'url': {'lookup_field': 'id'}}
 
     def get_created(self, instance):
         return instance.created.strftime('%B %d %Y')

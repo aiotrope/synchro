@@ -21,6 +21,8 @@ import { UsernameResetConfirm } from './UsernameResetConfirm'
 import { ContactForm } from './ContactForm'
 import { ContactFormSubmitted } from './ContactFormSubmitted'
 import { Shop } from './Shop'
+import { Item } from './Item'
+import { UserItems } from './UserItems'
 
 export const RoutesList = () => {
   const authTokens = tokenService.getAuthTokens()
@@ -91,6 +93,13 @@ export const RoutesList = () => {
       />
 
       <Route path="/shop" element={<Shop />} />
+
+      <Route path="/item/:id" element={<Item />} />
+
+      <Route
+        path="/user-items"
+        element={authTokens ? <UserItems /> : <Navigate to={'/login'} />}
+      />
 
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 

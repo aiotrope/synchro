@@ -17,7 +17,7 @@ const App = () => {
       </header>
       <Container>
         <ToastContainer />
-        <main style={{ marginTop: '6rem' }}>
+        <main className="mt-5">
           <RoutesList />
         </main>
         <footer>

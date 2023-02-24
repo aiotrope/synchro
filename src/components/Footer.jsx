@@ -10,11 +10,20 @@ export const Footer = () => {
   return (
     <Stack>
       <Nav className="justify-content-center">
-        <Nav.Item>
-          <LinkContainer to={'/'}>
-            <Nav.Link className="text-secondary">Home</Nav.Link>
-          </LinkContainer>
-        </Nav.Item>
+        {authTokens ? (
+          <Nav.Item>
+            <LinkContainer to={'/shop'}>
+              <Nav.Link className="text-secondary">Shop</Nav.Link>
+            </LinkContainer>
+          </Nav.Item>
+        ) : (
+          <Nav.Item>
+            <LinkContainer to={'/'}>
+              <Nav.Link className="text-secondary">Home</Nav.Link>
+            </LinkContainer>
+          </Nav.Item>
+        )}
+
         {authTokens ? (
           <Nav.Item>
             <LinkContainer to={'/contact'}>

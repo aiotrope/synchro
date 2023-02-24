@@ -1,5 +1,3 @@
-import { toast } from 'react-toastify'
-
 const getAuthTokens = () => {
   const authTokens = JSON.parse(localStorage.getItem('tokens'))
   if (authTokens) return authTokens
@@ -17,8 +15,6 @@ const getRefreshToken = () => {
   const user = JSON.parse(localStorage.getItem('tokens'))
   if (user) {
     return user?.refresh
-  } else {
-    toast.error('Refresh token missing!')
   }
 }
 
@@ -32,12 +28,28 @@ const removeAuthTokens = () => {
   localStorage.removeItem('tokens')
 }
 
+const setAuthUser = (userId) => {
+  localStorage.setItem('authUser', JSON.stringify(userId))
+}
+
+const getAuthUser = () => {
+  let userId = JSON.parse(localStorage.getItem('authUser'))
+  if (userId) return userId
+}
+
+const removeAuthUser = () => {
+  localStorage.removeItem('authUser')
+}
+
 const tokenService = {
   getAuthTokens,
   getAccessToken,
   removeAuthTokens,
   updateAccessToken,
   getRefreshToken,
+  getAuthUser,
+  removeAuthUser,
+  setAuthUser,
 }
 
 export default tokenService

@@ -1,17 +1,23 @@
 import * as React from 'react'
 import { useQuery } from '@tanstack/react-query'
-import Pagination from 'react-responsive-pagination'
-
-import Stack from 'react-bootstrap/Stack'
+import Pagination from 'react-js-pagination'
+import { LinkContainer } from 'react-router-bootstrap'
+import { toast } from 'react-toastify'
 
 import Spinner from 'react-bootstrap/Spinner'
 import Card from 'react-bootstrap/Card'
+import Nav from 'react-bootstrap/Nav'
+
+import Badge from 'react-bootstrap/Badge'
+
 import ListGroup from 'react-bootstrap/ListGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
 
 import shopService from '../services/shop'
 import { fabricatorService } from '../services/fabricator'
+import tokenService from '../services/token'
 
 export const Shop = () => {
   const [currentPage, setCurrentPage] = React.useState(1)
@@ -24,6 +30,14 @@ export const Shop = () => {
     queryKey: ['all-items'],
     queryFn: fabricatorService.allItemsCount,
   })
+  const authTokens = tokenService.getAuthTokens()
+  const authUser = tokenService.getAuthUser()
+
+  const handleLoginToBuy = () => {
+    if (!authTokens) {
+      toast.warning('Login to select the item!')
+    }
+  }
 
   if (isLoading) {
     return (
@@ -34,47 +48,102 @@ export const Shop = () => {
   }
 
   const allShopItemsCount = allItemsCount?.data?.item_count
-  const pageSize = 10
-  const totalPages = allShopItemsCount / pageSize
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber)
+  }
+
   return (
-    <Stack>
+    <Container fluid="lg">
       <h2>Shop</h2>
-      <div className="my-1">
+      <Nav>
         <Pagination
-          current={currentPage}
-          total={totalPages}
-          onPageChange={setCurrentPage}
+          activePage={currentPage}
+          itemsCountPerPage={10}
+          totalItemsCount={allShopItemsCount}
+          pageRangeDisplayed={10}
+          onChange={handlePageChange}
+          innerClass="pagination"
+          itemClass="page-item"
+          linkClass="page-link"
         />
-      </div>
-      <Row md={4}>
-        {data?.results?.map(({ id, name, price, item_image }) => (
-          <Col key={id} sm={4} className="my-1">
-            <Card border="light" bg="light">
-              <Card.Img variant="top" src={item_image} />
-              <Card.Body>
-                <Card.Title>{name}</Card.Title>
-                <Card.Text></Card.Text>
-              </Card.Body>
-              <ListGroup className="list-group-flush">
-                <ListGroup.Item>€ {price}</ListGroup.Item>
-                <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
-              </ListGroup>
-              <Card.Body>
-                <Card.Link href="#">Card Link</Card.Link>
-                <Card.Link href="#">Another Link</Card.Link>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
+      </Nav>
+
+      <Row className="justify-content-md-center" sm={5}>
+        {data?.results.map(
+          ({
+            id,
+            name,
+            price,
+            item_image,
+            on_stock,
+            merchant_email,
+            merchant,
+          }) => (
+            <Col key={id}>
+              <Card border="light" className="mb-1">
+                <LinkContainer to={`/item/${id}`}>
+                  <Card.Img
+                    variant="top"
+                    src={item_image}
+                    style={{ width: '5rem' }}
+                  />
+                </LinkContainer>
+                <Card.Body>
+                  <Card.Title>{name}</Card.Title>
+                  <Card.Text>{merchant_email}</Card.Text>
+                </Card.Body>
+                <ListGroup className="list-group-flush">
+                  <ListGroup.Item>Price: €{price}</ListGroup.Item>
+                  <ListGroup.Item>
+                    On Stock: {on_stock ? 'Available' : 'Not Available'}
+                  </ListGroup.Item>
+                </ListGroup>
+                {authTokens && authUser !== merchant && (
+                  <Card.Body>
+                    <Badge bg="info">Buy</Badge>
+                  </Card.Body>
+                )}
+                {authTokens && authUser === merchant && (
+                  <Card.Body>
+                    <div className="d-flex justify-content-around">
+                      <div>
+                        <LinkContainer to={`/item/${id}`}>
+                          <Badge bg="warning">Update</Badge>
+                        </LinkContainer>
+                      </div>
+                      <div>
+                        <LinkContainer to={`/item/${id}`}>
+                          <Badge bg="danger">Delete</Badge>
+                        </LinkContainer>
+                      </div>
+                    </div>
+                  </Card.Body>
+                )}
+                {!authTokens && (
+                  <Card.Body>
+                    <Badge bg="secondary" onClick={handleLoginToBuy}>
+                      Buy
+                    </Badge>
+                  </Card.Body>
+                )}
+              </Card>
+            </Col>
+          )
+        )}
       </Row>
-      <div className="mt-4">
+      <Nav className="justify-content-center mt-5">
         <Pagination
-          current={currentPage}
-          total={totalPages}
-          onPageChange={setCurrentPage}
+          activePage={currentPage}
+          itemsCountPerPage={10}
+          totalItemsCount={allShopItemsCount}
+          pageRangeDisplayed={10}
+          onChange={handlePageChange}
+          innerClass="pagination"
+          itemClass="page-item"
+          linkClass="page-link"
         />
-      </div>
-    </Stack>
+      </Nav>
+    </Container>
   )
 }

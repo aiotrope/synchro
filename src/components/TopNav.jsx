@@ -48,9 +48,10 @@ const AuthMenu = () => {
   const authTokens = tokenService.getAuthTokens()
 
   const handleLogout = () => {
-    removeSignedEmail()
     queryCache.clear()
     tokenService.removeAuthTokens()
+    tokenService.removeAuthUser()
+    removeSignedEmail()
     fabricatorService.tokenAuthLogout()
     http.defaults.headers.common['Authorization'] = null
     localStorage.removeItem('init')
@@ -89,6 +90,10 @@ const AuthMenu = () => {
         <NavDropdown title="Account" id="navbarScrollingDropdown">
           <LinkContainer to={'/me'}>
             <NavDropdown.Item>Profile</NavDropdown.Item>
+          </LinkContainer>
+          <NavDropdown.Divider />
+          <LinkContainer to={'/user-items'}>
+            <NavDropdown.Item>My Items</NavDropdown.Item>
           </LinkContainer>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>

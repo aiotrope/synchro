@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify'
 import qs from 'qs'
+import jwt_decode from 'jwt-decode'
 
 import http, { httpSocial } from './http'
 import { config } from '../utils/config/index'
@@ -19,6 +20,8 @@ const setAuthTokens = async (credentials) => {
   const response = await http.post('/auth/jwt/create/', credentials)
   if (response.data.access && response.data.refresh) {
     localStorage.setItem('tokens', JSON.stringify(response.data))
+    const decoded = jwt_decode(response.data.access)
+    tokenService.setAuthUser(decoded?.user_id)
     return response.data
   }
 }
@@ -89,6 +92,8 @@ const setAuthTokensFromSocialFacebook = async (code) => {
   console.log(response.data)
   if (response.data) {
     localStorage.setItem('tokens', JSON.stringify(response.data))
+    const decoded = jwt_decode(response.data.access)
+    tokenService.setAuthUser(decoded?.user_id)
     return response.data
   }
 }
@@ -101,6 +106,8 @@ const setAuthTokensFromSocialGoogle = async (code) => {
   //console.log(response.data)
   if (response.data.access && response.data.refresh && response.data.user) {
     localStorage.setItem('tokens', JSON.stringify(response.data))
+    const decoded = jwt_decode(response.data.access)
+    tokenService.setAuthUser(decoded?.user_id)
   }
 }
 

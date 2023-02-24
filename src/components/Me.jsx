@@ -135,6 +135,10 @@ export const Me = () => {
     passwordResetForm.reset()
   }
 
+  if (profile?.data) {
+    localStorage.setItem('authUserEmail', JSON.stringify(profile?.data?.email))
+  }
+
   if (
     profile.isLoading ||
     isLoading ||

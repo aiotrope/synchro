@@ -19,7 +19,7 @@ import { useCommon } from '../contexts/Common'
 
 const schema = yup
   .object({
-    username: yup.string().trim().min(3).required(),
+    username: yup.string().trim().min(6).required(),
     email: yup.string().email().required(),
     password: yup.string().trim().min(8).required(),
     re_password: yup
@@ -116,6 +116,9 @@ export const Signup = () => {
               {errors.username?.message}
             </FormControl.Feedback>
           )}
+          <Form.Text muted>
+            6 characters long. Numbers and special characters are allowed.
+          </Form.Text>
         </FormGroup>
         <FormGroup className="mb-2">
           <FormLabel htmlFor="email">
@@ -150,6 +153,10 @@ export const Signup = () => {
               {errors.password?.message}
             </FormControl.Feedback>
           )}
+          <Form.Text id="passwordHelpBlock" muted>
+            8 characters long with small & capital letters, numbers and special
+            characters.
+          </Form.Text>
         </FormGroup>
         <FormGroup className="mb-4">
           <FormLabel htmlFor="password">
