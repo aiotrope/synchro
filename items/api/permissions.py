@@ -1,7 +1,7 @@
-from rest_framework import permissions
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-class IsVendorOrReadOnly(permissions.BasePermission):
+class IsVendorOrReadOnly(BasePermission):
 
     def has_permission(self, request, view):
         if view.action in ['list', 'retrieve']:
@@ -16,13 +16,13 @@ class IsVendorOrReadOnly(permissions.BasePermission):
             return False
 
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
+        if request.method in SAFE_METHODS:
             return True
 
         return obj.merchant == request.user or request.user.is_staff
 
 
-class UserPermission(permissions.BasePermission):
+class UserPermission(BasePermission):
 
     def has_permission(self, request, view):
         if view.action == 'create':
@@ -47,10 +47,18 @@ class UserPermission(permissions.BasePermission):
         if view.action == 'destroy':
             return obj.merchant == request.user.is_staff
 
-        elif request.method in permissions.SAFE_METHODS or view.action == 'retrieve':
+        elif request.method in SAFE_METHODS or view.action == 'retrieve':
             return True
         elif view.action == 'create':
             return request.user.is_authenticated
 
         else:
             return False
+
+
+class IsAdminOrReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True
+        else:
+            return request.user.is_staff

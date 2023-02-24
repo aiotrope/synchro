@@ -17,7 +17,7 @@ from social_core.backends import google, facebook
 import requests
 
 from .serializers import UserSerializer
-from .permissions import IsOwnerOrAdmin
+from .permissions import IsOwnerOrAdmin, IsAdminOrReadOnly
 from items.models import Item
 
 
@@ -74,7 +74,7 @@ class UserCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.filter(is_staff=False)
     authentication_classes = [TokenAuthentication,]
-    permission_classes = [IsAdminUser, IsAuthenticated,]
+    permission_classes = [IsAdminOrReadOnly,]
 
     def list(self, request, *args, **kwargs):
         obj = User.objects.filter(is_staff=False).count()
@@ -88,7 +88,7 @@ class UserFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet
     queryset = User.objects.filter(
         fabricated=True) & User.objects.filter(is_staff=False)
     authentication_classes = [TokenAuthentication,]
-    permission_classes = [IsAdminUser, IsAuthenticated,]
+    permission_classes = [IsAdminOrReadOnly,]
 
     def list(self, request, *args, **kwargs):
         obj = self.queryset.count()
@@ -102,7 +102,7 @@ class UserUnFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewS
     queryset = User.objects.filter(
         fabricated=False) & User.objects.filter(is_staff=False)
     authentication_classes = [TokenAuthentication,]
-    permission_classes = [IsAdminUser, IsAuthenticated,]
+    permission_classes = [IsAdminOrReadOnly,]
 
     def list(self, request, *args, **kwargs):
         obj = self.queryset.count()

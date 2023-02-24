@@ -1,16 +1,16 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
-from rest_framework import filters, status, permissions
+from rest_framework import filters, status
 from django.contrib.auth import get_user_model
 
 from .serializers import ItemSerializer
 from items.models import Item
-from .permissions import IsVendorOrReadOnly
+from .permissions import IsVendorOrReadOnly, IsAdminOrReadOnly
 
 User = get_user_model()
 
@@ -47,6 +47,7 @@ class ItemCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = Item.objects.all()
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication,]
+    permission_classes = [IsAdminOrReadOnly,]
 
     def list(self, request, *args, **kwargs):
 
@@ -60,6 +61,7 @@ class ItemFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet
     queryset = Item.objects.all()
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication,]
+    permission_classes = [IsAdminOrReadOnly,]
 
     def list(self, request, *args, **kwargs):
         product_count = self.queryset.filter(merchant__fabricated=True).count()
@@ -73,6 +75,7 @@ class ItemUnFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewS
     queryset = Item.objects.all()
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication,]
+    permission_classes = [IsAdminOrReadOnly,]
 
     def list(self, request, *args, **kwargs):
         product_count = self.queryset.filter(
