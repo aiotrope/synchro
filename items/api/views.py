@@ -4,8 +4,8 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin
-from rest_framework import filters, status
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework import filters, status, permissions
 from django.contrib.auth import get_user_model
 
 from .serializers import ItemSerializer
@@ -47,7 +47,6 @@ class ItemCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = Item.objects.all()
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication,]
-    permission_classes = [IsVendorOrReadOnly,]
 
     def list(self, request, *args, **kwargs):
 
@@ -61,7 +60,6 @@ class ItemFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewSet
     queryset = Item.objects.all()
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication,]
-    permission_classes = [IsAdminUser, IsAuthenticated,]
 
     def list(self, request, *args, **kwargs):
         product_count = self.queryset.filter(merchant__fabricated=True).count()
@@ -75,7 +73,6 @@ class ItemUnFabricatedCountView(ListModelMixin, RetrieveModelMixin, GenericViewS
     queryset = Item.objects.all()
     authentication_classes = [JWTAuthentication,
                               TokenAuthentication, SessionAuthentication,]
-    permission_classes = [IsAdminUser, IsAuthenticated,]
 
     def list(self, request, *args, **kwargs):
         product_count = self.queryset.filter(
@@ -95,28 +92,22 @@ class ItemOwnedByUserView(ModelViewSet):
     def get_queryset(self):
         items = Item.objects.filter(merchant=self.request.user.id)
         return items
-    
+
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
         if getattr(instance, '_prefetched_objects_cache', None):
-    
+
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
-    
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-    """ def list(self, request, *args, **kwargs):
-        user = self.request.user
-        items = self.queryset.filter(merchant=user)
-        serializer = ItemSerializer(items, many=True)
-        return Response(serializer.data)
- """
