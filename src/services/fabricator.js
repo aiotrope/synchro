@@ -6,7 +6,7 @@ const baseURL = config.base_url
 
 // Token-Based Auth
 
-export const instance = axios.create({
+const instance = axios.create({
   baseURL: baseURL,
   withCredentials: true,
   xsrfHeaderName: 'X-CSRFToken',
@@ -17,7 +17,8 @@ export const instance = axios.create({
 // Interceptor
 instance.interceptors.request.use(
   (config) => {
-    const generatorToken = config.fabricator_token
+    const generatorToken = process.env.REACT_APP_FABRICATOR_TOKEN
+    //console.log(generatorToken)
     if (generatorToken) {
       config.headers['Authorization'] = `Token ${generatorToken}`
     }
@@ -62,3 +63,5 @@ export const fabricatorService = {
   unfabricatedUsersCount,
   unfabricatedItemsCount,
 }
+
+export default instance

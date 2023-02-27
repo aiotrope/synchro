@@ -16,3 +16,4 @@ class UserAdmin(auth_admin.UserAdmin):
     list_display = ['pk', 'username', 'email',
                     'is_superuser', 'is_staff', 'date_joined']
     search_fields = ['email',]
+ 

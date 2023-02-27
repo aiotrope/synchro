@@ -1,9 +1,7 @@
 from rest_framework import serializers
-from django.utils.text import slugify
 from babel.numbers import format_decimal
 
 from items.models import Item
-from core.utils import generate_random_string
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -12,11 +10,10 @@ class ItemSerializer(serializers.ModelSerializer):
     merchant_email = serializers.SerializerMethodField()
     merchant_username = serializers.SerializerMethodField()
     price = serializers.SerializerMethodField()
-    slug = serializers.SerializerMethodField()
 
     class Meta:
         model = Item
-        fields = ['id', 'name', 'slug', 'description', 'price', 'merchant', 'created',
+        fields = ['id', 'name', 'description', 'price', 'merchant', 'created',
                   'updated', 'item_image', 'merchant_email', 'merchant_username', 'on_stock', 'price_entry',]
         read_only_fields = ('on_stock',)
         extra_kwargs = {'url': {'lookup_field': 'id'}}
@@ -32,12 +29,6 @@ class ItemSerializer(serializers.ModelSerializer):
 
     def get_merchant_username(self, instance):
         return instance.merchant.username
-
-    def get_slug(self, instance):
-        slug = slugify(instance.name)
-        random_string = generate_random_string()
-        additional_str = slug + '-' + random_string
-        return additional_str
 
     def get_price(self, instance):
         formatted = format_decimal(instance.price_entry, locale='de_DE')

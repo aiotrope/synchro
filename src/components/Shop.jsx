@@ -1,14 +1,17 @@
 import * as React from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Pagination from 'react-js-pagination'
 import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { Currency } from 'react-intl-number-format'
 
 import Spinner from 'react-bootstrap/Spinner'
 import Card from 'react-bootstrap/Card'
 import Nav from 'react-bootstrap/Nav'
 
 import Badge from 'react-bootstrap/Badge'
+import Button from 'react-bootstrap/Badge'
 
 import ListGroup from 'react-bootstrap/ListGroup'
 import Row from 'react-bootstrap/Row'
@@ -18,20 +21,30 @@ import Container from 'react-bootstrap/Container'
 import shopService from '../services/shop'
 import { fabricatorService } from '../services/fabricator'
 import tokenService from '../services/token'
+import cartService from '../services/cart'
 
 export const Shop = () => {
   const [currentPage, setCurrentPage] = React.useState(1)
+  const queryClient = useQueryClient()
+  const authTokens = tokenService.getAuthTokens()
+  const authUser = tokenService.getAuthUser()
 
   const { isLoading, data } = useQuery(['all-shop-items', currentPage], () =>
     shopService.fetchItems(currentPage)
   )
 
-  const authTokens = tokenService.getAuthTokens()
-  const authUser = tokenService.getAuthUser()
-
   const allItemsCount = useQuery({
     queryKey: ['all-items'],
     queryFn: fabricatorService.allItemsCount,
+  })
+
+  const cartMutation = useMutation({
+    mutationFn: cartService.createCart,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['all-shop-items', 'cart', 'user-items', 'item'],
+      })
+    },
   })
 
   const handleLoginToBuy = () => {
@@ -40,7 +53,22 @@ export const Shop = () => {
     }
   }
 
-  if (isLoading) {
+  const handleBuyClick = async (data) => {
+    const dataObj = { item: data }
+    try {
+      const res = await cartMutation.mutateAsync(dataObj)
+      toast.success(`${res.item_name} added on your My Orders`)
+      let timer
+      timer = setTimeout(() => {
+        window.location.reload()
+        clearTimeout(timer)
+      }, 7000)
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
+  if (isLoading || cartMutation.isLoading) {
     return (
       <Spinner animation="border" className="spinner">
         <span className="visually-hidden">Loading...</span>
@@ -75,7 +103,7 @@ export const Shop = () => {
           ({
             id,
             name,
-            price,
+            price_entry,
             item_image,
             on_stock,
             merchant_email,
@@ -95,28 +123,44 @@ export const Shop = () => {
                   <Card.Text>{merchant_email}</Card.Text>
                 </Card.Body>
                 <ListGroup className="list-group-flush">
-                  <ListGroup.Item>Price: €{price}</ListGroup.Item>
                   <ListGroup.Item>
-                    On Stock: {on_stock ? 'Available' : 'Not Available'}
+                    {' '}
+                    <Currency locale="fi-FI" currency="EUR">
+                      {price_entry}
+                    </Currency>
                   </ListGroup.Item>
+                  <ListGroup.Item>On Stock: {on_stock}</ListGroup.Item>
                 </ListGroup>
                 {authTokens && authUser !== merchant && (
                   <Card.Body>
-                    <Badge bg="info">Buy</Badge>
+                    <Button
+                      type="button"
+                      onClick={() =>
+                        on_stock === 'Available' ? handleBuyClick(id) : null
+                      }
+                      disabled={on_stock === 'Available' ? false : true}
+                      aria-disabled={on_stock === 'Available' ? false : true}
+                    >
+                      {on_stock === 'Available' ? (
+                        'Buy'
+                      ) : (
+                        <span className="text-danger">{on_stock}</span>
+                      )}
+                    </Button>
                   </Card.Body>
                 )}
                 {authTokens && authUser === merchant && (
                   <Card.Body>
                     <div className="d-flex justify-content-around">
                       <div>
-                        <LinkContainer to={`/item/${id}`}>
+                        <Link to={`/item/${id}`}>
                           <Badge bg="warning">Update</Badge>
-                        </LinkContainer>
+                        </Link>
                       </div>
                       <div>
-                        <LinkContainer to={`/item/${id}`}>
+                        <Link to={`/item/${id}`}>
                           <Badge bg="danger">Delete</Badge>
-                        </LinkContainer>
+                        </Link>
                       </div>
                     </div>
                   </Card.Body>
@@ -124,7 +168,11 @@ export const Shop = () => {
                 {!authTokens && (
                   <Card.Body>
                     <Badge bg="secondary" onClick={handleLoginToBuy}>
-                      Buy
+                      {on_stock === 'Available' ? (
+                        'Buy'
+                      ) : (
+                        <span className="text-warning">{on_stock}</span>
+                      )}
                     </Badge>
                   </Card.Body>
                 )}

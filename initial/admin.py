@@ -5,3 +5,4 @@ from .models import Initial
 @admin.register(Initial)
 class InitialAdmin(admin.ModelAdmin):
     pass
+ 

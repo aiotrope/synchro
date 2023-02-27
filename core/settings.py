@@ -55,6 +55,8 @@ LOCAL_APPS = [
     'contacts.apps.ContactsConfig',
     'items.apps.ItemsConfig',
     'initial.apps.InitialConfig',
+    'carts.apps.CartsConfig',
+    'purchases.apps.PurchasesConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

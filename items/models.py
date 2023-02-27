@@ -12,7 +12,7 @@ class Item(models.Model):
                               verbose_name='item_creator', related_name='user_items')
     item_image = models.URLField(
         max_length=255, default='https://via.placeholder.com/150/81a4cd/FFFFFF/?text=ITEM', blank=True)
-    on_stock = models.BooleanField(default=True)
+    on_stock = models.CharField(max_length=13, default='Available')
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
 
@@ -21,3 +21,4 @@ class Item(models.Model):
 
     def __str__(self):
         return '{}'.format(self.name)
+    

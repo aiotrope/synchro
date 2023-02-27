@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
+import { Currency } from 'react-intl-number-format'
 
 import Stack from 'react-bootstrap/Stack'
 import Spinner from 'react-bootstrap/Spinner'
@@ -20,6 +21,7 @@ import FormLabel from 'react-bootstrap/FormLabel'
 import itemService from '../services/item'
 import tokenService from '../services/token'
 import http from '../services/http'
+import cartService from '../services/cart'
 
 const regx = /^[0-9]+(\.[0-9][0-9]?)?$/gm
 
@@ -82,6 +84,15 @@ export const Item = () => {
     },
   })
 
+  const cartMutation = useMutation({
+    mutationFn: cartService.createCart,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['all-shop-items', 'cart', 'user-items', 'item'],
+      })
+    },
+  })
+
   React.useEffect(() => {
     let defaultValues = {}
     defaultValues.name = data?.name
@@ -97,6 +108,21 @@ export const Item = () => {
   const handleLoginToBuy = () => {
     if (!authTokens) {
       toast.warning('Login to select the item!')
+    }
+  }
+
+  const handleBuyClick = async (data) => {
+    const dataObj = { item: data }
+    try {
+      const res = await cartMutation.mutateAsync(dataObj)
+      toast.success(`${res.item_name} added on your My Orders`)
+      let timer
+      timer = setTimeout(() => {
+        window.location.reload()
+        clearTimeout(timer)
+      }, 7000)
+    } catch (error) {
+      toast.error(error.message)
     }
   }
 
@@ -229,10 +255,13 @@ export const Item = () => {
               <Card.Text>{data?.description}</Card.Text>
             </Card.Body>
             <ListGroup className="list-group-flush">
-              <ListGroup.Item>Price: €{data?.price}</ListGroup.Item>
               <ListGroup.Item>
-                On Stock: {data?.on_stock ? 'Available' : 'Not Available'}
+                Price:{' '}
+                <Currency locale="fi-FI" currency="EUR">
+                  {data?.price_entry}
+                </Currency>
               </ListGroup.Item>
+              <ListGroup.Item>On Stock: {data?.on_stock}</ListGroup.Item>
               <ListGroup.Item>Seller: {data?.merchant_email}</ListGroup.Item>
             </ListGroup>
             {authTokens && authUser === data?.merchant && (
@@ -254,8 +283,18 @@ export const Item = () => {
             {authTokens && authUser !== data?.merchant && (
               <Card.Body>
                 <div className="d-flex justify-content-around">
-                  <Button variant="info" size="lg">
-                    Buy
+                  <Button
+                    variant={data.on_stock === 'Available' ? 'info' : 'light'}
+                    size="lg"
+                    onClick={() =>
+                      data.on_stock === 'Available'
+                        ? handleBuyClick(data.id)
+                        : null
+                    }
+                    aria-disabled={data.on_stock === 'Available' ? false : true}
+                    disabled={data.on_stock === 'Available' ? false : true}
+                  >
+                    {data.on_stock === 'Available' ? 'Buy' : data.on_stock}
                   </Button>
                 </div>
               </Card.Body>

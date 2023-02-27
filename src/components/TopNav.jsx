@@ -70,7 +70,7 @@ const AuthMenu = () => {
     >
       <div>
         <h1 className="title">
-          <Link to={'/'}>Synchro</Link>
+          <Link to={'/shop'}>Synchro</Link>
         </h1>
       </div>
       <div>
@@ -91,6 +91,10 @@ const AuthMenu = () => {
           <NavDropdown.Divider />
           <LinkContainer to={'/user-items'}>
             <NavDropdown.Item>My Items</NavDropdown.Item>
+          </LinkContainer>
+          <NavDropdown.Divider />
+          <LinkContainer to={'/cart'}>
+            <NavDropdown.Item>My Orders</NavDropdown.Item>
           </LinkContainer>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>

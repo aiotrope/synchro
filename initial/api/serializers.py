@@ -7,3 +7,4 @@ class InitialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Initial
         fields = ['pk', 'name', 'created',]
+        

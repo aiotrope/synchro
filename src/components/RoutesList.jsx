@@ -23,6 +23,8 @@ import { ContactFormSubmitted } from './ContactFormSubmitted'
 import { Shop } from './Shop'
 import { Item } from './Item'
 import { UserItems } from './UserItems'
+import { Cart } from './Cart'
+import { PurchaseSubmitted } from './PurchaseSubmitted'
 
 export const RoutesList = () => {
   const authTokens = tokenService.getAuthTokens()
@@ -99,6 +101,18 @@ export const RoutesList = () => {
       <Route
         path="/user-items"
         element={authTokens ? <UserItems /> : <Navigate to={'/login'} />}
+      />
+
+      <Route
+        path="/cart"
+        element={authTokens ? <Cart /> : <Navigate to={'/login'} />}
+      />
+
+      <Route
+        path="/purchases-submitted"
+        element={
+          authTokens ? <PurchaseSubmitted /> : <Navigate to={'/login'} />
+        }
       />
 
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />

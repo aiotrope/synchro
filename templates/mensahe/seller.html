@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Synchro - Notification of Sale</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    </style>
+
+</head>
+
+<body style="font-family:Verdana, Geneva, Tahoma, sans-serif;">
+    <div style="padding:0.01em 16px;">
+        <h5>Hi {{ username }} / {{ email }},</h5>
+        <p>This is to inform you that your item(s) have already been sold from Synchro:</p>
+        <table border='1' style="margin-top: 2rem; margin-bottom: 2rem;">
+            <thead>
+                <tr>
+                    <th>ID #</th>
+                    <th>Item Name</th>
+                    <th>Buyer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for x in items %}
+
+                <tr>
+                    <td>{{ x.purchases.item.id }}</td>
+                    <td>{{ x.purchases.item.name }}</td>
+                    <td>{{ x.purchases.customer_email }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <hr>
+
+        <p>Thank you,<br><br><a href="https://www.arnelimperial.com"><strong>Synchro Team</strong></a></p>
+
+    </div>
+</body>
+
+</html>

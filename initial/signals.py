@@ -2,7 +2,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import get_object_or_404
 
 from .models import Initial
 from items.models import Item
@@ -16,7 +15,6 @@ def delete_users_and_items(sender, instance=None, created=False, **kwargs):
     if created:
         Item.objects.filter(merchant__fabricated=True).delete()
         User.objects.filter(fabricated=True).delete()
-        
 
 
 @receiver(post_save, sender=Initial)
