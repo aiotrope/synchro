@@ -11,7 +11,7 @@ export const Guide = () => {
   })
   const body = data?.items[0].fields.body
   return (
-    <Stack className="col-lg-7 mx-auto">
+    <Stack className="col-sm-10 mx-auto">
       <ReactMarkdown>{body}</ReactMarkdown>
     </Stack>
   )

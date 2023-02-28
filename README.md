@@ -1,8 +1,10 @@
 # synchro
 
-Backend api for FSO capstone project.
+FSO capstone project.
 
 [![Synchro](https://img.shields.io/badge/Live%20Site-https://www.arnelimperial.com-success)](https://www.arnelimperial.com)
+
+---
 
 ## ⏱️ Time Entries
 
