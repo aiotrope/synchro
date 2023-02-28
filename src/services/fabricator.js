@@ -19,6 +19,7 @@ instance.interceptors.request.use(
   (config) => {
     const generatorToken = process.env.REACT_APP_FABRICATOR_TOKEN
     //console.log(generatorToken)
+    //
     if (generatorToken) {
       config.headers['Authorization'] = `Token ${generatorToken}`
     }
