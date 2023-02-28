@@ -1,13 +1,19 @@
 # synchro
+
 A Full Stack Open project.
+
 By: Arnel Imperial
+
 Student Number: `017729895`
+
 [![Synchro](https://img.shields.io/badge/Live%20Site-https://www.arnelimperial.com-success)](https://www.arnelimperial.com)
+
 ---
 
 ## ⏱️ Time Entries
 
 Date Started(Backend): 22.1.2023 - 28.2.2023
+
 Date Started(Frontend): 31.1.2023 - 28.2.2023
 
 Links to my contributions to this project are provided, as well as a detailed breakdown of the time I allocate to it. Some of my hours are also spent on this [abandoned repository](https://github.com/aiotrope/synchro-frontend) during the early stages of development. Initially I intended to deploy the backend and frontend separately on different hosting providers, but an issue emerged later on, and I had to integrate the backend and frontend together.
@@ -74,6 +80,7 @@ yarn run build
 yarn run format && yarn run lint:fix
 
 ```
+
 ## 💫 Deploy
 
 Full stack app hosted in [render.io](https://render.com) @ [https://www.arnelimperial.com](https://www.arnelimperial.com). It should be noted that the site may be slow when making a request.
