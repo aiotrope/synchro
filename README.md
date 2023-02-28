@@ -21,7 +21,12 @@ Time entries are tracked, summarised (weekly) and aggregated using [Clockify](ht
 | 13.2.2023 - 19.02.2023  | 66.7         | [Fourth Week](https://app.clockify.me/shared/63f2d435f20fb758f276f8de) |
 | 22.2.2023 - 26.02.2023  | 38.95        | [Fifth Week](https://app.clockify.me/shared/63fc065db27db3781596dc7e)  |
 
-## CLI Commands
+
+## 🧐 How to use the app & about the project
+
+The information in [this link](https://wwww.arnelimperial.com/guide) may be useful in navigating the site and learning more about the project.
+
+## 🤖 CLI Commands
 
 ```bash
 # creating python virtual environment

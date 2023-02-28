@@ -19,6 +19,8 @@ import requests
 from .serializers import UserSerializer
 from .permissions import IsOwnerOrAdmin, IsAdminOrReadOnly
 from items.models import Item
+from carts.models import Cart
+from purchases.models import Purchase
 
 
 UserModel = getattr(settings, 'AUTH_USER_MODEL')
@@ -55,7 +57,10 @@ class UserRetrieveDestroy(generics.RetrieveDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         user = self.get_queryset()
         if user:
-            Item.objects.filter(merchant__username=self.request.user.username)
+            Purchase.objects.all().filter(buyer=self.request.user.id).delete()
+            Cart.objects.all().filter(customer=self.request.user.id).delete()
+            Item.objects.filter(
+                merchant__username=self.request.user.username).delete()
             user.delete()
             return Response({'message': 'Account deleted!'}, status=status.HTTP_204_NO_CONTENT)
         return Response({'message': 'Account not deleted'}, status=status.HTTP_400_BAD_REQUEST)

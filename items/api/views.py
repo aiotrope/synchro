@@ -22,8 +22,10 @@ class ItemViewset(ModelViewSet):
                               TokenAuthentication, SessionAuthentication]
     lookup_field = 'id'
     permission_classes = [IsVendorOrReadOnly,]
+    # filterset_fields = ['name',]
     search_fields = ['name',]
-    filter_backends = (filters.SearchFilter,)
+    # ordering_fields = ['created', 'updated']
+    filter_backends = [filters.SearchFilter,]
 
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.get_serializer_class()

@@ -256,13 +256,15 @@ export const Item = () => {
             </Card.Body>
             <ListGroup className="list-group-flush">
               <ListGroup.Item>
-                Price:{' '}
                 <Currency locale="fi-FI" currency="EUR">
                   {data?.price_entry}
                 </Currency>
               </ListGroup.Item>
               <ListGroup.Item>On Stock: {data?.on_stock}</ListGroup.Item>
-              <ListGroup.Item>Seller: {data?.merchant_email}</ListGroup.Item>
+              <ListGroup.Item>
+                Seller: {data?.merchant_username} - {data?.merchant_email}
+              </ListGroup.Item>
+              <ListGroup.Item>Created: {data?.created}</ListGroup.Item>
             </ListGroup>
             {authTokens && authUser === data?.merchant && (
               <Card.Body>
@@ -292,7 +294,11 @@ export const Item = () => {
                         : null
                     }
                     aria-disabled={data.on_stock === 'Available' ? false : true}
-                    disabled={data.on_stock === 'Available' ? false : true}
+                    disabled={
+                      data.on_stock === 'Available' || !cartMutation.isLoading
+                        ? false
+                        : true
+                    }
                   >
                     {data.on_stock === 'Available' ? 'Buy' : data.on_stock}
                   </Button>

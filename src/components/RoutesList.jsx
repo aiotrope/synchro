@@ -1,5 +1,8 @@
 import * as React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { ContentfulProvider } from 'react-contentful'
+
+import { contentfulClient } from '../services/contentful'
 
 import tokenService from '../services/token'
 import { Home } from './Home'
@@ -25,6 +28,10 @@ import { Item } from './Item'
 import { UserItems } from './UserItems'
 import { Cart } from './Cart'
 import { PurchaseSubmitted } from './PurchaseSubmitted'
+import { Guide } from './Docs'
+import { AnonUsersMngtPage } from './AnonymousUsers'
+import { ResendUserActivationForm } from './ResendUserActivationForm'
+import { ResendUserActivationSubmission } from './ResendUserActivationSubmission'
 
 export const RoutesList = () => {
   const authTokens = tokenService.getAuthTokens()
@@ -113,6 +120,27 @@ export const RoutesList = () => {
         element={
           authTokens ? <PurchaseSubmitted /> : <Navigate to={'/login'} />
         }
+      />
+
+      <Route
+        path="/guide"
+        element={
+          <ContentfulProvider client={contentfulClient}>
+            <Guide />
+          </ContentfulProvider>
+        }
+      />
+
+      <Route path="/anonymous-users" element={<AnonUsersMngtPage />} />
+
+      <Route
+        path="/resend-user-activation"
+        element={<ResendUserActivationForm />}
+      />
+
+      <Route
+        path="/resend-user-activation-submission"
+        element={<ResendUserActivationSubmission />}
       />
 
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />

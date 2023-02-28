@@ -23,7 +23,7 @@ const UnAuthMenu = () => (
     </div>
     <div>
       <strong>
-        <Link to={'/'}>DEV</Link>
+        <Link to={'/guide'}>Guide</Link>
       </strong>
     </div>
     <div className="ms-auto">
@@ -80,7 +80,7 @@ const AuthMenu = () => {
       </div>
       <div>
         <strong>
-          <Link to={'/'}>DEV</Link>
+          <Link to={'/guide'}>Guide</Link>
         </strong>
       </div>
       <div className="ms-auto">

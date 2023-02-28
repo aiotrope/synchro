@@ -152,16 +152,10 @@ export const Login = () => {
         </FormGroup>
       </Form>
       <div className="mt-1">
-        <small>
-          Forget your password?{' '}
-          <Link to={'/password-reset-form'}>Reset password</Link>
-        </small>
-      </div>
-      <div className="my-1">
-        <small>
-          Forget your login username?{' '}
-          <Link to={'/username-reset-form'}>Reset username</Link>
-        </small>
+        <Link to={'/anonymous-users'}>
+          Have you forgotten your password or your user name? or have you not
+          received your activation email confirmation? This link may be useful.
+        </Link>
       </div>
       <div className="text-center mt-4">
         <strong>OR</strong>

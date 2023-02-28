@@ -33,17 +33,3 @@ class UserAsSellerViewSet(ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(seller=self.request.user.id)
-
-    """   def pre_save(self, obj):
-        obj.sellers = self.request.user
-
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        user = self.request.user
-
-        v = Purchase.objects.filter(sellers=user)
-
-        sells = Purchase.objects.filter(sellers=user).values('id', 'purchases', 'buyer', 'buyer_username', 'sellers', 'purchases_price',
-                                                             'created', 'purchased_item_name', 'purchased_item_description', 'purchased_item_product_image', 'on_stock')
-        return Response(sells)
- """

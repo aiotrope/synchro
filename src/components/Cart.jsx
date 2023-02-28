@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Currency } from 'react-intl-number-format'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import pkg from 'lodash'
 
@@ -79,7 +79,11 @@ export const Cart = () => {
     )
   }
 
-  if (deleteCartMutation.isLoading || cartQuery.isLoading) {
+  if (
+    deleteCartMutation.isLoading ||
+    cartQuery.isLoading ||
+    purchaseMutation.isLoading
+  ) {
     return (
       <Spinner animation="grow" className="spinner">
         <span className="visually-hidden">Loading...</span>
@@ -99,10 +103,12 @@ export const Cart = () => {
               <th></th>
             </tr>
           </thead>
-          {userCart?.map(({ id, item_name, item_price_entry }) => (
+          {userCart?.map(({ id, item_name, item_price_entry, item }) => (
             <tbody key={id}>
               <tr>
-                <td>{item_name}</td>
+                <td>
+                  <Link to={`/item/${item}`}>{item_name}</Link>
+                </td>
                 <td>
                   <Currency locale="fi-FI" currency="EUR">
                     {item_price_entry}

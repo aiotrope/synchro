@@ -82,4 +82,3 @@ if settings.DEBUG:
         ),
         path("500/", default_views.server_error),
     ]
- 

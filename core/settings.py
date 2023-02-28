@@ -46,6 +46,7 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'crispy_forms',
     'django_userforeignkey',
+    'django_filters',
 
 ]
 
@@ -310,7 +311,9 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+
 }
 
 # Simple JWT
@@ -436,7 +439,8 @@ if not settings.DEBUG:
     SESSION_COOKIE_SECURE = config(
         'SESSION_COOKIE_SECURE', default=True, cast=bool)
 
-    CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)
+    CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE',
+                                default=True, cast=bool)
 
     SECURE_HSTS_SECONDS = config(
         'SECURE_HSTS_SECONDS', default=18408206, cast=int)  # 60
@@ -470,7 +474,7 @@ if not settings.DEBUG:
 
 # Static files (CSS, JavaScript, Images) & Media
 # ------------------------------------------------------------------------------
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 STATIC_URL = '/static/'
 

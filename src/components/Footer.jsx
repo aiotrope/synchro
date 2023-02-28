@@ -24,8 +24,8 @@ export const Footer = () => {
           </Nav.Item>
         ) : null}
         <Nav.Item>
-          <LinkContainer to={'/'}>
-            <Nav.Link className="text-secondary">DEV</Nav.Link>
+          <LinkContainer to={'/guide'}>
+            <Nav.Link className="text-secondary">Guide</Nav.Link>
           </LinkContainer>
         </Nav.Item>
         <Nav.Item>

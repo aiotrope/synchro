@@ -10,7 +10,8 @@ class Cart(models.Model):
         Item, on_delete=models.CASCADE, related_name='carts')
     customer = UserForeignKey(auto_user_add=True,
                               verbose_name='cart_creator', related_name='customers')
-    item_price_entry = models.DecimalField(max_digits=14, decimal_places=2, default=0.00)
+    item_price_entry = models.DecimalField(
+        max_digits=14, decimal_places=2, default=0.00)
     merchant = models.PositiveBigIntegerField(blank=True, null=True)
     merchant_email = models.EmailField(blank=True)
     customer_email = models.EmailField(blank=True)

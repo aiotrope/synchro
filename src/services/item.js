@@ -18,10 +18,22 @@ const createItem = async (dataObj) => {
   if (response) response?.data
 }
 
+const fetchUserPurchaseItems = async () => {
+  const response = await http.get('/api/purchases/')
+  if (response) return response?.data
+}
+
+const fetchUserSoldItems = async () => {
+  const response = await http.get('/api/purchases-seller/')
+  if (response) return response?.data
+}
+
 const itemService = {
   fetchItem,
   fetchUserItems,
   createItem,
+  fetchUserPurchaseItems,
+  fetchUserSoldItems,
 }
 
 export default itemService

@@ -57,6 +57,11 @@ const requestEmailReset = async (email) => {
   }
 }
 
+const requestResendUserActivation = async (data) => {
+  const response = await http.post('/auth/users/resend_activation/', data)
+  if (response.status === 204) return response.data
+}
+
 const getAuthorizationUrlGoogle = async () => {
   try {
     const response = await http.get(
@@ -136,6 +141,7 @@ export const authService = {
   setAuthTokensFromSocialGoogle,
   setAuthTokensFromSocialFacebook,
   requestPasswordReset,
+  requestResendUserActivation,
   submitPasswordResetConfirmation,
   requestEmailReset,
   requestUsernameReset,

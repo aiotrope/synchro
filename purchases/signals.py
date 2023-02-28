@@ -1,16 +1,13 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from datetime import timedelta
-from django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
-from django.utils import timezone
 from django.contrib.auth import get_user_model
 
 from items.models import Item
 from purchases.models import Purchase
-
 
 User = get_user_model()
 
