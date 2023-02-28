@@ -65,7 +65,7 @@ export const PasswordResetConfirm = () => {
       await mutateAsync(data)
       reset()
     } catch (error) {
-      toast.error(`Error: ${error.message}`)
+      toast.error(`Refrain from using too common password _ ${error.message}`)
     }
   }
 
@@ -100,6 +100,10 @@ export const PasswordResetConfirm = () => {
               {errors?.new_password?.message}
             </FormControl.Feedback>
           )}
+          <Form.Text muted>
+            At least 8 characters with combination of letters(small & cap.),
+            numbers and special characters. Avoid common password names.
+          </Form.Text>
         </FormGroup>
         <FormGroup>
           <FormLabel htmlFor="re_new_password">Re-type new password</FormLabel>

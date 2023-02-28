@@ -60,7 +60,7 @@ export const UsernameResetConfirm = () => {
   })
 
   const onSubmit = async (data) => {
-    console.log(data)
+    //console.log(data)
     try {
       await mutateAsync(data)
       reset()
@@ -100,6 +100,10 @@ export const UsernameResetConfirm = () => {
               {errors?.new_username?.message}
             </FormControl.Feedback>
           )}
+          <Form.Text muted>
+            Username must be distinct. Any similar username will result in
+            errors.
+          </Form.Text>
         </FormGroup>
         <FormGroup>
           <FormLabel htmlFor="re_new_username">Re-type new username</FormLabel>
