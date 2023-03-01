@@ -32,7 +32,7 @@ Links to my contributions to this project are provided, as well as a detailed br
 
 ## 🧐 How to use the app & about the project
 
-The information in [this link](https://wwww.arnelimperial.com/guide) may be useful in navigating the site and learning more about the project.
+The information in [this link](https://www.arnelimperial.com/guide) may be useful in navigating the site and learning more about the project.
 
 ## 🤖 CLI Commands
 
