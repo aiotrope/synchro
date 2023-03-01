@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.4647cace.css",
-    "main.js": "/static/js/main.d5834a2a.js",
+    "main.js": "/static/js/main.e87c50db.js",
     "static/media/axios.cjs": "/static/media/axios.0759ddb776fac266cd46.cjs",
     "index.html": "/index.html",
     "main.4647cace.css.map": "/static/css/main.4647cace.css.map",
-    "main.d5834a2a.js.map": "/static/js/main.d5834a2a.js.map"
+    "main.e87c50db.js.map": "/static/js/main.e87c50db.js.map"
   },
   "entrypoints": [
     "static/css/main.4647cace.css",
-    "static/js/main.d5834a2a.js"
+    "static/js/main.e87c50db.js"
   ]
 }

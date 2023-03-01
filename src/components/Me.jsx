@@ -331,13 +331,8 @@ export const Me = () => {
             can&apos;t keep you forever.
           </p>
           <small>
-            Users who created their accounts using Synchro&apos;s user
-            registration system can delete their accounts. Account deletions
-            made through social authentication (Google & Facebook) are not yet
-            supported by our API. Please{' '}
-            <Link to={'/contact'}>contact Synchro</Link> if you want to delete
-            your account this way or if you are having difficulty deleting your
-            account using both methods.
+            If you are having trouble deleting your account, please{' '}
+            <Link to={'/contact'}>contact Synchro</Link> for assistance.
           </small>
         </div>
 
