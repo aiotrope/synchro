@@ -101,8 +101,8 @@ export const UsernameResetConfirm = () => {
             </FormControl.Feedback>
           )}
           <Form.Text muted>
-            Username must be distinct. Any similar username will result in
-            errors.
+            Username value may contain only letters, numbers, and @/./+/-/_
+            characters.
           </Form.Text>
         </FormGroup>
         <FormGroup>

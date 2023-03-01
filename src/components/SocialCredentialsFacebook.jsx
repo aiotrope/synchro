@@ -92,7 +92,7 @@ export const SocialCredentialsFacebook = () => {
           <FormLabel htmlFor="code">Code</FormLabel>
           <FormControl
             type="hidden"
-            placeholder={queryParameters.get('code')}
+            //placeholder={queryParameters.get('code')}
             {...register('code')}
             aria-invalid={errors.code?.message ? 'true' : 'false'}
             className={`${errors.code?.message ? 'is-invalid' : ''} `}

@@ -21,6 +21,7 @@ from .permissions import IsOwnerOrAdmin, IsAdminOrReadOnly
 from items.models import Item
 from carts.models import Cart
 from purchases.models import Purchase
+from contacts.models import Contact
 
 
 UserModel = getattr(settings, 'AUTH_USER_MODEL')
@@ -61,6 +62,7 @@ class UserRetrieveDestroy(generics.RetrieveDestroyAPIView):
             Cart.objects.all().filter(customer=self.request.user.id).delete()
             Item.objects.filter(
                 merchant__username=self.request.user.username).delete()
+            Contact.objects.all().filter(user=self.request.user.id).delete()
             user.delete()
             return Response({'message': 'Account deleted!'}, status=status.HTTP_204_NO_CONTENT)
         return Response({'message': 'Account not deleted'}, status=status.HTTP_400_BAD_REQUEST)

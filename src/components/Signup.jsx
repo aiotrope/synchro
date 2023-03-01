@@ -114,7 +114,8 @@ export const Signup = () => {
             </FormControl.Feedback>
           )}
           <Form.Text muted>
-            6 characters long. Numbers and special characters are allowed.
+            Username may contain only letters, numbers, and @/./+/-/_
+            characters.
           </Form.Text>
         </FormGroup>
         <FormGroup className="mb-2">

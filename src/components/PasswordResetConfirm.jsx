@@ -60,7 +60,7 @@ export const PasswordResetConfirm = () => {
   })
 
   const onSubmit = async (data) => {
-    console.log(data)
+    //console.log(data)
     try {
       await mutateAsync(data)
       reset()
