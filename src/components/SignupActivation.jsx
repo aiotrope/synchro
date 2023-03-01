@@ -1,24 +1,30 @@
 import * as React from 'react'
-import Container from 'react-bootstrap/Container'
+import { LinkContainer } from 'react-router-bootstrap'
+
+import Stack from 'react-bootstrap/Stack'
+import Alert from 'react-bootstrap/Alert'
+import Button from 'react-bootstrap/Button'
 
 import { useCommon } from '../contexts/Common'
 
 export const SignupActivation = () => {
   const { signedEmail } = useCommon()
-  //console.log(signedEmail?.email)
+
   return (
-    <Container>
-      <h2>Signup Activation</h2>
-      <div>
+    <Stack className="col-md-5 mx-auto">
+      <Alert variant="info">
+        <Alert.Heading>Signup Activation</Alert.Heading>
         <p>
-          Please verify your email address by clicking the link we sent to it at{' '}
+          Verify your email address by clicking the link we sent to it at{' '}
           <strong>{signedEmail?.email}</strong>
         </p>
-        <p>
-          Login to the Synchro requires verification after signing up to the
-          system.
-        </p>
-      </div>
-    </Container>
+        <hr />
+        <div className="d-flex justify-content-end">
+          <LinkContainer to={'/shop'}>
+            <Button variant="outline-info">Go To Shop</Button>
+          </LinkContainer>
+        </div>
+      </Alert>
+    </Stack>
   )
 }
