@@ -16,7 +16,7 @@ export const SignupActivation = () => {
         <Alert.Heading>Signup Activation</Alert.Heading>
         <p>
           Verify your email address by clicking the link we sent to it at{' '}
-          <strong>{signedEmail?.email}</strong>
+          <strong>{signedEmail?.email}</strong>.
         </p>
         <hr />
         <div className="d-flex justify-content-end">
