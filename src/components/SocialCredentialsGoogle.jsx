@@ -78,10 +78,7 @@ export const SocialCredentialsGoogle = () => {
   return (
     <Stack className="col-md-5 mx-auto">
       <h2>Social Authentication (Google)</h2>
-      <div>
-        <p>Press the ENTER to signin to the site!</p>
-        <small>CODE: {code}</small>
-      </div>
+
       <Form
         className="mt-2"
         spellCheck="false"
@@ -92,7 +89,6 @@ export const SocialCredentialsGoogle = () => {
           <FormLabel htmlFor="code">Login</FormLabel>
           <FormControl
             type="hidden"
-            //placeholder={queryParameters.get('code')}
             {...register('code')}
             aria-invalid={errors.code?.message ? 'true' : 'false'}
             className={`${errors.code?.message ? 'is-invalid' : ''} `}
@@ -105,7 +101,7 @@ export const SocialCredentialsGoogle = () => {
         </FormGroup>
         <FormGroup className="d-grid mt-3">
           <Button variant="primary" size="lg" type="submit">
-            ENTER
+            Press to enter Synchro
           </Button>
         </FormGroup>
       </Form>

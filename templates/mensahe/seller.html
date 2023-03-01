@@ -18,27 +18,14 @@
     <div style="padding:0.01em 16px;">
         <h5>Hi {{ username }} / {{ email }},</h5>
         <p>This is to inform you that your item(s) have already been sold from Synchro:</p>
-        <table style="margin-top: 2rem; margin-bottom: 2rem;">
-            <thead>
-                <tr>
-                    <th>ID #</th>
-                    <th>Item Name</th>
-                    <th>Buyer</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for x in items %}
 
-                <tr>
-                    <td>{{ x.purchases.item.id }}</td>
-                    <td>{{ x.purchases.item.name }}</td>
-                    <td>{{ x.purchases.customer_email }}</td>
-
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
+        <div style="background-color:#f2f2f2;font-style:italic;padding:0.01em 4px;margin:2rem;">
+            {% for x in items %}
+            <p>Item ID: {{ x.purchases.item.id }}</p>
+            <p>Item Name: {{ x.purchases.item.name }}</p>
+            <p>Customer contact email: {{ x.purchases.customer_email }}</p>
+            {% endfor %}
+            </div>
         <hr>
 
         <p>Thank you,<br><br><a href="https://www.arnelimperial.com"><strong>Synchro Team</strong></a></p>

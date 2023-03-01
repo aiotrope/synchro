@@ -30,7 +30,9 @@ Links to my contributions to this project are provided, as well as a detailed br
 |                         |               |                                                                        |
 | **TOTAL**               | **272 hours** |                                                                        |
 
-## 🧐 How to use the app & about the project
+PDF versions of my hours are also available on this [link](https://github.com/aiotrope/synchro/tree/main/time_entries). Entries are separated per week basis.
+
+## 🧐 Information about the project and how to use the app
 
 The information in [this link](https://www.arnelimperial.com/guide) may be useful in navigating the site and learning more about the project.
 
@@ -83,4 +85,4 @@ yarn run format && yarn run lint:fix
 
 ## 💫 Deploy
 
-Full stack app hosted in [render.io](https://render.com) @ [https://www.arnelimperial.com](https://www.arnelimperial.com). It should be noted that the site may be slow when making a request.
+Full stack web app is available at [https://www.arnelimperial.com](https://www.arnelimperial.com). It should be noted that the site may be slow when making a request.

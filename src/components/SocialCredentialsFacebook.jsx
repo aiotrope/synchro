@@ -78,10 +78,7 @@ export const SocialCredentialsFacebook = () => {
   return (
     <Stack className="col-md-5 mx-auto">
       <h2>Social Authentication (Facebook)</h2>
-      <div>
-        <p>Press the ENTER to signin to the site!</p>
-        <small>CODE: {code}</small>
-      </div>
+
       <Form
         className="mt-2"
         spellCheck="false"
@@ -92,7 +89,6 @@ export const SocialCredentialsFacebook = () => {
           <FormLabel htmlFor="code">Code</FormLabel>
           <FormControl
             type="hidden"
-            //placeholder={queryParameters.get('code')}
             {...register('code')}
             aria-invalid={errors.code?.message ? 'true' : 'false'}
             className={`${errors.code?.message ? 'is-invalid' : ''} `}
@@ -106,7 +102,7 @@ export const SocialCredentialsFacebook = () => {
 
         <FormGroup className="d-grid mt-3">
           <Button variant="primary" size="lg" type="submit">
-            ENTER
+            Press to enter Synchro
           </Button>
         </FormGroup>
       </Form>
