@@ -23,10 +23,10 @@ Links to my contributions to this project are provided, as well as a detailed br
 | 22.01.2023              | 5.2           | [Initial](https://app.clockify.me/shared/63e035c668c29410b9f4d693)     |
 | 23.01.2023 - 29.01.2023 | 29.8          | [First Week](https://app.clockify.me/shared/63e035e435504317106a58ef)  |
 | 30.1.2023 - 05.02.2023  | 57.4          | [Second Week](https://app.clockify.me/shared/63eba186f20fb758f2644190) |
-| 06.2.2023 - 12.02.2023  | 58.3          | [Third Week](https://app.clockify.me/shared/63e96492f20fb758f25bf78e)  |
-| 13.2.2023 - 19.02.2023  | 66.7          | [Fourth Week](https://app.clockify.me/shared/63f2d435f20fb758f276f8de) |
-| 22.2.2023 - 26.02.2023  | 38.95         | [Fifth Week](https://app.clockify.me/shared/63fc065db27db3781596dc7e)  |
-| 27.2.2023 - 28.02.2023  | 16.4          | [Finale](https://app.clockify.me/shared/63fe54c21e474432afd7e42f)      |
+| 06.2.2023 - 12.02.2023  | 58.3          | [Third Week](https://app.clockify.me/shared/6410943fab996774eaa9dcc9)  |
+| 13.2.2023 - 19.02.2023  | 66.7          | [Fourth Week](https://app.clockify.me/shared/641094a89083e91450827c52) |
+| 22.2.2023 - 26.02.2023  | 38.95         | [Fifth Week](https://app.clockify.me/shared/641094e211930932ca43251e)  |
+| 27.2.2023 - 28.02.2023  | 16.4          | [Finale](https://app.clockify.me/shared/6410953311930932ca4326db)      |
 |                         |               |                                                                        |
 | **TOTAL**               | **272 hours** |                                                                        |
 
